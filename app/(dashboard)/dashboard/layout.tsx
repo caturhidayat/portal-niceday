@@ -14,7 +14,7 @@ export default function DashboardLayout({
     return (
         <section>
             <NaviMenu />
-            <section>{children}</section>
+            <div>{children}</div>
         </section>
     );
 }

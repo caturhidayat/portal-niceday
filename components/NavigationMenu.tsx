@@ -14,6 +14,7 @@ import {
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { BoxIcon } from "lucide-react";
+
 // import {
 //     DropdownMenuLabel,
 //     DropdownMenuTrigger,
@@ -28,43 +29,43 @@ import { BoxIcon } from "lucide-react";
 const employees: { title: string; href: string }[] = [
     {
         title: "Employee Information",
-        href: "/dashboard/employee-information",
+        href: "/dashboard/employee/information",
     },
     {
         title: "Employee Requests",
-        href: "/dashboard/employee-requests",
+        href: "/dashboard/employee/requests",
     },
     {
         title: "Employee Report",
-        href: "/dashboard/employee-report",
+        href: "/dashboard/employee/report",
     },
     {
         title: "Employee Shifts",
-        href: "/dashboard/employee-shifts",
+        href: "/dashboard/employee/shifts",
     },
     {
         title: "Employee Group Shifts",
-        href: "/dashboard/employee-group-shifts",
-    }
+        href: "/dashboard/employee/group-shifts",
+    },
 ];
 
 const timeManagements: { title: string; href: string }[] = [
     {
         title: "Attendance List",
-        href: "/dashboard/attendance-list",
+        href: "/dashboard/attendance/list",
     },
     {
         title: "Attendance Correction Requests",
-        href: "/dashboard/attendance-correction-requests",
+        href: "/dashboard/attendance/correction-requests",
     },
     {
         title: "Attendance Edit",
-        href: "/dashboard/attendance-edit",
+        href: "/dashboard/attendance/edit",
     },
     {
         title: "Attendance Data",
-        href: "/dashboard/attendance-data",
-    }
+        href: "/dashboard/attendance/data",
+    },
 ];
 
 export function NaviMenu() {
@@ -87,11 +88,14 @@ export function NaviMenu() {
                         <NavigationMenuContent>
                             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                                 {employees.map((employee) => (
-                                    <ListItem
+                                    <Link
                                         key={employee.title}
-                                        title={employee.title}
                                         href={employee.href}
-                                    ></ListItem>
+                                    >
+                                        <ListItem
+                                            title={employee.title}
+                                        ></ListItem>
+                                    </Link>
                                 ))}
                             </ul>
                         </NavigationMenuContent>
@@ -131,24 +135,27 @@ export function NaviMenu() {
                         <NavigationMenuContent>
                             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                                 {timeManagements.map((timeManage) => (
-                                    <ListItem
+                                    <Link
                                         key={timeManage.title}
-                                        title={timeManage.title}
                                         href={timeManage.href}
-                                    ></ListItem>
+                                    >
+                                        <ListItem
+                                            title={timeManage.title}
+                                        ></ListItem>
+                                    </Link>
                                 ))}
                             </ul>
                         </NavigationMenuContent>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
-                        <Link href="/docs" legacyBehavior passHref>
+                        <Link href="/dashboard/organization" legacyBehavior passHref>
                             <NavigationMenuLink
                                 className={navigationMenuTriggerStyle()}
                             >
                                 Organization
                             </NavigationMenuLink>
                         </Link>
-                        <Link href="/docs" legacyBehavior passHref>
+                        <Link href="/dashboard/setting" legacyBehavior passHref>
                             <NavigationMenuLink
                                 className={navigationMenuTriggerStyle()}
                             >
