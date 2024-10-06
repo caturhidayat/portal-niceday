@@ -1,3 +1,4 @@
+import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
 
 export default function organizationLayout({
@@ -12,10 +13,13 @@ export default function organizationLayout({
             </div>
             <div className="mx-auto grid w-full max-w-8xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[210px_1fr]">
                 <nav
-                    className="grid gap-4 text-sm text-muted-foreground"
+                    className="grid gap-4 text-sm text-muted-foreground sticky top-0"
                     x-chunk="dashboard-04-chunk-0"
                 >
-                    <Link href="dashboard/organization" className="font-semibold text-primary">
+                    <Link
+                        href="dashboard/organization"
+                        className="font-semibold text-primary"
+                    >
                         General
                     </Link>
                     <Link href="dashboard/organization/security">Security</Link>
@@ -24,7 +28,7 @@ export default function organizationLayout({
                     <Link href="dashboard/organization">Organizations</Link>
                     <Link href="dashboard/organization">Advanced</Link>
                 </nav>
-                <div className="grid gap-6">{children}</div>
+                <ScrollArea className="grid gap-6">{children}</ScrollArea>
             </div>
         </section>
     );
