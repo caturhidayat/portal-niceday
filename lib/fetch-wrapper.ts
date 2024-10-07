@@ -6,7 +6,6 @@ export const getHeaders = () => ({
   Cookie: cookies().toString(),
 });
 
-console.log("Cookies : ", cookies().toString());
 
 export const post = async (path: string, data: FormData) => {
   console.log("formData : ", data);

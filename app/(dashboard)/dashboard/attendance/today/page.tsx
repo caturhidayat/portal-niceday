@@ -1,4 +1,3 @@
-import { API_URL } from "@/lib/constant";
 import { Attendance, Payment, columns } from "./columns";
 import { DataTable } from "./data-table";
 import { get } from "@/lib/fetch-wrapper";
