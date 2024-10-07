@@ -37,6 +37,15 @@ export type User = {
     updatedAt: string;
 }
 
+export type Shift = {
+    id: string;
+    name: string;
+    startTime: string;
+    endTime: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
 export type Attendance = {
     id: string;
     userId: string;
@@ -54,6 +63,7 @@ export type Attendance = {
     workHours: number;
     officeLocationId: string;
     shiftId: string;
+    shift: Shift;
     createdAt: string;
     updatedAt: string;
 };
@@ -179,26 +189,26 @@ export const columns: ColumnDef<Attendance>[] = [
             return <div className="ml-4">{workHours}</div>;
         },
     },
+    // {
+    //     accessorKey: "officeLocationId",
+    //     header: "Office Location",
+    //     cell: ({ row }) => {
+    //         const officeLocationId = row.getValue("officeLocationId");
+    //         if (!officeLocationId) {
+    //             return <div className="ml-4">--</div>;
+    //         }
+    //         return <div className="ml-4">{String(officeLocationId)}</div>;
+    //     },
+    // },
     {
-        accessorKey: "officeLocationId",
-        header: "Office Location",
-        cell: ({ row }) => {
-            const officeLocationId = row.getValue("officeLocationId");
-            if (!officeLocationId) {
-                return <div className="ml-4">--</div>;
-            }
-            return <div className="ml-4">{String(officeLocationId)}</div>;
-        },
-    },
-    {
-        accessorKey: "shiftId",
+        accessorKey: "shift",
         header: "Shift ID",
         cell: ({ row }) => {
-            const shiftId = row.getValue("shiftId");
-            if (!shiftId) {
+            const shift = row.getValue("shift") as Shift;
+            if (!shift) {
                 return <div className="ml-4">--</div>;
             }
-            return <div className="ml-4">{String(shiftId)}</div>;
+            return <div className="ml-4">{String(shift.name)}</div>;
         },
     },
     {
