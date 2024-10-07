@@ -24,7 +24,7 @@ export default async function login(
         body: JSON.stringify(Object.fromEntries(formData)),
     });
 
-    console.log("response from api : ", res);
+    // console.log("response from api : ", res);
 
     const parsedRes = await res.json();
 
@@ -35,3 +35,5 @@ export default async function login(
     setSession(res);
     redirect("/dashboard");
 }
+
+

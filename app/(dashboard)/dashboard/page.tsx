@@ -1,4 +1,4 @@
-import DataTab from "@/app/payments/page";
+import DataTab from "@/app/(dashboard)/dashboard/attendance/today/page";
 
 export default function Dashboard() {
     return (

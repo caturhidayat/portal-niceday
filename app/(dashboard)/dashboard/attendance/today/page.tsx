@@ -1,5 +1,7 @@
-import { Payment, columns } from "./columns";
+import { API_URL } from "@/lib/constant";
+import { Attendance, Payment, columns } from "./columns";
 import { DataTable } from "./data-table";
+import { get } from "@/lib/fetch-wrapper";
 
 async function getData(): Promise<Payment[]> {
     // Fetch data from your API here.
@@ -153,16 +155,23 @@ async function getData(): Promise<Payment[]> {
             amount: 1300,
             status: "pending",
             email: "x@example.com",
-        }
+        },
     ];
 }
 
+async function getAttendance(): Promise<Attendance[]> {
+    const response = await get("attendances");
+    // console.log("response :", response);
+    return response as Attendance[];
+}
+
 export default async function DataTab() {
-    const data = await getData();
+    // const data = await getData();
+    const attendance = await getAttendance();
 
     return (
         <div className="container mx-auto py-10">
-            <DataTable columns={columns} data={data} />
+            <DataTable columns={columns} data={attendance} />
         </div>
     );
 }

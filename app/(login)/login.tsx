@@ -25,12 +25,15 @@ export default function Login() {
         <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
             <div className="flex items-center justify-center py-12">
                 <div className="mx-auto grid w-[350px] gap-6">
-                    {state.error && (
+                    {/* {state.error !== undefined && (
                         <Alert variant="destructive">
                             <AlertCircle className="w-6 h-6" />
                             <AlertTitle>Error</AlertTitle>
                             <AlertDescription>{state.error}</AlertDescription>
                         </Alert>
+                    )} */}
+                    {state.error !== undefined && (
+                        <span className="text-destructive">{state.error}</span>
                     )}
                     <div className="grid gap-2 text-center">
                         <h1 className="text-3xl font-bold">Login</h1>
@@ -54,11 +57,14 @@ export default function Login() {
                                 <div className="flex items-center">
                                     <Label htmlFor="password">Password</Label>
                                 </div>
-                                <Input id="password" name="password" type="password" required />
+                                <Input
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    required
+                                />
                             </div>
-                            <Button className="w-full">
-                                Login
-                            </Button>
+                            <Button className="w-full">Login</Button>
                         </div>
                     </form>
                 </div>
