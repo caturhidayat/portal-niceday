@@ -1,5 +1,11 @@
 import Link from "next/link";
 
+const organizationLinks = [
+    { label: "Branches", href: "organization/branches" },
+    { label: "Departements", href: "organization/departements" },
+    { label: "Office location", href: "organization/office-location" },
+];
+
 export default function organizationLayout({
     children,
 }: {
@@ -15,14 +21,16 @@ export default function organizationLayout({
                     className="grid gap-4 text-sm text-muted-foreground"
                     x-chunk="dashboard-04-chunk-0"
                 >
-                    <Link href="dashboard/organization" className="font-semibold text-primary">
+                    {/* <Link href="dashboard/organization" className="font-semibold text-primary">
                         General
-                    </Link>
-                    <Link href="dashboard/organization/security">Security</Link>
-                    <Link href="dashboard/organization">Integrations</Link>
-                    <Link href="dashboard/organization">Support</Link>
-                    <Link href="dashboard/organization">Organizations</Link>
-                    <Link href="dashboard/organization">Advanced</Link>
+                    </Link> */}
+                    {organizationLinks.map((link) => (
+                        <Link key={link.href} href={`/dashboard/${link.href}`}>
+                            {link.label}
+                        </Link>
+                    ))}
+                    {/* <Link href="dashboard/organization">Organizations</Link>
+                    <Link href="dashboard/organization">Advanced</Link> */}
                 </nav>
                 <div className="grid gap-6">{children}</div>
             </div>

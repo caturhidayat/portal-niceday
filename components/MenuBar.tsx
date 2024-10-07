@@ -187,7 +187,7 @@ export function MenuBarNav() {
                     </MenubarContent>
                 </MenubarMenu>
                 <MenubarMenu>
-                    <MenubarTrigger>
+                    {/* <MenubarTrigger>
                         <Building2 className="w-6 h-6 text-primary mr-2" />
                         Organization
                     </MenubarTrigger>
@@ -202,7 +202,10 @@ export function MenuBarNav() {
                                 </MenubarItem>
                             </Link>
                         ))}
-                    </MenubarContent>
+                    </MenubarContent> */}
+                    <Link href="/dashboard/organization">
+                        <Button variant="outline" className="border-none">Organization</Button>
+                    </Link>
                 </MenubarMenu>
             </Menubar>
             <div className="ml-auto">
