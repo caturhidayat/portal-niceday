@@ -1,3 +1,5 @@
+'use server';
+
 import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
 import { SESSION_COOKIE } from "../constant";
@@ -7,6 +9,7 @@ export async function getSession() {
   return !!cookies().get(SESSION_COOKIE)?.value;
 }
 
+// Set the session cookie
 export async function setSession(response: Response) {
   const setSessionHeader = response.headers.get("Set-Cookie");
   // console.log("setSessionHeader", setSessionHeader);
@@ -22,6 +25,11 @@ export async function setSession(response: Response) {
   }
 }
 
-export default function authenticated() {
+// Remove the session cookie
+export async function removeSession() {
+  cookies().delete(SESSION_COOKIE);
+}
+
+export async function authenticated() {
     return !!cookies().get(SESSION_COOKIE)?.value;
 }

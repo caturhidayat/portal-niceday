@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { NaviMenu } from "@/components/NavigationMenu";
+import { MenuBarNav } from "@/components/MenuBar";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -13,7 +14,8 @@ export default function DashboardLayout({
 }>) {
     return (
         <section>
-            <NaviMenu />
+            {/* <NaviMenu /> */}
+            <MenuBarNav />
             <div>{children}</div>
         </section>
     );

@@ -76,7 +76,7 @@ export const columns: ColumnDef<Attendance>[] = [
         },
         cell: ({ row }) => {
             const user = row.getValue("user") as User;
-            return <span className="ml-4 ">{user.name}</span>;
+            return <div className="ml-2">{user.name}</div>;
         }
     },
     {
@@ -224,7 +224,7 @@ export const columns: ColumnDef<Attendance>[] = [
                 return <div>Invalid date</div>;
             }
 
-            const date = format(new Date(parsedDate), "dd/MM/yyyy HH:mm:ss");
+            const date = format(new Date(parsedDate), "dd/MM/yy - HH:mm");
             return <div className="ml-4">{date}</div>;
         }
     },
