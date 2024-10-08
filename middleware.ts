@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { authenticated } from "./lib/auth/sessions";
 
 const protectedRoutes = "/dashboard";
 
@@ -9,9 +8,8 @@ export async function middleware(request: NextRequest) {
     const isProtectedRoute = pathname.startsWith(protectedRoutes);
 
     if (!sessionCookie && isProtectedRoute) {
-        return NextResponse.redirect(new URL("/sign-in", request.url));
+        return Response.redirect(new URL("/sign-in", request.url));
     }
-
     if (sessionCookie && pathname === "/sign-in") {
         return NextResponse.redirect(new URL("/dashboard", request.url));
     }

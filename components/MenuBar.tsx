@@ -122,12 +122,9 @@ const organizations: { title: string; href: string; icon: JSX.Element }[] = [
 ];
 
 export function MenuBarNav() {
-    const router = useRouter();
-    async function handleLogout() {
-        console.log("logout");
+    const handleLogout = async () => {
         await removeSession();
-        router.push("/sign-in");
-    }
+    };
     return (
         <header className="sticky top-0  gap-4 border-b bg-background w-full flex px-4 z-10 items-center">
             <Menubar className="border-none gap-4">
@@ -204,7 +201,9 @@ export function MenuBarNav() {
                         ))}
                     </MenubarContent> */}
                     <Link href="/dashboard/organization">
-                        <Button variant="outline" className="border-none">Organization</Button>
+                        <Button variant="outline" className="border-none">
+                            Organization
+                        </Button>
                     </Link>
                 </MenubarMenu>
             </Menubar>
@@ -224,16 +223,14 @@ export function MenuBarNav() {
                                 </MenubarItem>
                             </Link>
 
-                            <form action={handleLogout} className="w-full">
-                                <button type="submit" className="flex w-full">
-                                    <MenubarItem className="text-destructive w-full flex-1 cursor-pointer">
-                                        Logout
-                                        <MenubarShortcut>
-                                            <LogOut className="w-4 h-4 text-destructive" />
-                                        </MenubarShortcut>
-                                    </MenubarItem>
-                                </button>
-                            </form>
+                            <button onClick={handleLogout} className="flex w-full">
+                                <MenubarItem className="text-destructive w-full flex-1 cursor-pointer">
+                                    Logout
+                                    <MenubarShortcut>
+                                        <LogOut className="w-4 h-4 text-destructive" />
+                                    </MenubarShortcut>
+                                </MenubarItem>
+                            </button>
                         </MenubarContent>
                     </MenubarMenu>
                 </Menubar>

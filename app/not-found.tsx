@@ -8,11 +8,15 @@ export default function NotFound() {
                 <p className="text-balance text-muted-foreground">
                     The page you are looking for does not exist
                 </p>
-                <Button variant="outline" className="border-primary" size="lg">
-                    <a href="/dashboard" className="">
+                <a href="/dashboard" className="">
+                    <Button
+                        variant="outline"
+                        className="border-primary"
+                        size="lg"
+                    >
                         Go back to Dashboard
-                    </a>
-                </Button>
+                    </Button>
+                </a>
             </div>
         </div>
     );

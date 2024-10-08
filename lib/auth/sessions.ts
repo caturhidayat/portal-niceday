@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
 import { SESSION_COOKIE } from "../constant";
+import { redirect } from "next/navigation";
 
 
 export async function getSession() {
@@ -28,8 +29,5 @@ export async function setSession(response: Response) {
 // Remove the session cookie
 export async function removeSession() {
   cookies().delete(SESSION_COOKIE);
-}
-
-export async function authenticated() {
-    return !!cookies().get(SESSION_COOKIE)?.value;
+  redirect("/sign-in");
 }
