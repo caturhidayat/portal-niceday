@@ -26,8 +26,10 @@ import {
     LayoutDashboardIcon,
     ListOrdered,
     LogOut,
+    Network,
     ScrollText,
     Settings,
+    Settings2,
     SquareMenu,
     User,
     UsersRound,
@@ -68,16 +70,6 @@ const employees: { title: string; href: string; icon?: JSX.Element }[] = [
         href: "/dashboard/employee/report",
         icon: <ScrollText className="w-4 h-4 text-primary" />,
     },
-    {
-        title: "Employee Shifts",
-        href: "/dashboard/employee/shifts",
-        icon: <CalendarClock className="w-4 h-4 text-primary" />,
-    },
-    {
-        title: "Employee Group Shifts",
-        href: "/dashboard/employee/group-shifts",
-        icon: <Boxes className="w-4 h-4 text-primary" />,
-    },
 ];
 
 const timeManagements: { title: string; href: string; icon: JSX.Element }[] = [
@@ -100,6 +92,16 @@ const timeManagements: { title: string; href: string; icon: JSX.Element }[] = [
         title: "Attendance Data",
         href: "/dashboard/attendance/data",
         icon: <BoxIcon className="w-4 h-4 text-primary" />,
+    },
+    {
+        title: "Employee Shifts",
+        href: "/dashboard/attendance/shifts",
+        icon: <CalendarClock className="w-4 h-4 text-primary" />,
+    },
+    {
+        title: "Employee Group Shifts",
+        href: "/dashboard/attendance/group-shifts",
+        icon: <Boxes className="w-4 h-4 text-primary" />,
     },
 ];
 
@@ -126,18 +128,18 @@ export function MenuBarNav() {
         await removeSession();
     };
     return (
-        <header className="sticky top-0  gap-4 border-b bg-background w-full flex px-4 z-10 items-center">
+        <header className="sticky top-0  gap-4 border-b bg-background w-full flex px-4 z-10 items-center text-foreground">
             <Menubar className="border-none gap-4">
                 <MenubarMenu>
                     <MenubarTrigger>
-                        <SquareMenu className="w-6 h-6 text-primary mr-2" />
+                        <SquareMenu className="w-4 h-4 text-primary mr-2" />
                         <span>Menu</span>
                     </MenubarTrigger>
                     <MenubarContent>
                         <Link href="/dashboard">
                             <MenubarItem>
                                 Dashboard
-                                <MenubarShortcut>
+                                <MenubarShortcut className="pl-2">
                                     <LayoutDashboardIcon className="w-4 h-4 text-primary" />
                                 </MenubarShortcut>
                             </MenubarItem>
@@ -146,7 +148,7 @@ export function MenuBarNav() {
                 </MenubarMenu>
                 <MenubarMenu>
                     <MenubarTrigger>
-                        <UsersRound className="w-6 h-6 text-primary mr-2" />
+                        <UsersRound className="w-4 h-4 text-primary mr-2" />
                         Employees{" "}
                     </MenubarTrigger>
                     <MenubarContent>
@@ -154,7 +156,7 @@ export function MenuBarNav() {
                             <Link key={employee.href} href={employee.href}>
                                 <MenubarItem>
                                     {employee.title}
-                                    <MenubarShortcut>
+                                    <MenubarShortcut className="pl-2">
                                         {employee.icon}
                                     </MenubarShortcut>
                                 </MenubarItem>
@@ -164,7 +166,7 @@ export function MenuBarNav() {
                 </MenubarMenu>
                 <MenubarMenu>
                     <MenubarTrigger>
-                        <Hourglass className="w-6 h-6 text-primary mr-2" />
+                        <Hourglass className="w-4 h-4 text-primary mr-2" />
                         Time Management
                     </MenubarTrigger>
                     <MenubarContent>
@@ -175,7 +177,7 @@ export function MenuBarNav() {
                             >
                                 <MenubarItem>
                                     {timeManagement.title}
-                                    <MenubarShortcut>
+                                    <MenubarShortcut className="pl-2">
                                         {timeManagement.icon}
                                     </MenubarShortcut>
                                 </MenubarItem>
@@ -184,25 +186,16 @@ export function MenuBarNav() {
                     </MenubarContent>
                 </MenubarMenu>
                 <MenubarMenu>
-                    {/* <MenubarTrigger>
-                        <Building2 className="w-6 h-6 text-primary mr-2" />
-                        Organization
-                    </MenubarTrigger>
-                    <MenubarContent>
-                        {organizations.map((org) => (
-                            <Link key={org.href} href={org.href}>
-                                <MenubarItem>
-                                    {org.title}
-                                    <MenubarShortcut>
-                                        {org.icon}
-                                    </MenubarShortcut>
-                                </MenubarItem>
-                            </Link>
-                        ))}
-                    </MenubarContent> */}
                     <Link href="/dashboard/organization">
                         <Button variant="outline" className="border-none">
+                            <Network className="w-4 h-4 text-primary mr-2" />
                             Organization
+                        </Button>
+                    </Link>
+                    <Link href="/dashboard/setting">
+                        <Button variant="outline" className="border-none">
+                            <Settings className="w-4 h-4 text-primary mr-2" />
+                            Setting
                         </Button>
                     </Link>
                 </MenubarMenu>
@@ -211,19 +204,13 @@ export function MenuBarNav() {
                 <Menubar className="border-none">
                     <MenubarMenu>
                         <MenubarTrigger>
-                            <User className="w-6 h-6 text-primary mr-2" />
+                            <User className="w-4 h-4 text-primary mr-2" />
                         </MenubarTrigger>
                         <MenubarContent>
-                            <Link href="/dashboard/setting">
-                                <MenubarItem>
-                                    Settings
-                                    <MenubarShortcut>
-                                        <Settings className="w-4 h-4 text-primary" />
-                                    </MenubarShortcut>
-                                </MenubarItem>
-                            </Link>
-
-                            <button onClick={handleLogout} className="flex w-full">
+                            <button
+                                onClick={handleLogout}
+                                className="flex w-full"
+                            >
                                 <MenubarItem className="text-destructive w-full flex-1 cursor-pointer">
                                     Logout
                                     <MenubarShortcut>
