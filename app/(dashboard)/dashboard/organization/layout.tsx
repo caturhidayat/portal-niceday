@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Building2, Home, Menu, Pin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Toaster } from "@/components/ui/toaster";
 
 const organizationLinks = [
     {
@@ -81,6 +82,7 @@ export default function settingLayout({
                 <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
                     {children}
                 </main>
+                <Toaster />
             </div>
         </div>
     );

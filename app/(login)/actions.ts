@@ -4,11 +4,7 @@ import { setSession } from "@/lib/auth/sessions";
 import { API_URL } from "@/lib/constant";
 import { getErrorMessage } from "@/lib/error";
 import { redirect } from "next/navigation";
-
-export interface FormResponse {
-    error: string;
-    success: string;
-}
+import { FormResponse } from "@/lib/interface/form-response.interface";
 
 export default async function login(
     _prevState: FormResponse,
