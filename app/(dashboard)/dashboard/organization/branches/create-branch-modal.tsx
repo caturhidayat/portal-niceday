@@ -8,9 +8,16 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import createBranch from "./action";
 import { Drawer } from "vaul";
+import { useFormState } from "react-dom";
+
+const initialState = {
+    error: "",
+    data: {},
+};
 
 export default function CreateBranchModal() {
     const [response, setResponse] = useState<FormResponse>();
+    // const [state, formAction] = useFormState(createBranch, initialState);
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -22,11 +29,16 @@ export default function CreateBranchModal() {
                 onOpenChange={setIsOpen}
             >
                 <Drawer.Trigger asChild>
-                    <Button>Create</Button>
+                    <Button aria-haspopup>Create</Button>
                 </Drawer.Trigger>
                 <Drawer.Portal>
                     <Drawer.Overlay className="fixed inset-0 bg-black/30" />
-                    <Drawer.Content className="right-0 top-0 bottom-0 fixed z-10 flex outline-none">
+                    <Drawer.Content
+                        className="right-0 top-0 bottom-0 fixed z-10 flex outline-none"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-describedby="create-branch-description"
+                    >
                         <div className="bg-background rounded-[16px] w-[380px] grow mt-2 mr-2 mb-2 p-5 flex flex-col">
                             <div className="">
                                 <Drawer.Title className="font-bold mb-2">
@@ -42,10 +54,11 @@ export default function CreateBranchModal() {
                                         const res = await createBranch(
                                             formData
                                         );
-                                        console.log("response", res.data);
-                                        setResponse(res.data);
+                                        console.log("response", res);
+
                                         setIsOpen(false);
                                     }}
+                                    // action={formAction}
                                 >
                                     <div className="space-y-4">
                                         <div className="space-y-1">
@@ -58,11 +71,27 @@ export default function CreateBranchModal() {
                                                 required
                                             />
                                         </div>
+                                        <div className="space-y-1">
+                                            <Label htmlFor="location">
+                                                Location
+                                            </Label>
+                                            <Input
+                                                id="location"
+                                                name="location"
+                                                type="text"
+                                                placeholder="Enter Branch Location"
+                                            />
+                                        </div>
 
                                         <div className="flex justify-end">
-                                            <Button type="submit">
-                                                Create
+                                            <Button
+                                                onClick={() => setIsOpen(false)}
+                                                className="mr-2"
+                                                variant="outline"
+                                            >
+                                                Cancel
                                             </Button>
+                                            <Button type="submit">Save</Button>
                                         </div>
                                     </div>
                                 </form>

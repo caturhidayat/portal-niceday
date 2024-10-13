@@ -15,7 +15,7 @@ export const columns: ColumnDef<Branch>[] = [
 
     },
     {
-        accessorKey: "createAt",
+        accessorKey: "createdAt",
         header: "Created At",
         cell: ({ row }) => {
             const createdAt = row.getValue("createdAt");

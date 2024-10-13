@@ -7,15 +7,16 @@ export type Branch = {
     id: number;
     name: string;
     location: string;
-    createAt: string;
+    createdAt: string;
     updatedAt: string;
 };
 
-async function getBranches() {
+async function getBranches(): Promise<Branch[]> {
     const response = (await get("branches", ["branches"])) as {
         data: Branch[];
     };
-    return response.data as Branch[];
+
+    return response.data;
 }
 
 export default async function Page() {
