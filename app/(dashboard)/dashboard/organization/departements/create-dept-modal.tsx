@@ -1,22 +1,15 @@
 "use client";
 
-import { FormResponse } from "@/lib/interface/form-response.interface";
 import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { Drawer } from "vaul";
-import createBranch from "./actions";
+import createDepartement from "./actions";
 
-const initialState = {
-    error: "",
-    data: {},
-};
 
-export default function CreateBranchModal() {
-    const [response, setResponse] = useState<FormResponse>();
-    // const [state, formAction] = useFormState(createBranch, initialState);
+export default function CreateDeptModal() {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -50,14 +43,12 @@ export default function CreateBranchModal() {
                                         const formData = new FormData(
                                             e.target as HTMLFormElement
                                         );
-                                        const res = await createBranch(
+                                        const res = await createDepartement(
                                             formData
                                         );
-                                        console.log("response", res);
 
                                         setIsOpen(false);
                                     }}
-                                    // action={formAction}
                                 >
                                     <div className="space-y-4">
                                         <div className="space-y-1">
@@ -68,17 +59,6 @@ export default function CreateBranchModal() {
                                                 type="text"
                                                 placeholder="Enter Branch Name"
                                                 required
-                                            />
-                                        </div>
-                                        <div className="space-y-1">
-                                            <Label htmlFor="location">
-                                                Location
-                                            </Label>
-                                            <Input
-                                                id="location"
-                                                name="location"
-                                                type="text"
-                                                placeholder="Enter Branch Location"
                                             />
                                         </div>
 

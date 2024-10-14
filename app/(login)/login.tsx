@@ -7,8 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormState } from "react-dom";
 import login from "./actions";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
 
 export const description =
     "A login page with two columns. The first column has the login form with email and password. There's a Forgot your passwork link and a link to sign up if you do not have an account. The second column has a cover image.";
@@ -25,13 +23,6 @@ export default function Login() {
         <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
             <div className="flex items-center justify-center py-12">
                 <div className="mx-auto grid w-[350px] gap-6">
-                    {/* {state.error !== undefined && (
-                        <Alert variant="destructive">
-                            <AlertCircle className="w-6 h-6" />
-                            <AlertTitle>Error</AlertTitle>
-                            <AlertDescription>{state.error}</AlertDescription>
-                        </Alert>
-                    )} */}
                     {state.error !== undefined && (
                         <span className="text-destructive">{state.error}</span>
                     )}
@@ -71,7 +62,7 @@ export default function Login() {
             </div>
             <div className="hidden bg-muted lg:block">
                 <Image
-                    src="/placeholder.svg"
+                    src="/images/drawkit-grape-1.svg"
                     alt="Image"
                     width="1920"
                     height="1080"

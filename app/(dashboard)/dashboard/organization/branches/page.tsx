@@ -31,7 +31,7 @@ export default async function Page() {
                 </div>
             </div>
             <div className=" grid grid-cols-1">
-                <h1>Branches</h1>
+                <h1 className="py-4 font-bold text-xl">Branches</h1>
                 <DataTable columns={columns} data={branches} />
             </div>
         </div>
