@@ -34,13 +34,17 @@ export default async function OfficeLocation() {
         <div className="grid gap-4">
             <div className="flex">
                 <CreateOfficeLocationModal />
+                
             </div>
-            <div className="grid grid-cols-2">
-                <div>
-                    <h1 className="py-4 font-bold text-xl">Office Locations</h1>
+            <div className="grid">
+            <h1 className="py-4 font-bold text-xl">Office Locations</h1>
+            </div>
+            <div className="flex gap-4">
+                <div className="">
+                    
                     <DataTable data={officeLocations} columns={columns} />
                 </div>
-                <div className="w-[350px] leaflet-container">
+                <div className="w-2/5">
                     <MapDisplay />
                 </div>
             </div>

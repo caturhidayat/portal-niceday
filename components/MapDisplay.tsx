@@ -1,15 +1,21 @@
 "use client";
 
+import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+
+// Impor icon default Leaflet
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
 export default function MapDisplay() {
     return (
-        <div className="leaflet-container">
+        <div className="">
             <MapContainer
                 center={[51.505, -0.09]}
                 zoom={13}
                 scrollWheelZoom={false}
-                // className="w-full h-[300px] border border-gray-300 rounded-md"
+                className="w-full h-[300px] border border-gray-300 rounded-md"
                 style={{ height: "200px", width: "100%" }}
             >
                 {/* <TileLayer
