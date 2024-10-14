@@ -34,18 +34,13 @@ export default async function OfficeLocation() {
         <div className="grid gap-4">
             <div className="flex">
                 <CreateOfficeLocationModal />
-                
             </div>
             <div className="grid">
-            <h1 className="py-4 font-bold text-xl">Office Locations</h1>
+                <h1 className="py-4 font-bold text-xl">Office Locations</h1>
             </div>
-            <div className="flex gap-4">
+            <div className="grid gap-4">
                 <div className="">
-                    
                     <DataTable data={officeLocations} columns={columns} />
-                </div>
-                <div className="w-2/5">
-                    <MapDisplay />
                 </div>
             </div>
         </div>
