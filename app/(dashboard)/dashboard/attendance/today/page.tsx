@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import { Attendance, Payment, columns } from "./columns";
 import { DataTable } from "./data-table";
 import { get } from "@/lib/fetch-wrapper";
+import Loading from "@/app/loading";
 
 async function getData(): Promise<Payment[]> {
     // Fetch data from your API here.
@@ -169,8 +171,10 @@ export default async function DataTab() {
     const attendance = await getAttendance();
 
     return (
-        <div className="container mx-auto py-10">
-            <DataTable columns={columns} data={attendance} />
+        <div className="container mx-auto">
+            <Suspense fallback={<Loading />}>
+                <DataTable columns={columns} data={attendance} />
+            </Suspense>
         </div>
     );
 }

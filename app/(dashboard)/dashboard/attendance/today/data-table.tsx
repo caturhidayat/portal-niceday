@@ -44,7 +44,7 @@ export function DataTable<TData, TValue>({
     });
 
     return (
-        <div>
+        <div className="space-y-1">
             <div className="rounded-md border">
                 <Table>
                     <TableHeader className="bg-accent">
