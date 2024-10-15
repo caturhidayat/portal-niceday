@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { Drawer } from "vaul";
 import createBranch from "./actions";
+import { toast } from "sonner";
 
 const initialState = {
     error: "",
@@ -57,7 +58,6 @@ export default function CreateBranchModal() {
 
                                         setIsOpen(false);
                                     }}
-                                    // action={formAction}
                                 >
                                     <div className="space-y-4">
                                         <div className="space-y-1">

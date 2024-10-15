@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { NaviMenu } from "@/components/NavigationMenu";
 import { MenuBarNav } from "@/components/MenuBar";
 
 export const metadata: Metadata = {
@@ -14,7 +13,6 @@ export default function DashboardLayout({
 }>) {
     return (
         <section>
-            {/* <NaviMenu /> */}
             <MenuBarNav />
             <div>{children}</div>
         </section>

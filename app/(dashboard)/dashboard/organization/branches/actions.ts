@@ -10,18 +10,15 @@ const branchSchema = z.object({
 });
 
 export default async function createBranch(formData: FormData) {
-    // const validationFields = branchSchema.safeParse({
-    //     name: formData.get("name") as string,
-    //     location: formData.get("location") as string,
-    // });
-
-    // if (!validationFields.success) {
-    //     return {
-    //         error: validationFields.error.flatten().fieldErrors,
-    //     };
-    // }
 
     const res = await post("branches", formData);
+
+    if (res.error) {
+        return { error: "An error occured", success: "" };
+    }
+
+
+
     revalidateTag("branches");
     return res.data;
 }

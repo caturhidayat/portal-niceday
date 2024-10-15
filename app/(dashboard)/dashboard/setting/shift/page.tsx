@@ -1,7 +1,9 @@
-import { Shift, Payment, columns } from "./columns";
+import { Shift, columns } from "./columns";
 import { DataTable } from "./data-table";
 import { get } from "@/lib/fetch-wrapper";
 import { Button } from "@/components/ui/button";
+import { Suspense } from "react";
+import Loading from "@/app/loading";
 
 async function getShifts(): Promise<Shift[]> {
     const response = await get("shifts");
@@ -16,11 +18,11 @@ export default async function DataTab() {
     return (
         <div className="container mx-auto">
             <div className="flex justify-end mb-4">
-                <Button variant="default">
-                    Create Shift
-                </Button>
+                <Button variant="default">Create Shift</Button>
             </div>
-            <DataTable columns={columns} data={attendance} />
+            <Suspense fallback={<Loading />}>
+                <DataTable columns={columns} data={attendance} />
+            </Suspense>
         </div>
     );
 }
