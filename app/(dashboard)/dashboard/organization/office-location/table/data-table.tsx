@@ -79,7 +79,7 @@ export function DataTable<TData, TValue>({
                                 className="h-24 text-center"
                             >
                                 <div className="flex justify-center">
-                                    <Alert className="w-1/3">
+                                    <Alert className="w-1/3" variant={"destructive"}>
                                         <SearchX className="h-4 w-4" />
                                         <AlertTitle>No results.</AlertTitle>
                                         <AlertDescription>
