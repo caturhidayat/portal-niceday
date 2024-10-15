@@ -1,9 +1,9 @@
 import { Shift, columns } from "./columns";
 import { DataTable } from "./data-table";
 import { get } from "@/lib/fetch-wrapper";
-import { Button } from "@/components/ui/button";
 import { Suspense } from "react";
 import Loading from "@/app/loading";
+import CreateShiftModal from "./create-shift-modal";
 
 async function getShifts(): Promise<Shift[]> {
     const response = await get("shifts");
@@ -16,13 +16,18 @@ export default async function DataTab() {
     const attendance = await getShifts();
 
     return (
-        <div className="container mx-auto">
-            <div className="flex justify-end mb-4">
-                <Button variant="default">Create Shift</Button>
+        <div className="grid gap-4">
+            <div className="flex">
+                <CreateShiftModal />
             </div>
-            <Suspense fallback={<Loading />}>
-                <DataTable columns={columns} data={attendance} />
-            </Suspense>
+            <div className="grid">
+                <h1 className="py-4 font-bold text-xl">Shifts Daily</h1>
+            </div>
+            <div className="grid gap-4">
+                <Suspense fallback={<Loading />}>
+                    <DataTable columns={columns} data={attendance} />
+                </Suspense>
+            </div>
         </div>
     );
 }
