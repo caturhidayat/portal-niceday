@@ -1,12 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useCallback, useMemo, useRef, useState } from "react";
-import createOfficeLocation from "./actions";
-
+import { useEffect, useRef, useState } from "react";
 import {
     Drawer,
     DrawerTrigger,
@@ -19,15 +14,48 @@ import MapDisplay from "@/components/MapDisplay";
 
 // Map Import
 import "leaflet/dist/leaflet.css";
-import { Marker, Popup } from "react-leaflet";
+import L from "leaflet";
+import FormCreateOffice from "./form-create";
 
 const center = {
-    lat: 51.505,
-    lng: -0.09,
+    lat: 106.871867,
+    lng: -6.188705,
 };
 
 export default function CreateOfficeLocationModal() {
     const [isOpen, setIsOpen] = useState(false);
+
+    const [draggable, setDraggable] = useState(false);
+    const [position, setPosition] = useState(center);
+    const [radius, setRadius] = useState(150);
+    const markerRef = useRef<L.Marker>(null);
+
+    // * Function to get user location
+    const getPosition = async () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const userLocation = new L.LatLng(
+                        position.coords.latitude,
+                        position.coords.longitude
+                    );
+                    setPosition({
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                    });
+                },
+                (error) => {
+                    console.error("Error obtaining location", error);
+                }
+            );
+        } else {
+            console.error("Geolocation is not supported by this browser.");
+        }
+    };
+
+    useEffect(() => {
+        getPosition();
+    }, []);
 
     return (
         <div className="grid grid-cols-1">
@@ -58,117 +86,23 @@ export default function CreateOfficeLocationModal() {
                                 <div className="grid grid-cols-2 gap-8">
                                     <div>
                                         <MapDisplay
-                                            component={DraggableMarker}
+                                            setPosition={setPosition}
+                                            setDraggable={setDraggable}
+                                            markerRef={markerRef}
+                                            position={position}
+                                            radius={radius}
+                                            draggable={draggable}
                                         />
                                     </div>
-                                    <form
-                                        onSubmit={async (e) => {
-                                            e.preventDefault();
-                                            const formData = new FormData(
-                                                e.target as HTMLFormElement
-                                            );
-                                            const res =
-                                                await createOfficeLocation(
-                                                    formData
-                                                );
-
-                                            setIsOpen(false);
-                                        }}
-                                    >
-                                        <div className="space-y-4">
-                                            <div className="space-y-1">
-                                                <Label htmlFor="name">
-                                                    Name
-                                                </Label>
-                                                <Input
-                                                    id="name"
-                                                    name="name"
-                                                    type="text"
-                                                    placeholder="Enter Branch Name"
-                                                    required
-                                                />
-                                            </div>
-                                            <div className="space-y-1">
-                                                <Label htmlFor="latitude">
-                                                    Latitude
-                                                </Label>
-                                                <Input
-                                                    id="latitude"
-                                                    name="latitude"
-                                                    type="number"
-                                                    step="any"
-                                                    placeholder="Enter Latitude"
-                                                    required
-                                                />
-                                            </div>
-                                            <div className="space-y-1">
-                                                <Label htmlFor="longitude">
-                                                    Longitude
-                                                </Label>
-                                                <Input
-                                                    id="longitude"
-                                                    name="longitude"
-                                                    type="number"
-                                                    placeholder="Enter Longitude"
-                                                    step="any"
-                                                    min="-1000"
-                                                    required
-                                                />
-                                            </div>
-                                            <div className="space-y-1">
-                                                <Label htmlFor="radius">
-                                                    Radius
-                                                </Label>
-                                                <Input
-                                                    id="radius"
-                                                    name="radius"
-                                                    type="number"
-                                                    placeholder="Enter Radius"
-                                                    step="any"
-                                                    required
-                                                />
-                                            </div>
-                                            <div className="space-y-1">
-                                                <Label htmlFor="officeStart">
-                                                    Office Start
-                                                </Label>
-                                                <Input
-                                                    id="officeStart"
-                                                    name="officeStart"
-                                                    type="time"
-                                                    placeholder="Enter Office Start Time"
-                                                    required
-                                                />
-                                            </div>
-                                            <div className="space-y-1">
-                                                <Label htmlFor="officeEnd">
-                                                    Office End
-                                                </Label>
-                                                <Input
-                                                    id="officeEnd"
-                                                    name="officeEnd"
-                                                    type="time"
-                                                    placeholder="Enter Office End Time"
-                                                    required
-                                                />
-                                            </div>
-
-                                            <div className="flex justify-end">
-                                                <Button
-                                                    onClick={() =>
-                                                        setIsOpen(false)
-                                                    }
-                                                    className="mr-2"
-                                                    variant="outline"
-                                                >
-                                                    Cancel
-                                                </Button>
-                                                <Button type="submit">
-                                                    Save
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </form>
+                                    <div>
+                                        <FormCreateOffice
+                                            setIsOpen={setIsOpen}
+                                            setPosition={setPosition}
+                                            setRadius={setRadius}
+                                            position={position}
+                                            radius={radius}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -176,43 +110,5 @@ export default function CreateOfficeLocationModal() {
                 </DrawerPortal>
             </Drawer>
         </div>
-    );
-}
-
-function DraggableMarker() {
-    const [draggable, setDraggable] = useState(false);
-    const [position, setPosition] = useState(center);
-    const markerRef = useRef<L.Marker>(null);
-
-    const eventHanlder = useMemo(
-        () => ({
-            dragend() {
-                const marker = markerRef.current;
-                if (marker != null) {
-                    setPosition(marker.getLatLng());
-                }
-            },
-        }),
-        []
-    );
-    const toggleDraggable = useCallback(() => {
-        setDraggable((d) => !d);
-    }, []);
-
-    return (
-        <Marker
-            position={position}
-            draggable={draggable}
-            eventHandlers={eventHanlder}
-            ref={markerRef}
-        >
-            <Popup minWidth={90}>
-                <span onClick={toggleDraggable}>
-                    {draggable
-                        ? "Marker is draggable"
-                        : "Click on marker to make it draggable"}
-                </span>
-            </Popup>
-        </Marker>
     );
 }
