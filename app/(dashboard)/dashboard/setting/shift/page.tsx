@@ -4,6 +4,8 @@ import { get } from "@/lib/fetch-wrapper";
 import { Suspense } from "react";
 import Loading from "@/app/loading";
 import CreateShiftModal from "./create-shift-modal";
+import { DataTableC } from "@/components/table/data-table";
+import { DataTableToolbar } from "./data-table-toolbar";
 
 async function getShifts(): Promise<Shift[]> {
     const response = await get("shifts");
@@ -25,7 +27,8 @@ export default async function DataTab() {
             </div>
             <div className="grid gap-4">
                 <Suspense fallback={<Loading />}>
-                    <DataTable columns={columns} data={attendance} />
+                    {/* <DataTable columns={columns} data={attendance} /> */}
+                    <DataTableC columns={columns} data={attendance} />
                 </Suspense>
             </div>
         </div>
