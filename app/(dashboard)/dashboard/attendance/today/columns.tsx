@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     DropdownMenuContent,
     DropdownMenuItem,
@@ -12,7 +13,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 import { format, fromUnixTime } from "date-fns";
-
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -35,7 +35,7 @@ export type User = {
     branch: string;
     createdAt: string;
     updatedAt: string;
-}
+};
 
 export type Shift = {
     id: string;
@@ -44,7 +44,7 @@ export type Shift = {
     endTime: string;
     createdAt: string;
     updatedAt: string;
-}
+};
 
 export type Attendance = {
     id: string;
@@ -70,6 +70,32 @@ export type Attendance = {
 
 export const columns: ColumnDef<Attendance>[] = [
     {
+        id: "select",
+        header: ({ table }) => (
+            <Checkbox
+                checked={
+                    table.getIsAllPageRowsSelected() ||
+                    (table.getIsSomePageRowsSelected() && "indeterminate")
+                }
+                onCheckedChange={(value) =>
+                    table.toggleAllPageRowsSelected(!!value)
+                }
+                aria-label="Select all"
+                className="translate-y-[2px]"
+            />
+        ),
+        cell: ({ row }) => (
+            <Checkbox
+                checked={row.getIsSelected()}
+                onCheckedChange={(value) => row.toggleSelected(!!value)}
+                aria-label="Select row"
+                className="translate-y-[2px]"
+            />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+    },
+    {
         accessorKey: "user",
         header: ({ column }) => {
             return (
@@ -79,7 +105,7 @@ export const columns: ColumnDef<Attendance>[] = [
                         column.toggleSorting(column.getIsSorted() == "asc")
                     }
                 >
-                    User
+                    Name
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );
@@ -87,7 +113,7 @@ export const columns: ColumnDef<Attendance>[] = [
         cell: ({ row }) => {
             const user = row.getValue("user") as User;
             return <div className="ml-2">{user.name}</div>;
-        }
+        },
     },
     {
         accessorKey: "attendanceDate",
@@ -236,7 +262,7 @@ export const columns: ColumnDef<Attendance>[] = [
 
             const date = format(new Date(parsedDate), "dd/MM/yy - HH:mm");
             return <div className="ml-4">{date}</div>;
-        }
+        },
     },
     {
         id: "actions",
