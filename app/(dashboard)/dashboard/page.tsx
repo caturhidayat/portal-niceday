@@ -4,7 +4,7 @@ export default function Dashboard() {
     return (
         <div className="grid gap-4">
             <div className="grid container mx-auto pt-4">
-                <h1 className="text-4xl font-bold text-primary">Dashboard</h1>
+                <h1 className="text-3xl font-bold">Dashboard</h1>
                 <p className="text-balance text-muted-foreground">
                     Welcome to your dashboard
                 </p>

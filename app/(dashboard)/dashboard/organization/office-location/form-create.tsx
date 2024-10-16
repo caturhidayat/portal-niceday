@@ -10,7 +10,7 @@ export default function FormCreateOffice({
     setPosition,
     setRadius,
     position,
-    radius
+    radius,
 }: {
     setIsOpen: (value: boolean) => void;
     setPosition: (value: any) => void;
@@ -24,7 +24,6 @@ export default function FormCreateOffice({
                 e.preventDefault();
                 const formData = new FormData(e.target as HTMLFormElement);
                 const res = await createOfficeLocation(formData);
-                
 
                 setIsOpen(false);
             }}
@@ -49,7 +48,12 @@ export default function FormCreateOffice({
                         step="any"
                         placeholder="Enter Latitude"
                         value={position.lat.toFixed(6)}
-                        onChange={(e) => setPosition({ ...position, lat: parseFloat(e.target.value) })}
+                        onChange={(e) =>
+                            setPosition({
+                                ...position,
+                                lat: parseFloat(e.target.value),
+                            })
+                        }
                         required
                     />
                 </div>
@@ -63,7 +67,12 @@ export default function FormCreateOffice({
                         step="any"
                         min="-1000"
                         value={position.lng.toFixed(6)}
-                        onChange={(e) => setPosition({ ...position, lng: parseFloat(e.target.value) })}
+                        onChange={(e) =>
+                            setPosition({
+                                ...position,
+                                lng: parseFloat(e.target.value),
+                            })
+                        }
                         required
                     />
                 </div>
@@ -87,7 +96,6 @@ export default function FormCreateOffice({
                         name="officeStart"
                         type="time"
                         placeholder="Enter Office Start Time"
-                        required
                     />
                 </div>
                 <div className="space-y-1">
@@ -97,7 +105,6 @@ export default function FormCreateOffice({
                         name="officeEnd"
                         type="time"
                         placeholder="Enter Office End Time"
-                        required
                     />
                 </div>
 

@@ -69,7 +69,7 @@ body {
 } */
 
 
-/* @layer base {
+@layer base {
   :root {
     --background: 0 0% 100%;
     --foreground: 224 71.4% 4.1%;
@@ -124,9 +124,11 @@ body {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
-} */
+}
 
-@layer base {
+
+
+/* @layer base {
   :root {
     --background: 13.96 100.00% 99.49%;
     --foreground: 222.2 84.00% 4.90%;
@@ -182,7 +184,65 @@ body {
     --chart-5: hsl(35.95, 87.00%, 67.00%);
     --radius: 0.5rem;
   }
-}
+} */
+
+/* @layer base {
+  :root {
+    --background: 47.24 0% 100%;
+    --foreground: 222.2 84.00% 4.90%;
+    --card: 194.23 80.35% 98.96%;
+    --card-foreground: 222.2 84.00% 4.90%;
+    --primary: 194.59 21.82% 20.75%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 194.23 91.76% 42.00%;
+    --secondary-foreground: 222.2 47.4% 11.20%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 194.23 49.92% 90%;
+    --accent-foreground: 222.2 47.4% 11.20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84.00% 4.90%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84.00% 68%;
+    --chart-1: 12 76.00% 61.00%;
+    --chart-2: 173 58.00% 39%;
+    --chart-3: 197 37.00% 24.00%;
+    --chart-4: 43 74.00% 66.00%;
+    --chart-5: 27 87.00% 67.00%;
+    --radius: 0.5rem;
+  }
+
+    {
+    --background: hsl(47.24, 0%, 100%);
+    --foreground: hsl(222.2, 84.00%, 4.90%);
+    --card: hsl(194.23, 80.35%, 98.96%);
+    --card-foreground: hsl(222.2, 84.00%, 4.90%);
+    --primary: hsl(194.59, 21.82%, 20.75%);
+    --primary-foreground: hsl(210, 40%, 98%);
+    --secondary: hsl(194.23, 91.76%, 42.00%);
+    --secondary-foreground: hsl(222.2, 47.4%, 11.20%);
+    --muted: hsl(210, 40%, 96.1%);
+    --muted-foreground: hsl(215.4, 16.3%, 46.9%);
+    --accent: hsl(194.23, 49.92%, 90%);
+    --accent-foreground: hsl(222.2, 47.4%, 11.20%);
+    --popover: hsl(0, 0%, 100%);
+    --popover-foreground: hsl(222.2, 84.00%, 4.90%);
+    --destructive: hsl(0, 84.2%, 60.2%);
+    --destructive-foreground: hsl(210, 40%, 98%);
+    --border: hsl(214.3, 31.8%, 91.4%);
+    --input: hsl(214.3, 31.8%, 91.4%);
+    --ring: hsl(222.2, 84.00%, 68%);
+    --chart-1: hsl(12, 76.00%, 61.00%);
+    --chart-2: hsl(173, 58.00%, 39%);
+    --chart-3: hsl(197, 37.00%, 24.00%);
+    --chart-4: hsl(43, 74.00%, 66.00%);
+    --chart-5: hsl(27, 87.00%, 67.00%);
+    --radius: 0.5rem;
+  }
+} */
 
 @layer base {
   * {
