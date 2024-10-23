@@ -1,6 +1,6 @@
 import { DataTableC } from "@/components/table/data-table";
 import { get } from "@/lib/fetch-wrapper";
-import { columns, ShiftGroup } from "./columns";
+import { columns, ShiftGroup } from "./table/columns";
 import { Suspense } from "react";
 import Loading from "@/app/loading";
 import CreateShiftGroupModal from "./create-shift-group-modal";
