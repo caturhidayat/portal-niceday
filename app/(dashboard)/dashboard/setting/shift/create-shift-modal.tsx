@@ -28,8 +28,8 @@ export default function CreateShiftModal() {
         <div className="grid grid-cols-1">
             <Drawer.Root
                 direction="right"
-                modal={false}
-                dismissible={false}
+                // modal={false}
+                // dismissible={false}
                 open={isOpen}
                 onOpenChange={setIsOpen}
             >

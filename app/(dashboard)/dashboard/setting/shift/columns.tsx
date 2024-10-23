@@ -29,6 +29,7 @@ export type Payment = {
 export type Shift = {
     id: string;
     name: string;
+    break: number;
     startTime: string;
     endTime: string;
     createdAt: string;
@@ -71,6 +72,16 @@ export const columns: ColumnDef<Shift>[] = [
             const name = row.getValue("name");
             return <div className="ml-2">{name as string}</div>;
         },
+    },
+    {
+        accessorKey: "break",
+        header: ({ column }) => {
+            return <DataTableColumnHeader column={column} title="Break" />;
+        },
+        cell: ({ row }) => {
+            const breakTime = row.getValue("break");
+            return <div className="ml-4">{breakTime as string}</div>;
+        }
     },
     {
         accessorKey: "startTime",

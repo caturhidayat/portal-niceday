@@ -45,6 +45,15 @@ export default function FormCreateShift({ setIsOpen }: { setIsOpen: any }) {
                             required
                         />
                     </div>
+                    <div>
+                        <Label>Break (Minute)</Label>
+                        <Input
+                            name="break"
+                            type="number"
+                            placeholder="Long Break in Minute"
+                            required
+                        />
+                    </div>
 
                     <div>
                         <Label>Start Time</Label>
@@ -58,13 +67,13 @@ export default function FormCreateShift({ setIsOpen }: { setIsOpen: any }) {
                 </div>
 
                 <div className="flex justify-end">
-                    <Button
+                    {/* <Button
                         onClick={() => setIsOpen(false)}
                         className="mr-2"
                         variant="outline"
                     >
                         Cancel
-                    </Button>
+                    </Button> */}
                     <Button type="submit">Save</Button>
                 </div>
             </div>
