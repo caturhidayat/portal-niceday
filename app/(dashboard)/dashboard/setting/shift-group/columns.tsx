@@ -76,7 +76,7 @@ export const columns: ColumnDef<ShiftGroup>[] = [
                 return <div>Invalid date</div>;
             }
 
-            const date = format(new Date(parsedDate), "dd/MM/yy");
+            const date = format(new Date(parsedDate), "dd/MM/yyyy HH:mm:ss");
             return <div className="ml-4">{date}</div>;
         },
     },
@@ -93,7 +93,7 @@ export const columns: ColumnDef<ShiftGroup>[] = [
                 return <div>Invalid date</div>;
             }
 
-            const date = format(new Date(parsedDate), "dd/MM/yy");
+            const date = format(new Date(parsedDate), "dd/MM/yyyy HH:mm:ss");
             return <div className="ml-4">{date}</div>;
         },
     },
