@@ -1,30 +1,22 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { DropdownMenu, DropdownMenuLabel } from "@radix-ui/react-dropdown-menu";
-import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
-import { format, fromUnixTime } from "date-fns";
+import { ColumnDef } from "@tanstack/react-table";
+
+import { format } from "date-fns";
 
 import { DataTableColumnHeader } from "@/components/table/data-table-column-header";
 import { DataTableRowActions } from "@/components/table/data-table-row-action";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Payment = {
-    id: string;
-    amount: number;
-    status: "pending" | "processing" | "success" | "failed";
-    email: string;
-};
+// export type Payment = {
+//     id: string;
+//     amount: number;
+//     status: "pending" | "processing" | "success" | "failed";
+//     email: string;
+// };
 
 export type Shift = {
     id: string;
@@ -76,7 +68,7 @@ export const columns: ColumnDef<Shift>[] = [
     {
         accessorKey: "break",
         header: ({ column }) => {
-            return <DataTableColumnHeader column={column} title="Break" />;
+            return <DataTableColumnHeader column={column} title="Break (minutes)" />;
         },
         cell: ({ row }) => {
             const breakTime = row.getValue("break");

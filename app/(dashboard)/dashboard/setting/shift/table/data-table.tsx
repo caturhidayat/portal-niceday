@@ -21,7 +21,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
-import { DataTableToolbar } from "./data-table-toolbar";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface DataTableProps<TData, TValue> {
