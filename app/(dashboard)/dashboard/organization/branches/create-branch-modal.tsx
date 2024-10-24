@@ -24,7 +24,7 @@ export default function CreateBranchModal() {
         <div className="grid grid-cols-1">
             <Drawer.Root
                 direction="right"
-                dismissible={false}
+                // dismissible={false}
                 open={isOpen}
                 onOpenChange={setIsOpen}
             >
