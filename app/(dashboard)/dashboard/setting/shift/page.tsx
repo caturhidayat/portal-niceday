@@ -9,7 +9,7 @@ import { DataTable } from "./table/data-table";
 // import { DataTableToolbar } from "./data-table-toolbar";
 
 
-async function getShifts(): Promise<Shift[]> {
+export async function getShifts(): Promise<Shift[]> {
     const response = (await get("shifts", ["shifts"])) as { data: Shift[] };
     // console.log("response :", response);
     return response.data;

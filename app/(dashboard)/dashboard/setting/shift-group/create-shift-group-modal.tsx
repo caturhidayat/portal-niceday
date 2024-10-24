@@ -39,7 +39,7 @@ export default function CreateShiftGroupModal() {
                 <DrawerPortal>
                     <DrawerOverlay className="fixed inset-0 bg-black/30" />
                     <DrawerContent
-                        className="mx-auto w-2/3"
+                        className="mx-auto w-2/3 h-5/6 bg-white rounded-lg"
                         role="dialog"
                         aria-modal="true"
                         aria-describedby="create-branch-description"
@@ -55,7 +55,7 @@ export default function CreateShiftGroupModal() {
                                     <div>
 
                                     </div>
-                                    <div>
+                                    <div className="p-4 overflow-y-auto max-h-[60vh]">
                                         <FormCreateShiftGroup />
                                     </div>
                                 </div>
