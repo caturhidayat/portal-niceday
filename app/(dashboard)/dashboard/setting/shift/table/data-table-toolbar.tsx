@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 import { ShiftTableViewOptions } from "./data-table-view-option"
-import { shiftPriorities, shiftStatuses } from "./data/data"
+import { shiftPriorities, shiftStatuses } from "../data/data"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 
 interface DataTableToolbarProps<TData> {

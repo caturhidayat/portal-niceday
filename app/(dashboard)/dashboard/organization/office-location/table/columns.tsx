@@ -62,7 +62,7 @@ export const columns: ColumnDef<OfficeLocation>[] = [
                 return <div className="ml-4"> --:--:-- </div>;
             }
 
-            const date = format(new Date(parsedDate), "HH:mm:ss");
+            const date = format(new Date(parsedDate), "dd/MM/yyyy HH:mm:ss");
             return <div className="ml-4"> {date} </div>;
         },
     },
@@ -77,7 +77,7 @@ export const columns: ColumnDef<OfficeLocation>[] = [
                 return <div className="ml-4"> --:--:-- </div>;
             }
 
-            const date = format(new Date(parsedDate), "HH:mm:ss");
+            const date = format(new Date(parsedDate), "dd/MM/yyyy HH:mm:ss");
             return <div className="ml-4"> {date} </div>;
         },
     },

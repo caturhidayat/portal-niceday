@@ -4,10 +4,12 @@ import { z } from "zod"
 // IRL, you will have a schema for your data models.
 export const shiftSchema = z.object({
     id: z.string(),
-    employeeId: z.string(),
+    name: z.string(),
+    break: z.number(),
     startTime: z.string(),
     endTime: z.string(),
-    // role: z.string(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
 })
 
 export type Shift = z.infer<typeof shiftSchema>

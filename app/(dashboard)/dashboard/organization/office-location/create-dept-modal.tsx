@@ -60,7 +60,7 @@ export default function CreateOfficeLocationModal() {
     return (
         <div className="grid grid-cols-1">
             <Drawer
-                dismissible={true}
+                // dismissible={true}
                 open={isOpen}
                 onOpenChange={setIsOpen}
                 handleOnly={true}

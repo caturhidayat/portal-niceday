@@ -29,7 +29,7 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
-  const task = shiftSchema.parse(row.original)
+  // const task = shiftSchema.parse(row.original)
 
   return (
     <DropdownMenu>
