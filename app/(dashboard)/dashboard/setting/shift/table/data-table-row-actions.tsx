@@ -3,7 +3,7 @@
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { Row } from "@tanstack/react-table"
 
-import { Button } from "../ui/button"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,10 +16,10 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu"
 
-import { labels } from "@/lib/constant"
-import { shiftSchema, taskSchema } from "@/lib/schema"
+
+import EditShiftModal from "../edit-shift-modal"
 
 
 interface DataTableRowActionsProps<TData> {
@@ -43,12 +43,13 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Edit</DropdownMenuItem>
-        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+            <EditShiftModal />
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           Delete
-          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+          <DropdownMenuShortcut>⌘ ⌫</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

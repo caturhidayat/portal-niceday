@@ -7,7 +7,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 
 import { DataTableColumnHeader } from "@/components/table/data-table-column-header";
-import { DataTableRowActions } from "@/components/table/data-table-row-action";
+import { DataTableRowActions } from "./data-table-row-actions";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
