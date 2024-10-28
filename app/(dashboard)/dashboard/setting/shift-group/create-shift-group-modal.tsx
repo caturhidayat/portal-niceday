@@ -16,6 +16,13 @@ import MapDisplay from "@/components/MapDisplay";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import FormCreateShiftGroup from "./form-create-shift";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 
 const center = {
     lat: 106.871867,
@@ -23,11 +30,9 @@ const center = {
 };
 
 export default function CreateShiftGroupModal() {
-
-
     return (
         <div className="grid grid-cols-1">
-            <Drawer
+            {/* <Drawer
                 // dismissible={true}
                 // open={isOpen}
                 // onOpenChange={setIsOpen}
@@ -63,7 +68,22 @@ export default function CreateShiftGroupModal() {
                         </div>
                     </DrawerContent>
                 </DrawerPortal>
-            </Drawer>
+            </Drawer> */}
+
+            <Dialog>
+                <DialogTrigger asChild>
+                    <Button aria-haspopup>Create</Button>
+                </DialogTrigger>
+                <DialogContent className="h-5/6 max-w-4x">
+                    <DialogHeader>
+                        <DialogTitle className="font-bold">Create Shift Group</DialogTitle>
+                        <DialogDescription>
+                            Create a new shift group for your company.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <FormCreateShiftGroup />
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

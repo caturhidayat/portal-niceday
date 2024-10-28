@@ -118,7 +118,7 @@ export default function FormCreateShiftGroup() {
 
     return (
         <div className="space-y-4">
-            <ScrollArea className="h-2/3">
+            <ScrollArea className="mt-4 h-4/5">
                 <div className="grid gap-2">
                     <form className="space-y-2" onSubmit={handleSubmit}>
                         <div className="grid gap-4">
