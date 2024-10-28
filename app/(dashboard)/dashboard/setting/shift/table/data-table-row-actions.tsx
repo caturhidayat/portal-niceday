@@ -44,7 +44,7 @@ export function DataTableRowActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem asChild>
-            <EditShiftModal />
+            <EditShiftModal data={row.original} />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>

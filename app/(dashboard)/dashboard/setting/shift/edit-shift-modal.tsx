@@ -8,11 +8,15 @@ import { useState } from "react";
 
 import { Drawer } from "vaul";
 import FormEditShift from "./form-update-shift";
+import { Shift } from "./table/columns";
 
-export default function EditShiftModal() {
+export default function EditShiftModal(
+    { data }: { data: any }
+) {
     const [response, setResponse] = useState<FormResponse>();
     const [isOpen, setIsOpen] = useState(false);
 
+    
     return (
         <div className="grid grid-cols-1">
             <Drawer.Root
@@ -39,7 +43,7 @@ export default function EditShiftModal() {
                                     Edit Shift Daily
                                 </Drawer.Title>
 
-                                <FormEditShift setIsOpen={setIsOpen} />
+                                <FormEditShift setIsOpen={setIsOpen} data={data} />
                             </div>
                         </div>
                     </Drawer.Content>

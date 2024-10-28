@@ -6,8 +6,9 @@ import { Label } from "@/components/ui/label";
 import { parse, getTime } from "date-fns";
 
 import createShift from "./actions";
+import { Shift } from "./table/columns";
 
-export default function FormEditShift({ setIsOpen }: { setIsOpen: any }) {
+export default function FormEditShift({ setIsOpen, data }: { setIsOpen: any, data: Shift }) {
     const convertTimeToEpoch = (time: string) => {
         const parsedTime = parse(time, "HH:mm", new Date());
         return getTime(parsedTime);
@@ -41,6 +42,7 @@ export default function FormEditShift({ setIsOpen }: { setIsOpen: any }) {
                         <Input
                             name="name"
                             type="text"
+                            value={data.name}
                             placeholder="Shift Name"
                             required
                         />
@@ -50,6 +52,7 @@ export default function FormEditShift({ setIsOpen }: { setIsOpen: any }) {
                         <Input
                             name="break"
                             type="number"
+                            value={data.break}
                             placeholder="Long Break in Minute"
                             required
                         />
@@ -57,12 +60,12 @@ export default function FormEditShift({ setIsOpen }: { setIsOpen: any }) {
 
                     <div>
                         <Label>Start Time</Label>
-                        <Input name="startTime" type="time" required />
+                        <Input name="startTime" type="time" value={data.startTime} required />
                     </div>
 
                     <div>
                         <Label>End Time</Label>
-                        <Input name="endTime" type="time" required />
+                        <Input name="endTime" type="time" value={data.endTime} required />
                     </div>
                 </div>
 
