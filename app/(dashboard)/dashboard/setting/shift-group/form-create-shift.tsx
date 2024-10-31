@@ -13,7 +13,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Shift } from "../shift/table/columns";
 import { get } from "@/lib/fetch-wrapper";
 import {
@@ -24,6 +24,8 @@ import {
     CommandItem,
     CommandList,
 } from "@/components/ui/command";
+import createShiftGroup from "./actions";
+import { getAllShift } from "../shift/actions";
 
 export type ShiftGroup = {
     id: string;
@@ -41,79 +43,99 @@ export default function FormCreateShiftGroup() {
     const [cycleLength, setCycleLength] = useState(0);
     const [open, setOpen] = useState<Record<number, boolean>>({});
     const [value, setValue] = useState<Record<number, string>>({});
+    const [shifts, setShifts] = useState<Shift[]>([]);
+    const [error, setError] = useState<string | null>(null);
 
-    const shifts = [
-        {
-            id: "1",
-            name: "Shift Normal Pagi",
-            startTime: "08:00",
-            endTime: "16:00",
-            createdAt: "2021-09-21T06:59:59.000Z",
-            updatedAt: "2021-09-21T06:59:59.000Z",
-        },
-        {
-            id: "2",
-            name: "Shift Normal Siang",
-            startTime: "16:00",
-            endTime: "00:00",
-            createdAt: "2021-09-21T06:59:59.000Z",
-            updatedAt: "2021-09-21T06:59:59.000Z",
-        },
-        {
-            id: "3",
-            name: "Shift Normal Malam",
-            startTime: "00:00",
-            endTime: "08:00",
-            createdAt: "2021-09-21T06:59:59.000Z",
-            updatedAt: "2021-09-21T06:59:59.000Z",
-        },
-        {
-            id: "4",
-            name: "Shift MEIN Pagi",
-            startTime: "09:00",
-            endTime: "17:00",
-            createdAt: "2023-06-15T10:30:00.000Z",
-            updatedAt: "2023-06-15T10:30:00.000Z",
-        },
-        {
-            id: "5",
-            name: "Shift MEIN Siang",
-            startTime: "14:00",
-            endTime: "22:00",
-            createdAt: "2023-06-15T11:00:00.000Z",
-            updatedAt: "2023-06-15T11:00:00.000Z",
-        },
-        {
-            id: "6",
-            name: "Night Shift",
-            startTime: "22:00",
-            endTime: "06:00",
-            createdAt: "2023-06-15T11:30:00.000Z",
-            updatedAt: "2023-06-15T11:30:00.000Z",
-        },
-    ];
+    useEffect(() => {
+        const getShiftsData = async () => {
+            const shifts = await getAllShift();
+            setShifts(shifts);
+        };
+        getShiftsData();
+    }, []);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    // const shifts = [
+    //     {
+    //         id: "1",
+    //         name: "Shift Normal Pagi",
+    //         startTime: "08:00",
+    //         endTime: "16:00",
+    //         createdAt: "2021-09-21T06:59:59.000Z",
+    //         updatedAt: "2021-09-21T06:59:59.000Z",
+    //     },
+    //     {
+    //         id: "2",
+    //         name: "Shift Normal Siang",
+    //         startTime: "16:00",
+    //         endTime: "00:00",
+    //         createdAt: "2021-09-21T06:59:59.000Z",
+    //         updatedAt: "2021-09-21T06:59:59.000Z",
+    //     },
+    //     {
+    //         id: "3",
+    //         name: "Shift Normal Malam",
+    //         startTime: "00:00",
+    //         endTime: "08:00",
+    //         createdAt: "2021-09-21T06:59:59.000Z",
+    //         updatedAt: "2021-09-21T06:59:59.000Z",
+    //     },
+    //     {
+    //         id: "4",
+    //         name: "Shift MEIN Pagi",
+    //         startTime: "09:00",
+    //         endTime: "17:00",
+    //         createdAt: "2023-06-15T10:30:00.000Z",
+    //         updatedAt: "2023-06-15T10:30:00.000Z",
+    //     },
+    //     {
+    //         id: "5",
+    //         name: "Shift MEIN Siang",
+    //         startTime: "14:00",
+    //         endTime: "22:00",
+    //         createdAt: "2023-06-15T11:00:00.000Z",
+    //         updatedAt: "2023-06-15T11:00:00.000Z",
+    //     },
+    //     {
+    //         id: "6",
+    //         name: "Night Shift",
+    //         startTime: "22:00",
+    //         endTime: "06:00",
+    //         createdAt: "2023-06-15T11:30:00.000Z",
+    //         updatedAt: "2023-06-15T11:30:00.000Z",
+    //     },
+    // ];
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setError(null); // Reset error state
         const formData = new FormData(e.target as HTMLFormElement);
         const formObject = Object.fromEntries(formData);
 
-        // Extract shift data
-        const shiftData = Array.from({ length: cycleLength }, (_, index) => {
-            const dayKey = `day-${index + 1}`;
-            return formObject[dayKey] as string;
-        });
-
-        // Create the final form object
-        const finalFormObject = {
-            name: formObject.name,
-            startDate: formObject.startDate,
-            cycleLength: formObject.cycleLength,
-            shiftId: shiftData,
+        const payload = {
+            name: formObject.name as string,
+            description: formObject.description as string,
+            startDate: formObject.startDate as string,
+            cycleLength: Number(formObject.cycleLength),
+            shiftId: Array.from({ length: cycleLength }, (_, index) => {
+                const dayKey = `day-${index + 1}`;
+                return (
+                    shifts.find((shift) => shift.name === formObject[dayKey])
+                        ?.id || ""
+                );
+            }),
         };
 
-        console.log("Final form object:", finalFormObject);
-        // Here you can send finalFormObject to your API or perform other actions
+        try {
+            await createShiftGroup(payload);
+            // Handle success - you could redirect or show success message
+        } catch (err) {
+            if (err instanceof Error) {
+                console.log("error bro :", err.message);
+                setError(err.message);
+            } else {
+                setError("An error occurred while creating shift group");
+            }
+        }
     };
 
     return (
@@ -134,6 +156,11 @@ export default function FormCreateShiftGroup() {
                                     className="flex-grow"
                                 />
                             </div>
+                            {error && (
+                                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+                                    {error}
+                                </div>
+                            )}
                             <div className="flex items-center gap-2">
                                 <Label htmlFor="description" className="w-60">
                                     Description
@@ -174,18 +201,16 @@ export default function FormCreateShiftGroup() {
                                             onSelect={(newDate) => {
                                                 setDate(newDate);
                                                 if (newDate) {
-                                                    const formattedDate =
-                                                        format(
-                                                            newDate,
-                                                            "yyyy-MM-dd"
-                                                        );
+                                                    const epochMillis =
+                                                        newDate.getTime();
                                                     const hiddenInput =
                                                         document.getElementById(
                                                             "hiddenStartDate"
                                                         ) as HTMLInputElement;
-                                                    if (hiddenInput)
+                                                    if (hiddenInput) {
                                                         hiddenInput.value =
-                                                            formattedDate;
+                                                            epochMillis.toString();
+                                                    }
                                                 }
                                             }}
                                             disabled={(date) =>
@@ -202,6 +227,7 @@ export default function FormCreateShiftGroup() {
                                     name="startDate"
                                 />
                             </div>
+
                             <div className="flex items-center gap-2">
                                 <Label htmlFor="cycleLength" className="w-60">
                                     Cycle Length
@@ -355,7 +381,9 @@ export default function FormCreateShiftGroup() {
                                     )
                                 )}
                         </div>
-                        <Button type="submit">Save</Button>
+                        <div className="flex justify-end ">
+                            <Button type="submit">Save</Button>
+                        </div>
                     </form>
                 </div>
             </ScrollArea>
