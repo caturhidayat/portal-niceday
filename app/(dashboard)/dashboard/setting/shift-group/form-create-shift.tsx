@@ -54,57 +54,6 @@ export default function FormCreateShiftGroup() {
         getShiftsData();
     }, []);
 
-    // const shifts = [
-    //     {
-    //         id: "1",
-    //         name: "Shift Normal Pagi",
-    //         startTime: "08:00",
-    //         endTime: "16:00",
-    //         createdAt: "2021-09-21T06:59:59.000Z",
-    //         updatedAt: "2021-09-21T06:59:59.000Z",
-    //     },
-    //     {
-    //         id: "2",
-    //         name: "Shift Normal Siang",
-    //         startTime: "16:00",
-    //         endTime: "00:00",
-    //         createdAt: "2021-09-21T06:59:59.000Z",
-    //         updatedAt: "2021-09-21T06:59:59.000Z",
-    //     },
-    //     {
-    //         id: "3",
-    //         name: "Shift Normal Malam",
-    //         startTime: "00:00",
-    //         endTime: "08:00",
-    //         createdAt: "2021-09-21T06:59:59.000Z",
-    //         updatedAt: "2021-09-21T06:59:59.000Z",
-    //     },
-    //     {
-    //         id: "4",
-    //         name: "Shift MEIN Pagi",
-    //         startTime: "09:00",
-    //         endTime: "17:00",
-    //         createdAt: "2023-06-15T10:30:00.000Z",
-    //         updatedAt: "2023-06-15T10:30:00.000Z",
-    //     },
-    //     {
-    //         id: "5",
-    //         name: "Shift MEIN Siang",
-    //         startTime: "14:00",
-    //         endTime: "22:00",
-    //         createdAt: "2023-06-15T11:00:00.000Z",
-    //         updatedAt: "2023-06-15T11:00:00.000Z",
-    //     },
-    //     {
-    //         id: "6",
-    //         name: "Night Shift",
-    //         startTime: "22:00",
-    //         endTime: "06:00",
-    //         createdAt: "2023-06-15T11:30:00.000Z",
-    //         updatedAt: "2023-06-15T11:30:00.000Z",
-    //     },
-    // ];
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError(null); // Reset error state

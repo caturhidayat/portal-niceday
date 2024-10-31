@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useEffect, useRef, useState } from "react";
 import {
     Drawer,
     DrawerTrigger,
@@ -10,19 +9,12 @@ import {
     DrawerPortal,
     DrawerTitle,
 } from "@/components/ui/drawer";
-import MapDisplay from "@/components/MapDisplay";
 
 // Map Import
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import FormCreateShiftGroup from "./form-create-shift";
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTrigger,
-} from "@/components/ui/dialog";
-import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
+
 import { Separator } from "@/components/ui/separator";
 
 const center = {
@@ -59,9 +51,7 @@ export default function CreateShiftGroupModal() {
                                 </div>
                                 <Separator />
                                 <div className="grid grid-cols-1 ">
-                                    <div>
-
-                                    </div>
+                                    <div></div>
                                     <div className="p-4 overflow-y-auto max-h-[60vh]">
                                         <FormCreateShiftGroup />
                                     </div>
@@ -71,21 +61,6 @@ export default function CreateShiftGroupModal() {
                     </DrawerContent>
                 </DrawerPortal>
             </Drawer>
-
-            {/* <Dialog>
-                <DialogTrigger asChild>
-                    <Button aria-haspopup>Create</Button>
-                </DialogTrigger>
-                <DialogContent className="h-5/6 max-w-4x">
-                    <DialogHeader>
-                        <DialogTitle className="font-bold">Create Shift Group</DialogTitle>
-                        <DialogDescription>
-                            Create a new shift group for your company.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <FormCreateShiftGroup />
-                </DialogContent>
-            </Dialog> */}
         </div>
     );
 }
