@@ -21,14 +21,44 @@ import {
     CommandItem,
     CommandList,
 } from "@/components/ui/command";
+
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+
 import { getAllShift } from "../../setting/shift/actions";
 import { Shift } from "../../setting/shift/table/columns";
 import { getAllEmployee } from "./actions";
 
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 type Employee = {
     id: string;
     name: string;
+    username: string;
 };
+
+const AttendanceSchemas = z.object({
+    userId: z.string({
+        required_error: "Please select an employee",
+    }),
+    attendanceDate: z.string({
+        required_error: "Please select an attendance date",
+    }),
+    startTime: z.string().optional(),
+    endTime: z.string().optional(),
+    shiftId: z.string({
+        required_error: "Please select a shift",
+    }),
+});
 
 export default function FormCreateAttendance() {
     const [attendanceDate, setAttendanceDate] = useState<Date>();
@@ -38,6 +68,23 @@ export default function FormCreateAttendance() {
     const [valueEmployee, setValueEmployee] = useState("");
     const [shifts, setShifts] = useState<Shift[]>([]);
     const [employees, setEmployees] = useState<Employee[]>([]);
+
+    // React Hook Form
+    const form = useForm<z.infer<typeof AttendanceSchemas>>({
+        resolver: zodResolver(AttendanceSchemas),
+        // defaultValues: {
+        //     userId: "",
+        //     attendanceDate: "",
+        //     startTime: "",
+        //     endTime: "",
+        //     shiftId: "",
+        // },
+    });
+
+    // Submit function for React Hook Form
+    const onSubmit = async (data: any) => {
+        console.log(data);
+    };
 
     // Get Shifts from the server using useEffect and fetch
     useEffect(() => {
@@ -54,219 +101,308 @@ export default function FormCreateAttendance() {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const data = {
-            userId: employees.find(employee => employee.name === formData.get("userId"))?.id,
-            attendanceDate: attendanceDate?.getTime(),
+            userId: employees.find(
+                (employee) => employee.name === formData.get("userId")
+            )?.id,
+            attendanceDate: formData.get("attendanceDate"),
             checkInTime: formData.get("startTime"),
             checkOutTime: formData.get("endTime"),
             inLatitude: formData.get("inLatitude"),
             inLongitude: formData.get("inLongitude"),
             outLatitude: formData.get("outLatitude"),
             outLongitude: formData.get("outLongitude"),
-            shiftId: shifts.find(shift => shift.name === formData.get("shiftId"))?.id
+            shiftId: shifts.find(
+                (shift) => shift.name === formData.get("shiftId")
+            )?.id,
         };
         console.log(data);
     };
 
     return (
         <div>
-            <form className="w-1/3 m-auto space-y-4" onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 gap-4">
+            <Form {...form}>
+                <form
+                    className="w-1/3 m-auto space-y-4"
+                    onSubmit={form.handleSubmit(onSubmit)}
+                >
                     <div className="grid grid-cols-1 gap-4">
-                        <Label>Employee</Label>
-                        <Popover
-                            open={openEmployee}
-                            onOpenChange={(isOpen) => setOpenEmployee(isOpen)}
-                        >
-                            <PopoverTrigger asChild>
-                                <Button
-                                    variant={"outline"}
-                                    aria-expanded={openEmployee}
-                                    className={cn(
-                                        "justify-start text-left font-normal",
-                                        !valueEmployee && "text-muted-foreground"
-                                    )}
-                                >
-                                    {valueEmployee
-                                        ? employees.find(
-                                              (employee) =>
-                                                  employee.name ===
-                                                  valueEmployee
-                                          )?.name
-                                        : "Select Employee..."}
-                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                                <Command>
-                                    <CommandInput placeholder="Search employee..." />
-                                    <CommandList>
-                                        <CommandEmpty>
-                                            No employee found.
-                                        </CommandEmpty>
-                                        <CommandGroup>
-                                            {employees.map((employee) => (
-                                                <CommandItem
-                                                    key={employee.id}
-                                                    value={employee.name}
-                                                    onSelect={(
-                                                        currentValue
-                                                    ) => {
-                                                        setValueEmployee(
-                                                            currentValue ===
-                                                                valueEmployee
-                                                                ? ""
-                                                                : currentValue
-                                                        );
-                                                        setOpenEmployee(false);
-                                                        const hiddenInput =
-                                                            document.getElementById(
-                                                                `hiddenDay0`
-                                                            ) as HTMLInputElement;
-                                                        if (hiddenInput)
-                                                            hiddenInput.value =
-                                                                currentValue;
-                                                    }}
-                                                >
-                                                    <Check
+                        <div className="grid grid-cols-1 gap-4">
+                            <FormField
+                                control={form.control}
+                                name="userId"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Employee</FormLabel>
+                                        <Popover
+                                            open={openEmployee}
+                                            onOpenChange={(isOpen) =>
+                                                setOpenEmployee(isOpen)
+                                            }
+                                        >
+                                            <PopoverTrigger asChild>
+                                                <FormControl>
+                                                    <Button
+                                                        variant={"outline"}
+                                                        aria-expanded={
+                                                            openEmployee
+                                                        }
                                                         className={cn(
-                                                            "mr-2 h-4 w-4",
-                                                            valueEmployee ===
-                                                                employee.name
-                                                                ? "opacity-100"
-                                                                : "opacity-0"
+                                                            "justify-start text-left font-normal",
+                                                            !valueEmployee &&
+                                                                "text-muted-foreground"
                                                         )}
-                                                    />
-                                                    {employee.name} (ID: {employee.id})
-                                                </CommandItem>
-                                            ))}
-                                        </CommandGroup>
-                                    </CommandList>
-                                </Command>
-                            </PopoverContent>
-                        </Popover>
-                    </div>
-                    <div className="grid grid-cols-1 gap-4">
-                        <Label>Attendance Date</Label>
-                        <Popover>
-                            <PopoverTrigger asChild>
-                                <Button
-                                    variant={"outline"}
-                                    className={cn(
-                                        "justify-start text-left font-normal",
-                                        !attendanceDate &&
-                                            "text-muted-foreground"
-                                    )}
-                                >
-                                    <CalendarIcon className="mr-2 h-4 w-4" />
-                                    {attendanceDate ? (
-                                        format(attendanceDate, "PPP")
-                                    ) : (
-                                        <span>Select Date</span>
-                                    )}
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                                <Calendar
-                                    mode="single"
-                                    selected={attendanceDate}
-                                    onSelect={setAttendanceDate}
-                                    initialFocus
-                                />
-                            </PopoverContent>
-                        </Popover>
-                    </div>
-                    <div className="grid grid-cols-1 gap-4">
-                        <Label>Check In Time</Label>
-                        <Input name="startTime" type="time" />
-                    </div>
-                    <div className="grid grid-cols-1 gap-4">
-                        <Label>Check Out Time</Label>
-                        <Input name="endTime" type="time" />
-                    </div>
-                    <div className="grid grid-cols-1 gap-4">
-                        <Label>In Latitude</Label>
-                        <Input type="number" />
-                    </div>
-                    <div className="grid grid-cols-1 gap-4">
-                        <Label>In Longitude</Label>
-                        <Input type="number" />
-                    </div>
-                    <div className="grid grid-cols-1 gap-4">
-                        <Label>Out Latitude</Label>
-                        <Input type="number" />
-                    </div>
-                    <div className="grid grid-cols-1 gap-4">
-                        <Label>Out Longitude</Label>
-                        <Input type="number" />
-                    </div>
-                    <Popover
-                        open={openShift}
-                        onOpenChange={(isOpen) => setOpenShift(isOpen)}
-                    >
-                        <PopoverTrigger asChild>
-                            <Button
-                                variant="outline"
-                                role="combobox"
-                                aria-expanded={openShift}
-                                className="justify-between"
-                            >
-                                {valueShift
-                                    ? shifts.find(
-                                          (shift) => shift.name === valueShift
-                                      )?.name
-                                    : "Select shift..."}
-                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="p-0">
-                            <Command>
-                                <CommandInput placeholder="Search shift..." />
-                                <CommandList>
-                                    <CommandEmpty>No shift found.</CommandEmpty>
-                                    <CommandGroup>
-                                        {shifts.map((shift) => (
-                                            <CommandItem
-                                                key={shift.id}
-                                                value={shift.name}
-                                                onSelect={(currentValue) => {
-                                                    setValueShift(
-                                                        currentValue ===
-                                                            valueShift
-                                                            ? ""
-                                                            : currentValue
-                                                    );
-                                                    setOpenShift(false);
-                                                    const hiddenInput =
-                                                        document.getElementById(
-                                                            `hiddenDay0`
-                                                        ) as HTMLInputElement;
-                                                    if (hiddenInput)
-                                                        hiddenInput.value =
-                                                            currentValue;
-                                                }}
-                                            >
-                                                <Check
+                                                    >
+                                                        {valueEmployee
+                                                            ? employees.find(
+                                                                  (employee) =>
+                                                                      employee.name ===
+                                                                      valueEmployee
+                                                              )?.name
+                                                            : "Select Employee..."}
+                                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                    </Button>
+                                                </FormControl>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-auto p-0">
+                                                <Command>
+                                                    <CommandInput placeholder="Search employee..." />
+                                                    <CommandList>
+                                                        <CommandEmpty>
+                                                            No employee found.
+                                                        </CommandEmpty>
+                                                        <CommandGroup>
+                                                            {employees.map(
+                                                                (employee) => (
+                                                                    <CommandItem
+                                                                        key={
+                                                                            employee.id
+                                                                        }
+                                                                        value={
+                                                                            employee.name
+                                                                        }
+                                                                        onSelect={(
+                                                                            currentValue
+                                                                        ) => {
+                                                                            setValueEmployee(
+                                                                                currentValue ===
+                                                                                    valueEmployee
+                                                                                    ? ""
+                                                                                    : currentValue
+                                                                            );
+                                                                            form.setValue(
+                                                                                "userId",
+                                                                                employee.id
+                                                                            );
+                                                                            setOpenEmployee(
+                                                                                false
+                                                                            );
+                                                                        }}
+                                                                    >
+                                                                        <Check
+                                                                            className={cn(
+                                                                                "mr-2 h-4 w-4",
+                                                                                valueEmployee ===
+                                                                                    employee.name
+                                                                                    ? "opacity-100"
+                                                                                    : "opacity-0"
+                                                                            )}
+                                                                        />
+                                                                        {
+                                                                            employee.name
+                                                                        }{" "}
+                                                                        (NIK:{" "}
+                                                                        {
+                                                                            employee.username
+                                                                        }
+                                                                        )
+                                                                    </CommandItem>
+                                                                )
+                                                            )}
+                                                        </CommandGroup>
+                                                    </CommandList>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="grid grid-cols-1 gap-4">
+                            <FormField
+                                control={form.control}
+                                name="attendanceDate"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Attendance Date</FormLabel>
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <Button
+                                                    variant={"outline"}
                                                     className={cn(
-                                                        "mr-2 h-4 w-4",
-                                                        valueShift ===
-                                                            shift.name
-                                                            ? "opacity-100"
-                                                            : "opacity-0"
+                                                        "justify-start text-left font-normal",
+                                                        !attendanceDate &&
+                                                            "text-muted-foreground"
                                                     )}
+                                                >
+                                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                                    {attendanceDate ? (
+                                                        format(
+                                                            attendanceDate,
+                                                            "PPP"
+                                                        )
+                                                    ) : (
+                                                        <span>Select Date</span>
+                                                    )}
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-auto p-0">
+                                                <Calendar
+                                                    mode="single"
+                                                    selected={attendanceDate}
+                                                    onSelect={(date) => {
+                                                        setAttendanceDate(date);
+                                                        if (date) {
+                                                            form.setValue(
+                                                                "attendanceDate",
+                                                                date
+                                                                    .getTime()
+                                                                    .toString()
+                                                            );
+                                                        }
+                                                    }}
+                                                    initialFocus
                                                 />
-                                                {shift.name}
-                                            </CommandItem>
-                                        ))}
-                                    </CommandGroup>
-                                </CommandList>
-                            </Command>
-                        </PopoverContent>
-                    </Popover>
-                </div>
-                <div className="grid grid-cols-1 gap-4">
-                    <Button type="submit">Submit</Button>
-                </div>
-            </form>
+                                            </PopoverContent>
+                                        </Popover>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="grid grid-cols-1 gap-4">
+                            <FormField
+                                control={form.control}
+                                name="startTime"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Check In Time</FormLabel>
+                                        <FormControl>
+                                            <Input {...field} type="time" />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="grid grid-cols-1 gap-4">
+                            <FormField
+                                control={form.control}
+                                name="startTime"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Check Out Time</FormLabel>
+                                        <FormControl>
+                                            <Input {...field} type="time" />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <FormField
+                                control={form.control}
+                                name="shiftId"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <Popover
+                                            open={openShift}
+                                            onOpenChange={(isOpen) =>
+                                                setOpenShift(isOpen)
+                                            }
+                                        >
+                                            <PopoverTrigger asChild>
+                                                <Button
+                                                    variant="outline"
+                                                    role="combobox"
+                                                    aria-expanded={openShift}
+                                                    className="justify-between"
+                                                >
+                                                    {valueShift
+                                                        ? shifts.find(
+                                                              (shift) =>
+                                                                  shift.name ===
+                                                                  valueShift
+                                                          )?.name
+                                                        : "Select shift..."}
+                                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="p-0">
+                                                <Command>
+                                                    <CommandInput placeholder="Search shift..." />
+                                                    <CommandList>
+                                                        <CommandEmpty>
+                                                            No shift found.
+                                                        </CommandEmpty>
+                                                        <CommandGroup>
+                                                            {shifts.map(
+                                                                (shift) => (
+                                                                    <CommandItem
+                                                                        key={
+                                                                            shift.id
+                                                                        }
+                                                                        value={
+                                                                            shift.name
+                                                                        }
+                                                                        onSelect={(
+                                                                            currentValue
+                                                                        ) => {
+                                                                            setValueShift(
+                                                                                currentValue ===
+                                                                                    valueShift
+                                                                                    ? ""
+                                                                                    : currentValue
+                                                                            );
+                                                                            form.setValue(
+                                                                                "shiftId",
+                                                                                shift.id
+                                                                            );
+                                                                            setOpenShift(
+                                                                                false
+                                                                            );
+                                                                        }}
+                                                                    >
+                                                                        <Check
+                                                                            className={cn(
+                                                                                "mr-2 h-4 w-4",
+                                                                                valueShift ===
+                                                                                    shift.name
+                                                                                    ? "opacity-100"
+                                                                                    : "opacity-0"
+                                                                            )}
+                                                                        />
+                                                                        {
+                                                                            shift.name
+                                                                        }
+                                                                    </CommandItem>
+                                                                )
+                                                            )}
+                                                        </CommandGroup>
+                                                    </CommandList>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-4">
+                        <Button type="submit">Submit</Button>
+                    </div>
+                </form>
+            </Form>
         </div>
     );
 }
