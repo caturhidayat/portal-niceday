@@ -39,6 +39,7 @@ import { getAllEmployee } from "./actions";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { NEXT_PUBLIC_API_URL } from "@/lib/constant";
 
 type Employee = {
     id: string;
@@ -53,8 +54,12 @@ const AttendanceSchemas = z.object({
     attendanceDate: z.string({
         required_error: "Please select an attendance date",
     }),
-    startTime: z.string().optional(),
-    endTime: z.string().optional(),
+    startTime: z.string({
+        required_error: "Please Input check in time",
+    }),
+    endTime: z.string({
+        required_error: "Please Input check out time",
+    }),
     shiftId: z.string({
         required_error: "Please select a shift",
     }),
@@ -72,18 +77,19 @@ export default function FormCreateAttendance() {
     // React Hook Form
     const form = useForm<z.infer<typeof AttendanceSchemas>>({
         resolver: zodResolver(AttendanceSchemas),
-        // defaultValues: {
-        //     userId: "",
-        //     attendanceDate: "",
-        //     startTime: "",
-        //     endTime: "",
-        //     shiftId: "",
-        // },
     });
 
     // Submit function for React Hook Form
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: z.infer<typeof AttendanceSchemas>) => {
         console.log(data);
+        console.log(NEXT_PUBLIC_API_URL)
+        const res = await fetch(`${NEXT_PUBLIC_API_URL}/attendances/entry`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
     };
 
     // Get Shifts from the server using useEffect and fetch
@@ -122,119 +128,120 @@ export default function FormCreateAttendance() {
         <div>
             <Form {...form}>
                 <form
-                    className="w-1/3 m-auto space-y-4"
+                    className="w-2/3 m-auto space-y-4"
                     onSubmit={form.handleSubmit(onSubmit)}
                 >
                     <div className="grid grid-cols-1 gap-4">
-                        <div className="grid grid-cols-1 gap-4">
-                            <FormField
-                                control={form.control}
-                                name="userId"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Employee</FormLabel>
-                                        <Popover
-                                            open={openEmployee}
-                                            onOpenChange={(isOpen) =>
-                                                setOpenEmployee(isOpen)
-                                            }
-                                        >
-                                            <PopoverTrigger asChild>
-                                                <FormControl>
-                                                    <Button
-                                                        variant={"outline"}
-                                                        aria-expanded={
-                                                            openEmployee
-                                                        }
-                                                        className={cn(
-                                                            "justify-start text-left font-normal",
-                                                            !valueEmployee &&
-                                                                "text-muted-foreground"
-                                                        )}
-                                                    >
-                                                        {valueEmployee
-                                                            ? employees.find(
-                                                                  (employee) =>
-                                                                      employee.name ===
-                                                                      valueEmployee
-                                                              )?.name
-                                                            : "Select Employee..."}
-                                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                                    </Button>
-                                                </FormControl>
-                                            </PopoverTrigger>
-                                            <PopoverContent className="w-auto p-0">
-                                                <Command>
-                                                    <CommandInput placeholder="Search employee..." />
-                                                    <CommandList>
-                                                        <CommandEmpty>
-                                                            No employee found.
-                                                        </CommandEmpty>
-                                                        <CommandGroup>
-                                                            {employees.map(
-                                                                (employee) => (
-                                                                    <CommandItem
-                                                                        key={
+                        <FormField
+                            control={form.control}
+                            name="userId"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="grid">
+                                        Employee
+                                    </FormLabel>
+                                    <Popover
+                                        open={openEmployee}
+                                        onOpenChange={(isOpen) =>
+                                            setOpenEmployee(isOpen)
+                                        }
+                                    >
+                                        <PopoverTrigger asChild>
+                                            <FormControl>
+                                                <Button
+                                                    variant={"outline"}
+                                                    aria-expanded={openEmployee}
+                                                    className={cn(
+                                                        "justify-start text-left font-normal",
+                                                        !field.value &&
+                                                            "text-muted-foreground"
+                                                    )}
+                                                >
+                                                    {field.value
+                                                        ? employees.find(
+                                                              (employee) =>
+                                                                  employee.id ===
+                                                                  field.value
+                                                          )?.name
+                                                        : "Select Employee..."}
+                                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                </Button>
+                                            </FormControl>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-auto p-0">
+                                            <Command>
+                                                <CommandInput placeholder="Search employee..." />
+                                                <CommandList>
+                                                    <CommandEmpty>
+                                                        No employee found.
+                                                    </CommandEmpty>
+                                                    <CommandGroup>
+                                                        {employees.map(
+                                                            (employee) => (
+                                                                <CommandItem
+                                                                    key={
+                                                                        employee.id
+                                                                    }
+                                                                    value={
+                                                                        employee.name
+                                                                    }
+                                                                    onSelect={(
+                                                                        currentValue
+                                                                    ) => {
+                                                                        setValueEmployee(
+                                                                            currentValue ===
+                                                                                field.value
+                                                                                ? ""
+                                                                                : currentValue
+                                                                        );
+                                                                        form.setValue(
+                                                                            "userId",
                                                                             employee.id
-                                                                        }
-                                                                        value={
-                                                                            employee.name
-                                                                        }
-                                                                        onSelect={(
-                                                                            currentValue
-                                                                        ) => {
-                                                                            setValueEmployee(
-                                                                                currentValue ===
-                                                                                    valueEmployee
-                                                                                    ? ""
-                                                                                    : currentValue
-                                                                            );
-                                                                            form.setValue(
-                                                                                "userId",
-                                                                                employee.id
-                                                                            );
-                                                                            setOpenEmployee(
-                                                                                false
-                                                                            );
-                                                                        }}
-                                                                    >
-                                                                        <Check
-                                                                            className={cn(
-                                                                                "mr-2 h-4 w-4",
-                                                                                valueEmployee ===
-                                                                                    employee.name
-                                                                                    ? "opacity-100"
-                                                                                    : "opacity-0"
-                                                                            )}
-                                                                        />
-                                                                        {
-                                                                            employee.name
-                                                                        }{" "}
-                                                                        (NIK:{" "}
-                                                                        {
-                                                                            employee.username
-                                                                        }
-                                                                        )
-                                                                    </CommandItem>
-                                                                )
-                                                            )}
-                                                        </CommandGroup>
-                                                    </CommandList>
-                                                </Command>
-                                            </PopoverContent>
-                                        </Popover>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
+                                                                        );
+                                                                        setOpenEmployee(
+                                                                            false
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Check
+                                                                        className={cn(
+                                                                            "mr-2 h-4 w-4",
+                                                                            valueEmployee ===
+                                                                                field.name
+                                                                                ? "opacity-100"
+                                                                                : "opacity-0"
+                                                                        )}
+                                                                    />
+                                                                    {
+                                                                        employee.name
+                                                                    }{" "}
+                                                                    (NIK:{" "}
+                                                                    {
+                                                                        employee.username
+                                                                    }
+                                                                    )
+                                                                </CommandItem>
+                                                            )
+                                                        )}
+                                                    </CommandGroup>
+                                                </CommandList>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
                         <div className="grid grid-cols-1 gap-4">
                             <FormField
                                 control={form.control}
                                 name="attendanceDate"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Attendance Date</FormLabel>
+                                        <FormLabel className="grid">
+                                            Attendance Date
+                                        </FormLabel>
                                         <Popover>
                                             <PopoverTrigger asChild>
                                                 <Button
@@ -290,6 +297,7 @@ export default function FormCreateAttendance() {
                                         <FormControl>
                                             <Input {...field} type="time" />
                                         </FormControl>
+                                        <FormMessage />
                                     </FormItem>
                                 )}
                             />
@@ -297,13 +305,14 @@ export default function FormCreateAttendance() {
                         <div className="grid grid-cols-1 gap-4">
                             <FormField
                                 control={form.control}
-                                name="startTime"
+                                name="endTime"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Check Out Time</FormLabel>
                                         <FormControl>
                                             <Input {...field} type="time" />
                                         </FormControl>
+                                        <FormMessage />
                                     </FormItem>
                                 )}
                             />
@@ -314,6 +323,9 @@ export default function FormCreateAttendance() {
                                 name="shiftId"
                                 render={({ field }) => (
                                     <FormItem>
+                                        <FormLabel className="grid">
+                                            Shift
+                                        </FormLabel>
                                         <Popover
                                             open={openShift}
                                             onOpenChange={(isOpen) =>
@@ -325,13 +337,17 @@ export default function FormCreateAttendance() {
                                                     variant="outline"
                                                     role="combobox"
                                                     aria-expanded={openShift}
-                                                    className="justify-between"
+                                                    className={cn(
+                                                        "justify-start text-left font-normal",
+                                                        !field.value &&
+                                                            "text-muted-foreground"
+                                                    )}
                                                 >
-                                                    {valueShift
+                                                    {field.value
                                                         ? shifts.find(
                                                               (shift) =>
-                                                                  shift.name ===
-                                                                  valueShift
+                                                                  shift.id ===
+                                                                  field.value
                                                           )?.name
                                                         : "Select shift..."}
                                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -359,7 +375,7 @@ export default function FormCreateAttendance() {
                                                                         ) => {
                                                                             setValueShift(
                                                                                 currentValue ===
-                                                                                    valueShift
+                                                                                    field.value
                                                                                     ? ""
                                                                                     : currentValue
                                                                             );
@@ -375,7 +391,7 @@ export default function FormCreateAttendance() {
                                                                         <Check
                                                                             className={cn(
                                                                                 "mr-2 h-4 w-4",
-                                                                                valueShift ===
+                                                                                field.value ===
                                                                                     shift.name
                                                                                     ? "opacity-100"
                                                                                     : "opacity-0"
