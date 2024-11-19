@@ -14,3 +14,4 @@ export async function getAllEmployee() {
     const data = await res.json();
     return data;
 }
+
