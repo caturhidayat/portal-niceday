@@ -29,7 +29,6 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import Cookies from "js-cookie";
 
 import { getAllShift } from "../../setting/shift/actions";
 import { Shift } from "../../setting/shift/table/columns";
@@ -38,8 +37,8 @@ import { getAllEmployee } from "./actions";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { NEXT_PUBLIC_API_URL, SESSION_COOKIE } from "@/lib/constant";
 import { toast } from "sonner";
+import { NEXT_PUBLIC_API_URL } from "@/lib/constant";
 
 type Employee = {
     id: string;
@@ -73,10 +72,7 @@ export default function FormCreateAttendance() {
     const [valueEmployee, setValueEmployee] = useState("");
     const [shifts, setShifts] = useState<Shift[]>([]);
     const [employees, setEmployees] = useState<Employee[]>([]);
-    const token = Cookies.get(SESSION_COOKIE);
 
-
-    console.log("token : ", token);
     // React Hook Form
     const form = useForm<z.infer<typeof AttendanceSchemas>>({
         resolver: zodResolver(AttendanceSchemas),
@@ -84,15 +80,22 @@ export default function FormCreateAttendance() {
 
     // Submit function for React Hook Form
     const onSubmit = async (data: z.infer<typeof AttendanceSchemas>) => {
-        console.log(data);
-        console.log(NEXT_PUBLIC_API_URL);
+        console.log("raw data: ", data);
+        // console.log(NEXT_PUBLIC_API_URL);
 
-        console.log("token", token);
+        const formData = new FormData();
+        formData.append("userId", data.userId);
+        formData.append("attendanceDate", data.attendanceDate);
+        formData.append("checkInTime", data.startTime);
+        formData.append("checkOutTime", data.endTime);
+        formData.append("shiftId", data.shiftId);
+
+        console.log("formData", formData);
+
         const res = await fetch(`${NEXT_PUBLIC_API_URL}/attendances/entry`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
             },
             body: JSON.stringify(data),
         });
@@ -125,26 +128,26 @@ export default function FormCreateAttendance() {
         getShiftsData();
     }, []);
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        const data = {
-            userId: employees.find(
-                (employee) => employee.name === formData.get("userId")
-            )?.id,
-            attendanceDate: formData.get("attendanceDate"),
-            checkInTime: formData.get("startTime"),
-            checkOutTime: formData.get("endTime"),
-            inLatitude: formData.get("inLatitude"),
-            inLongitude: formData.get("inLongitude"),
-            outLatitude: formData.get("outLatitude"),
-            outLongitude: formData.get("outLongitude"),
-            shiftId: shifts.find(
-                (shift) => shift.name === formData.get("shiftId")
-            )?.id,
-        };
-        console.log(data);
-    };
+    // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    //     e.preventDefault();
+    //     const formData = new FormData(e.currentTarget);
+    //     const data = {
+    //         userId: employees.find(
+    //             (employee) => employee.name === formData.get("userId")
+    //         )?.id,
+    //         attendanceDate: formData.get("attendanceDate"),
+    //         checkInTime: formData.get("startTime"),
+    //         checkOutTime: formData.get("endTime"),
+    //         inLatitude: formData.get("inLatitude"),
+    //         inLongitude: formData.get("inLongitude"),
+    //         outLatitude: formData.get("outLatitude"),
+    //         outLongitude: formData.get("outLongitude"),
+    //         shiftId: shifts.find(
+    //             (shift) => shift.name === formData.get("shiftId")
+    //         )?.id,
+    //     };
+    //     console.log(data);
+    // };
 
     return (
         <div>
@@ -152,6 +155,7 @@ export default function FormCreateAttendance() {
                 <form
                     className="w-2/3 m-auto space-y-4"
                     onSubmit={form.handleSubmit(onSubmit)}
+                    // action={formAction}
                 >
                     <div className="grid grid-cols-2 gap-4">
                         <FormField
@@ -254,109 +258,6 @@ export default function FormCreateAttendance() {
                             )}
                         />
                     </div>
-                    {/* <div className="grid grid-cols-1 gap-4">
-                        <FormField
-                            control={form.control}
-                            name="userId"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="grid">
-                                        Employee
-                                    </FormLabel>
-                                    <Popover
-                                        open={openEmployee}
-                                        onOpenChange={(isOpen) =>
-                                            setOpenEmployee(isOpen)
-                                        }
-                                    >
-                                        <PopoverTrigger asChild>
-                                            <FormControl>
-                                                <Button
-                                                    variant={"outline"}
-                                                    aria-expanded={openEmployee}
-                                                    className={cn(
-                                                        "justify-start text-left font-normal",
-                                                        !field.value &&
-                                                            "text-muted-foreground"
-                                                    )}
-                                                >
-                                                    {field.value
-                                                        ? employees.find(
-                                                              (employee) =>
-                                                                  employee.id ===
-                                                                  field.value
-                                                          )?.name
-                                                        : "Select Employee..."}
-                                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                                </Button>
-                                            </FormControl>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-auto p-0">
-                                            <Command>
-                                                <CommandInput placeholder="Search employee..." />
-                                                <CommandList>
-                                                    <CommandEmpty>
-                                                        No employee found.
-                                                    </CommandEmpty>
-                                                    <CommandGroup>
-                                                        {employees.map(
-                                                            (employee) => (
-                                                                <CommandItem
-                                                                    key={
-                                                                        employee.id
-                                                                    }
-                                                                    value={
-                                                                        employee.name
-                                                                    }
-                                                                    onSelect={(
-                                                                        currentValue
-                                                                    ) => {
-                                                                        setValueEmployee(
-                                                                            currentValue ===
-                                                                                field.value
-                                                                                ? ""
-                                                                                : currentValue
-                                                                        );
-                                                                        form.setValue(
-                                                                            "userId",
-                                                                            employee.id
-                                                                        );
-                                                                        setOpenEmployee(
-                                                                            false
-                                                                        );
-                                                                    }}
-                                                                >
-                                                                    <Check
-                                                                        className={cn(
-                                                                            "mr-2 h-4 w-4",
-                                                                            field.value ===
-                                                                                field.name
-                                                                                ? "opacity-100"
-                                                                                : "opacity-0"
-                                                                        )}
-                                                                    />
-                                                                    {
-                                                                        employee.name
-                                                                    }{" "}
-                                                                    (NIK:{" "}
-                                                                    {
-                                                                        employee.username
-                                                                    }
-                                                                    )
-                                                                </CommandItem>
-                                                            )
-                                                        )}
-                                                    </CommandGroup>
-                                                </CommandList>
-                                            </Command>
-                                        </PopoverContent>
-                                    </Popover>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div> */}
-
                     <div className="grid grid-cols-1 gap-4">
                         <FormField
                             control={form.control}
@@ -395,6 +296,12 @@ export default function FormCreateAttendance() {
                                                     setAttendanceDate(date);
                                                     if (date) {
                                                         form.setValue(
+                                                            "attendanceDate",
+                                                            date
+                                                                .getTime()
+                                                                .toString()
+                                                        );
+                                                        console.log(
                                                             "attendanceDate",
                                                             date
                                                                 .getTime()

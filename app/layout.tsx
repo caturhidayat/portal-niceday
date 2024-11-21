@@ -33,12 +33,12 @@ export default function RootLayout({
                 <Toaster
                     toastOptions={{
                         // unstyled: true,
-                        classNames: {
-                            error: "text-red-400 font-bold",
-                            success: "text-green-400 font-bold",
-                            warning: "text-yellow-400 font-bold",
-                            info: "text-blue-400 font-bold",
-                        },
+                        // classNames: {
+                        //     error: "text-red-400 font-bold",
+                        //     success: "text-green-400 font-bold",
+                        //     warning: "text-yellow-400 font-bold",
+                        //     info: "text-blue-400 font-bold",
+                        // },
                     }}
                     richColors
                     position="top-right"
