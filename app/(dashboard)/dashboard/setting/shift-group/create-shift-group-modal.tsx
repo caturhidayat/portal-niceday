@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useEffect, useRef, useState } from "react";
 import {
     Drawer,
     DrawerTrigger,
@@ -10,12 +9,13 @@ import {
     DrawerPortal,
     DrawerTitle,
 } from "@/components/ui/drawer";
-import MapDisplay from "@/components/MapDisplay";
 
 // Map Import
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import FormCreateShiftGroup from "./form-create-shift";
+
+import { Separator } from "@/components/ui/separator";
 
 const center = {
     lat: 106.871867,
@@ -23,8 +23,6 @@ const center = {
 };
 
 export default function CreateShiftGroupModal() {
-
-
     return (
         <div className="grid grid-cols-1">
             <Drawer
@@ -45,16 +43,15 @@ export default function CreateShiftGroupModal() {
                         aria-describedby="create-branch-description"
                     >
                         <div className="px-16 py-4">
-                            <div className="grid gap-4">
+                            <div className="grid gap-2">
                                 <div className="grid justify-center">
                                     <DrawerTitle className="font-bold mb-2">
                                         Create Shift Group
                                     </DrawerTitle>
                                 </div>
-                                <div className="grid grid-cols-1 gap-8">
-                                    <div>
-
-                                    </div>
+                                <Separator />
+                                <div className="grid grid-cols-1 ">
+                                    <div></div>
                                     <div className="p-4 overflow-y-auto max-h-[60vh]">
                                         <FormCreateShiftGroup />
                                     </div>

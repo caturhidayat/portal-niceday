@@ -1,7 +1,8 @@
 "use server";
 
-import { post } from "@/lib/fetch-wrapper";
+import { get, post } from "@/lib/fetch-wrapper";
 import { revalidateTag } from "next/cache";
+import { Shift } from "./table/columns";
 
 export default async function createShift(formData: FormData) {
     const res = await post("shifts", formData);
@@ -13,3 +14,12 @@ export default async function createShift(formData: FormData) {
     revalidateTag("shifts");
     return res.data;
 }
+
+
+// Get All Shift
+export async function getAllShift() {
+    const res = await get("shifts") as { data: Shift[]};
+
+    return res.data;
+}
+

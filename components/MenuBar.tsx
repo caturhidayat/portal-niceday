@@ -20,6 +20,7 @@ import {
     Building2,
     CalendarClock,
     CalendarCog,
+    CalendarPlus2,
     FilePenLine,
     FileUser,
     Hourglass,
@@ -73,6 +74,11 @@ const employees: { title: string; href: string; icon?: JSX.Element }[] = [
 ];
 
 const timeManagements: { title: string; href: string; icon: JSX.Element }[] = [
+    {
+        title: "Attendance Entry Form",
+        href: "/dashboard/attendance/entry-form",
+        icon: <CalendarPlus2 className="w-4 h-4 text-primary" />,
+    },
     {
         title: "Attendance List",
         href: "/dashboard/attendance/list",
