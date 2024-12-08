@@ -47,6 +47,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.3.0",
     "@swc/cli": "^0.5.0",
     "@swc/core": "^1.9.2",
     "@types/js-cookie": "^3.0.6",
