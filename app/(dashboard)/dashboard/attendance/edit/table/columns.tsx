@@ -1,7 +1,7 @@
 "use client";
 
 import { Column, ColumnDef, Table } from "@tanstack/react-table";
-import { HTMLProps, useEffect, useMemo, useRef } from "react";
+import { HTMLProps, useEffect, useRef } from "react";
 import { Person } from "./makeData";
 import { Input } from "@/components/ui/input";
 

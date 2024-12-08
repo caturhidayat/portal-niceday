@@ -1,17 +1,9 @@
 "use client";
 
-import {
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  Table as ReactTable,
-  useReactTable,
-} from "@tanstack/react-table";
+import { flexRender, Table as ReactTable } from "@tanstack/react-table";
 import { useReducer, useState } from "react";
-import { makeData, Person } from "./makeData";
+import { Person } from "./makeData";
 import { Filter, IndeterminateCheckbox } from "./columns";
-import { columnsEditAttendance } from "./columns";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -29,11 +21,9 @@ import {
   ChevronsLeft,
   ChevronsRight,
 } from "lucide-react";
-import { Label } from "@/components/ui/label";
 
 export default function TableEdit({
   table,
-  rowSelection,
   refreshData,
 }: {
   table: ReactTable<Person>;
@@ -200,45 +190,6 @@ export default function TableEdit({
           </Button>
         </div>
       </div>
-      <br />
-      <hr />
-      <br />
-      {/* <div>
-        <Button className="border rounded p-2 mb-2" onClick={() => rerender()}>
-          Force Rerender
-        </Button>
-      </div> */}
-
-      {/* <div>
-        <Button
-          className="border rounded p-2 mb-2"
-          onClick={() =>
-            console.info(
-              "table.getSelectedRowModel().flatRows",
-              table.getSelectedRowModel().flatRows
-            )
-          }
-        >
-          Log table.getSelectedRowModel().flatRows
-        </Button>
-      </div> */}
-      {/* <div>
-        <Label>Row Selection State:</Label>
-        <ul>
-          {Object.entries(table.getState().rowSelection).map(([key, value]) => {
-            if (value) {
-              const row = table.getRow(key);
-              return (
-                <li key={key}>
-                  ID: {row.original._id} - {row.original.firstName}{" "}
-                  {row.original.lastName}
-                </li>
-              );
-            }
-            return null;
-          })}
-        </ul>
-      </div> */}
     </div>
   );
 }

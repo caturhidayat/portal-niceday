@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Attendance, Payment, columns } from "./columns";
+import { Attendance, columns } from "./columns";
 import { DataTableC } from "./data-table";
 import { get } from "@/lib/fetch-wrapper";
 import Loading from "@/app/loading";
