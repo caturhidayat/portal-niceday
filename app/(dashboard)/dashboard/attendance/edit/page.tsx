@@ -1,73 +1,26 @@
 "use client";
 
 import React, { useState } from "react";
-import { User2Icon, Users, X } from "lucide-react";
+import { Users, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
-import TableEdit from "./table";
-import { columnsEditAttendance } from "./columns";
+import TableEdit from "./table/table";
+import { columnsEditAttendance } from "./table/columns";
 import {
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { makeData } from "./makeData";
+import { makeData } from "./table/makeData";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-type Employee = {
-  id: number;
-  name: string;
-  divisi: string;
-  jamMasuk: string;
-  jamKeluar: string;
-};
-
-const initialEmployees = [
-  {
-    id: 1,
-    name: "Ahmad Suryadi",
-    divisi: "IT",
-    jamMasuk: "08:00",
-    jamKeluar: "17:00",
-  },
-  {
-    id: 2,
-    name: "Siti Rahayu",
-    divisi: "HR",
-    jamMasuk: "08:30",
-    jamKeluar: "17:30",
-  },
-  {
-    id: 3,
-    name: "Budi Santoso",
-    divisi: "Keuangan",
-    jamMasuk: "08:15",
-    jamKeluar: "17:15",
-  },
-  {
-    id: 4,
-    name: "Rina Kartika",
-    divisi: "Marketing",
-    jamMasuk: "08:45",
-    jamKeluar: "17:45",
-  },
-  {
-    id: 5,
-    name: "Dedy Kurniawan",
-    divisi: "Produksi",
-    jamMasuk: "07:45",
-    jamKeluar: "16:45",
-  },
-];
-
 const EmployeeTimeManagement = () => {
-  const [employees, setEmployees] = useState<Employee[]>(initialEmployees);
+  // const [employees, setEmployees] = useState<Employee[]>(initialEmployees);
   const [selectedEmployees, setSelectedEmployees] = useState<number[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
   const [newStartTime, setNewStartTime] = useState("");
   const [newEndTime, setNewEndTime] = useState("");
 
@@ -94,51 +47,51 @@ const EmployeeTimeManagement = () => {
   });
 
   // Fungsi toggle pilih karyawan
-  const toggleEmployee = (employeeId: number) => {
-    setSelectedEmployees((prev) =>
-      prev.includes(employeeId)
-        ? prev.filter((id) => id !== employeeId)
-        : [...prev, employeeId]
-    );
-  };
+  // const toggleEmployee = (employeeId: number) => {
+  //   setSelectedEmployees((prev) =>
+  //     prev.includes(employeeId)
+  //       ? prev.filter((id) => id !== employeeId)
+  //       : [...prev, employeeId]
+  //   );
+  // };
 
   // Fungsi hapus pilihan karyawan
-  const removeEmployee = (employeeId: number) => {
-    setSelectedEmployees((prev) => prev.filter((id) => id !== employeeId));
-  };
+  // const removeEmployee = (employeeId: number) => {
+  //   setSelectedEmployees((prev) => prev.filter((id) => id !== employeeId));
+  // };
 
   // Fungsi update jam kerja untuk karyawan yang dipilih
-  const updateEmployeeTime = () => {
-    if (selectedEmployees.length === 0) {
-      alert("Pilih setidaknya satu karyawan");
-      return;
-    }
+  // const updateEmployeeTime = () => {
+  //   if (selectedEmployees.length === 0) {
+  //     alert("Pilih setidaknya satu karyawan");
+  //     return;
+  //   }
 
-    if (!newStartTime || !newEndTime) {
-      alert("Jam masuk dan jam keluar harus diisi");
-      return;
-    }
+  //   if (!newStartTime || !newEndTime) {
+  //     alert("Jam masuk dan jam keluar harus diisi");
+  //     return;
+  //   }
 
-    const updatedEmployees = employees.map((emp) =>
-      selectedEmployees.includes(emp.id)
-        ? { ...emp, jamMasuk: newStartTime, jamKeluar: newEndTime }
-        : emp
-    );
+  //   const updatedEmployees = employees.map((emp) =>
+  //     selectedEmployees.includes(emp.id)
+  //       ? { ...emp, jamMasuk: newStartTime, jamKeluar: newEndTime }
+  //       : emp
+  //   );
 
-    setEmployees(updatedEmployees);
+  //   setEmployees(updatedEmployees);
 
-    // Reset seleksi dan input
-    setSelectedEmployees([]);
-    setNewStartTime("");
-    setNewEndTime("");
-  };
+  //   // Reset seleksi dan input
+  //   setSelectedEmployees([]);
+  //   setNewStartTime("");
+  //   setNewEndTime("");
+  // };
 
   // Filter karyawan berdasarkan pencarian
-  const filteredEmployees = employees.filter(
-    (emp) =>
-      emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      emp.divisi.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredEmployees = employees.filter(
+  //   (emp) =>
+  //     emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     emp.divisi.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
   return (
     <div className="grid p-4 grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-8">
@@ -164,7 +117,7 @@ const EmployeeTimeManagement = () => {
             />
           </div>
           <Button
-            onClick={updateEmployeeTime}
+            // onClick={updateEmployeeTime}
             className="px-4 py-2 self-end"
             variant={"default"}
           >
