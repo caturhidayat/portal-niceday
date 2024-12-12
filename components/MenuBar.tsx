@@ -102,17 +102,17 @@ const timeManagements: {
     sub: [
       {
         title: "Overtime List",
-        href: "/dashboard/attendance/overtime/list",
+        href: "/dashboard/overtime",
         icon: <ListOrdered className="w-4 h-4 text-primary" />,
       },
       {
         title: "Overtime Request",
-        href: "/dashboard/attendance/overtime/request",
+        href: "/dashboard/overtime/request",
         icon: <CalendarPlus2 className="w-4 h-4 text-primary" />,
       },
       {
         title: "Overtime Cacellation",
-        href: "/dashboard/attendance/overtime/cancellation",
+        href: "/dashboard/overtime/cancellation",
         icon: <CircleX className="w-4 h-4 text-primary" />,
       },
     ],
@@ -123,17 +123,17 @@ const timeManagements: {
     sub: [
       {
         title: "Leave List",
-        href: "/dashboard/attendance/leave/list",
+        href: "/dashboard/leaves",
         icon: <ListOrdered className="w-4 h-4 text-primary" />,
       },
       {
         title: "Leave Request",
-        href: "/dashboard/attendance/leave/request",
+        href: "/dashboard/leaves/request",
         icon: <CalendarPlus2 className="w-4 h-4 text-primary" />,
       },
       {
         title: "Leave Cacellation",
-        href: "/dashboard/attendance/leave/cancellation",
+        href: "/dashboard/leaves/cancellation",
         icon: <CircleX className="w-4 h-4 text-primary" />,
       },
     ],
