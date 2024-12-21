@@ -93,7 +93,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
     filterFn: (row, id, filterValue) => {
       const date = new Date(Number(row.getValue(id)));
       const searchDate = new Date(filterValue);
-      
+
       // Compare only the date part (ignore time)
       return (
         date.getFullYear() === searchDate.getFullYear() &&
@@ -160,11 +160,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
       const isLate = row.getValue("isLate");
       return (
         <div className="ml-2">
-          {isLate ? (
-            <Badge variant={"destructive"}>Late</Badge>
-          ) : (
-            <Badge variant={"outline"}>No</Badge>
-          )}
+          {isLate ? <Badge variant={"destructive"}>LATE</Badge> : null}
         </div>
       );
     },
