@@ -46,6 +46,7 @@ import {
 } from "@/components/ui/menubar";
 import { Button } from "./ui/button";
 import { removeSession } from "@/lib/auth/sessions";
+import { JSX } from "react";
 
 const employees: { title: string; href: string; icon?: JSX.Element }[] = [
   {
