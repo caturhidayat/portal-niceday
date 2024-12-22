@@ -14,7 +14,6 @@ import {
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import { columnsAttendance } from "./table/columns";
-import { getAttendance } from "./action";
 import { Attendance } from "../today/columns";
 import TableAttendancesList from "./table/table";
 import { Button } from "@/components/ui/button";
@@ -23,9 +22,15 @@ import {
   DialogTrigger,
   DialogContent,
   DialogTitle,
+  DialogDescription,
+  DialogHeader,
+  DialogClose,
 } from "@/components/ui/dialog";
-import FormCreateAttendance from "../entry-form/form-create-attendance";
 import FormEntryAttendance from "./FormCreateAttendance";
+import { getAttendance } from "./actions";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import FormCreateAttendance from "../entry-form/form-create-attendance";
 
 export default function Page() {
   const [data, setData] = useState<Attendance[]>([]);
@@ -75,12 +80,15 @@ export default function Page() {
           <DialogTrigger asChild>
             <Button>Entry Attendance</Button>
           </DialogTrigger>
-          <DialogContent>
-            <DialogTitle>
-              <h1>Entry Attendance</h1>
-            </DialogTitle>
-            {/* <FormCreateAttendance /> */}
-            <FormEntryAttendance />
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Create Attendance</DialogTitle>
+              <DialogDescription>
+                Create a new entry attendance
+              </DialogDescription>
+            </DialogHeader>
+            {/* <FormEntryAttendance /> */}
+            <FormCreateAttendance />
           </DialogContent>
         </Dialog>
       </div>

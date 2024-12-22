@@ -16,11 +16,11 @@ const organizationLinks = [
         href: "organization/departements",
         icon: <Home className="h-4 w-4" />,
     },
-    {
-        name: "Office location",
-        href: "organization/office-location",
-        icon: <Pin className="h-4 w-4" />,
-    },
+    // {
+    //     name: "Office location",
+    //     href: "organization/office-location",
+    //     icon: <Pin className="h-4 w-4" />,
+    // },
 ];
 
 export default function settingLayout({

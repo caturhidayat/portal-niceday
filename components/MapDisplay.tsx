@@ -1,10 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from "react-leaflet";
 import L, { LatLngExpression } from "leaflet";
-
 
 // Custome map marker icon
 const myIcon = L.icon({
@@ -34,6 +33,12 @@ export default function MapDisplay({
     radius: any;
     draggable: any;
 }) {
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
     // Circle Marker
     const CircleMarker = () => {
         return (
@@ -60,7 +65,7 @@ export default function MapDisplay({
         );
         const toggleDraggable = useCallback(() => {
             setDraggable((d: boolean) => !d);
-        }, [setDraggable]);
+        }, []);
 
         return (
             <Marker
@@ -89,28 +94,31 @@ export default function MapDisplay({
                 animate: true,
                 duration: 1.5,
             });
-
         }, [position, map]);
 
         return null;
     }
 
-    return (
-        <MapContainer
-            center={position}
-            zoom={16}
-            scrollWheelZoom={false}
-            className="w-full h-[800px] border border-gray-300 rounded-md"
-            style={{ height: "400px", width: "100%" }}
-        >
-            <TileLayer
-                url="https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYnJva3lsYWJzIiwiYSI6ImNreXYxaHZqcjAycGwyeG8wOWNsM2t5OGwifQ.3y1OHJxnEpjsTmqGDV7ZDw"
-                id="mapbox/streets-v11"
-            />
+    if (!isMounted) {
+        return null; // or a loading spinner
+    }
 
-            <CircleMarker />
-            <DraggableMarker />
-            <FlyToUserLocation position={position} />
-        </MapContainer>
+    return (
+        <div className="h-[400px] w-full">
+            <MapContainer
+                center={position}
+                zoom={16}
+                scrollWheelZoom={false}
+                style={{ height: "100%", width: "100%" }}
+            >
+                <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <DraggableMarker />
+                <CircleMarker />
+                <FlyToUserLocation position={position} />
+            </MapContainer>
+        </div>
     );
 }

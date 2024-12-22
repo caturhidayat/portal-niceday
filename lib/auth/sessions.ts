@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 
 
 export async function getSession() {
-  return !!cookies().get(SESSION_COOKIE)?.value;
+  return !!(await cookies()).get(SESSION_COOKIE)?.value;
 }
 
 // Set the session cookie
@@ -16,7 +16,7 @@ export async function setSession(response: Response) {
   // console.log("setSessionHeader", setSessionHeader);
   if (setSessionHeader) {
     const token = setSessionHeader.split(";")[0].split("=")[1];
-    cookies().set({
+    (await cookies()).set({
       name: SESSION_COOKIE,
       value: token,
       secure: true,
@@ -28,6 +28,6 @@ export async function setSession(response: Response) {
 
 // Remove the session cookie
 export async function removeSession() {
-  cookies().delete(SESSION_COOKIE);
+  (await cookies()).delete(SESSION_COOKIE);
   redirect("/sign-in");
 }
