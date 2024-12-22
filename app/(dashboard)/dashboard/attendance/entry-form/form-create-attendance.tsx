@@ -32,7 +32,7 @@ import {
 
 import { getAllShift } from "../../setting/shift/actions";
 import { Shift } from "../../setting/shift/table/columns";
-import { getAllEmployee } from "./actions";
+import { getAllEmployee, saveAttendance } from "./actions";
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -81,7 +81,6 @@ export default function FormCreateAttendance() {
   // Submit function for React Hook Form
   const onSubmit = async (data: z.infer<typeof AttendanceSchemas>) => {
     console.log("raw data: ", data);
-    // console.log(NEXT_PUBLIC_API_URL);
 
     const formData = new FormData();
     formData.append("userId", data.userId);
@@ -92,22 +91,37 @@ export default function FormCreateAttendance() {
 
     console.log("formData", formData);
 
-    const res = await fetch(`${NEXT_PUBLIC_API_URL}/attendances/entry`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    if (res.ok) {
-      toast.success("Attendance has been created", {
-        description: "Attendance has been created successfully",
+    // const res = await fetch(`${NEXT_PUBLIC_API_URL}/attendances/entry`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(data),
+    // });
+    // if (res.ok) {
+    //   toast.success("Attendance has been created", {
+    //     description: "Attendance has been created successfully",
+    //     duration: 5000,
+    //   });
+    // } else {
+    //   toast.error("Failed to create attendance", {
+    //     description:
+    //       "Failed to create attendance, please try again " + res.statusText,
+    //     duration: 5000,
+    //   });
+    // }
+
+    const res = await saveAttendance(formData);
+
+    if (res.error) {
+      toast.error("Failed to create attendance", {
+        description:
+          "❌ Failed to create attendance, please try again " + res.error,
         duration: 5000,
       });
     } else {
-      toast.error("Failed to create attendance", {
-        description:
-          "Failed to create attendance, please try again " + res.statusText,
+      toast.success("✅ Attendance has been created", {
+        description: "Attendance has been created successfully",
         duration: 5000,
       });
     }
@@ -116,8 +130,13 @@ export default function FormCreateAttendance() {
   // Get Shifts from the server using useEffect and fetch
   useEffect(() => {
     const getShiftsData = async () => {
-      const shifts = await getAllShift();
-      const employees = await getAllEmployee();
+      // const shifts = await getAllShift();
+      // const employees = await getAllEmployee();
+
+      const [shifts, employees] = await Promise.all([
+        getAllShift(),
+        getAllEmployee(),
+      ])
 
       console.log("shift", shifts);
       console.log("employee", employees);

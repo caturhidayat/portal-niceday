@@ -10,6 +10,9 @@ import { revalidateTag } from "next/cache";
 export async function getAllEmployee() {
     const res = await fetch(`${API_URL}/users`, {
         headers: getHeaders(),
+        next: {
+            tags: ["employee"],
+        }
     });
 
     const data = await res.json();
@@ -17,31 +20,33 @@ export async function getAllEmployee() {
 }
 
 
-export default async function saveAttendance(
-    _prevState: FormResponse,
+export async function saveAttendance(
+    // _prevState: FormResponse,
     formData: FormData
 ) {
-
-    console.log("Form Data server action : ", formData);
-
-    return {
-        error: "",
-        success: formData,
-    }
-    // const res = await fetch(`${API_URL}/auth/login`, {
-    //     method: "POST",
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //         ...getHeaders(),
-    //     },
-    //     body: JSON.stringify(Object.fromEntries(formData)),
-    // });
-
-    // console.log("response from api : ", res);
-
-    // const parsedRes = await res.json();
-
-    // if (!res.ok) {
-    //     return { error: getErrorMessage(parsedRes), success: "" };
+    // console.log("Form Data server action : ", formData);
+    // return {
+    //     error: "",
+    //     success: formData,
     // }
+
+    const res = await post("attendances/entry", formData);
+
+    if (res.error) {
+        return { error: res.error, success: "" };
+    }   
+
+    revalidateTag("attendances");
+    return { success: res.data };
 }
+
+// export async function createShift(formData: FormData) {
+//     const res = await post("shifts", formData);
+
+//     if (res.error) {
+//         return { error: "An error occured", success: "" };
+//     }
+
+//     revalidateTag("shifts");
+//     return res.data;
+// }

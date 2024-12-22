@@ -16,6 +16,9 @@ import {
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Popover } from "@/components/ui/popover";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import FormEditAttendance from "../FormEditAttendance";
 
 export const columnsAttendance: ColumnDef<Attendance>[] = [
   {
@@ -197,6 +200,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
       return <div className="ml-4">{String(shift.name)}</div>;
     },
   },
+
   // {
   //   accessorKey: "createdAt",
   //   header: ({ column }) => {
@@ -222,6 +226,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
   //     return <div className="ml-4">{date}</div>;
   //   },
   // },
+
   {
     id: "actions",
     cell: ({ row }) => {
@@ -243,7 +248,25 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
             >
               Copy Attendance ID
             </DropdownMenuItem>
-            <DropdownMenuItem>View user</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="ghost" className="w-full justify-start">
+                    Edit Attendance
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <FormEditAttendance
+                    attendance={{
+                      id: row.original.id,
+                      attendanceDate: new Date(row.original.attendanceDate),
+                      checkInTime: row.original.checkInTime,
+                      checkOutTime: row.original.checkOutTime,
+                    }}
+                  />
+                </DialogContent>
+              </Dialog>
+            </DropdownMenuItem>
             <DropdownMenuItem>View attendance details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

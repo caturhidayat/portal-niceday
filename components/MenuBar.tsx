@@ -173,14 +173,14 @@ export function MenuBarNav() {
     await removeSession();
   };
   return (
-    <div>
-      <header className="sticky top-0 w-full flex items-center justify-center text-foreground px-4 z-10 border-b">
-        <div className="flex items-center">
+    <div className="sticky top-0 z-10">
+      <header className="flex bg-background items-center justify-center text-foreground px-4 z-10 border-b">
+        <div className="flex items-center py-2">
           <Building className="w-4 h-4 mr-2" />
           <span className="text-sm font-medium">PT. Puninar Yusen Logistics Indonesia</span>
         </div>
       </header>
-      <header className="sticky top-[54px]  gap-4 bg-background w-full flex px-4 z-10 items-center text-foreground border-b">
+      <header className="gap-4 bg-background w-full flex px-4 z-10 items-center text-foreground border-b">
         <Menubar className="border-none gap-4">
           <MenubarMenu>
             <MenubarTrigger>
