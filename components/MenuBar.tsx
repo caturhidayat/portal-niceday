@@ -48,9 +48,9 @@ import { Button } from "./ui/button";
 import { removeSession } from "@/lib/auth/sessions";
 import { JSX } from "react";
 
-const employees: { title: string; href: string; icon?: JSX.Element }[] = [
+const employees: { name: string; href: string; icon?: JSX.Element }[] = [
   {
-    title: "Employee Information",
+    name: "Employee Information",
     href: "/dashboard/employee/information",
     icon: <FileUser className="w-4 h-4 text-primary" />,
   },
@@ -60,25 +60,25 @@ const employees: { title: string; href: string; icon?: JSX.Element }[] = [
   //     icon: <CalendarCog className="w-4 h-4 text-primary" />,
   //   },
   {
-    title: "Employee Report",
+    name: "Employee Report",
     href: "/dashboard/employee/report",
     icon: <ScrollText className="w-4 h-4 text-primary" />,
   },
 ];
 
 const timeManagements: {
-  title: string;
+  name: string;
   href: string;
   icon?: JSX.Element;
-  sub?: { title: string; href: string; icon: JSX.Element }[];
+  sub?: { name: string; href: string; icon: JSX.Element }[];
 }[] = [
   {
-    title: "Attendance Entry Form",
+    name: "Attendance Entry Form",
     href: "/dashboard/attendance/entry-form",
     icon: <CalendarPlus2 className="w-4 h-4 text-primary" />,
   },
   {
-    title: "Attendance List",
+    name: "Attendance List",
     href: "/dashboard/attendance/list",
     icon: <ListOrdered className="w-4 h-4 text-primary" />,
   },
@@ -88,7 +88,7 @@ const timeManagements: {
   //     icon: <CalendarCog className="w-4 h-4 text-primary" />,
   //   },
   {
-    title: "Attendance Edit",
+    name: "Attendance Edit",
     href: "/dashboard/attendance/edit",
     icon: <FilePenLine className="w-4 h-4 text-primary" />,
   },
@@ -98,72 +98,72 @@ const timeManagements: {
   //     icon: <BoxIcon className="w-4 h-4 text-primary" />,
   //   },
   {
-    title: "Overtime",
+    name: "Overtime",
     href: "",
     sub: [
       {
-        title: "Overtime List",
+        name: "Overtime List",
         href: "/dashboard/overtime",
         icon: <ListOrdered className="w-4 h-4 text-primary" />,
       },
       {
-        title: "Overtime Request",
+        name: "Overtime Request",
         href: "/dashboard/overtime/request",
         icon: <CalendarPlus2 className="w-4 h-4 text-primary" />,
       },
       {
-        title: "Overtime Cacellation",
+        name: "Overtime Cacellation",
         href: "/dashboard/overtime/cancellation",
         icon: <CircleX className="w-4 h-4 text-primary" />,
       },
     ],
   },
   {
-    title: "Leave",
+    name: "Leave",
     href: "",
     sub: [
       {
-        title: "Leave List",
+        name: "Leave List",
         href: "/dashboard/leaves",
         icon: <ListOrdered className="w-4 h-4 text-primary" />,
       },
       {
-        title: "Leave Request",
+        name: "Leave Request",
         href: "/dashboard/leaves/request",
         icon: <CalendarPlus2 className="w-4 h-4 text-primary" />,
       },
       {
-        title: "Leave Cacellation",
+        name: "Leave Cacellation",
         href: "/dashboard/leaves/cancellation",
         icon: <CircleX className="w-4 h-4 text-primary" />,
       },
     ],
   },
   {
-    title: "Employee Shifts",
+    name: "Employee Shifts",
     href: "/dashboard/attendance/shifts",
     icon: <CalendarClock className="w-4 h-4 text-primary" />,
   },
   {
-    title: "Employee Group Shifts",
+    name: "Employee Group Shifts",
     href: "/dashboard/attendance/group-shifts",
     icon: <Boxes className="w-4 h-4 text-primary" />,
   },
 ];
 
-const organizations: { title: string; href: string; icon: JSX.Element }[] = [
+const organizations: { name: string; href: string; icon: JSX.Element }[] = [
   {
-    title: "Organization",
+    name: "Organization",
     href: "/dashboard/organization",
     icon: <Building className="w-4 h-4 text-primary" />,
   },
   {
-    title: "Organization Structure",
+    name: "Organization Structure",
     href: "/dashboard/organization/structure",
     icon: <Building2 className="w-4 h-4 text-primary" />,
   },
   {
-    title: "Organization Shifts",
+    name: "Organization Shifts",
     href: "/dashboard/organization/shifts",
     icon: <Boxes className="w-4 h-4 text-primary" />,
   },
@@ -208,7 +208,7 @@ export function MenuBarNav() {
               {employees.map((employee) => (
                 <Link key={employee.href} href={employee.href}>
                   <MenubarItem>
-                    {employee.title}
+                    {employee.name}
                     <MenubarShortcut className="pl-2">
                       {employee.icon}
                     </MenubarShortcut>
@@ -228,7 +228,7 @@ export function MenuBarNav() {
                   {timeManagement.sub ? (
                     <MenubarSub>
                       <MenubarSubTrigger>
-                        {timeManagement.title}
+                        {timeManagement.name}
                         <MenubarShortcut className="pl-2">
                           {timeManagement.icon}
                         </MenubarShortcut>
@@ -237,7 +237,7 @@ export function MenuBarNav() {
                         {timeManagement.sub.map((sub) => (
                           <Link key={sub.href} href={sub.href}>
                             <MenubarItem>
-                              {sub.title}
+                              {sub.name}
                               <MenubarShortcut className="pl-2">
                                 {sub.icon}
                               </MenubarShortcut>
@@ -248,7 +248,7 @@ export function MenuBarNav() {
                     </MenubarSub>
                   ) : (
                     <MenubarItem>
-                      {timeManagement.title}
+                      {timeManagement.name}
                       <MenubarShortcut className="pl-2">
                         {timeManagement.icon}
                       </MenubarShortcut>
