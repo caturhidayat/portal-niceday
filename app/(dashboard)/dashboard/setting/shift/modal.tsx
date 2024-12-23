@@ -32,7 +32,6 @@ const formSchema = z.object({
 });
 
 export default function CreateShiftForm() {
-    const toast = useToast();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
