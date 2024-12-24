@@ -11,6 +11,8 @@ import {
   organizationsLink,
   timeManagements,
 } from "@/lib/ListMenu";
+import { ThemeProvider } from "./theme-provider";
+import { ModeToggle } from "@/components/ModeToggle-Theme";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -33,23 +35,33 @@ export default function RootLayout({
         className={`${sarala.className} antialiased`}
         suppressHydrationWarning={true}
       >
-        <SidebarProvider>
-          <AppSidebar
-            employeesLinks={employeesLink}
-            organizationsLinks={organizationsLink}
-            organizationLinks={organizationLinks}
-            settingLinks={settingLink}
-            timeManagementsLinks={timeManagements}
-          />
-          <section>
-            <div className="p-4">
-              <SidebarTrigger />
-            </div>
-            <section className="p-4">{children}</section>
-          </section>
-        </SidebarProvider>
-        <main>{children}</main>
-        <Toaster position="top-right" />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SidebarProvider>
+            <AppSidebar
+              employeesLinks={employeesLink}
+              organizationsLinks={organizationsLink}
+              organizationLinks={organizationLinks}
+              settingLinks={settingLink}
+              timeManagementsLinks={timeManagements}
+            />
+            <section>
+              <div className="flex gap-4 p-4 sticky top-0 w-full bg-background z-20">
+                <SidebarTrigger />
+                <div className="flex flex-1 justify-end">
+                  <ModeToggle />
+                </div>
+              </div>
+              {/* <section className="p-4">{children}</section> */}
+              <main className="p-4">{children}</main>
+            </section>
+          </SidebarProvider>
+          <Toaster position="top-right" />
+        </ThemeProvider>
       </body>
     </html>
   );
