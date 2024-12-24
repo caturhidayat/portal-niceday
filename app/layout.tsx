@@ -13,6 +13,8 @@ import {
 } from "@/lib/ListMenu";
 import { ThemeProvider } from "./theme-provider";
 import { ModeToggle } from "@/components/ModeToggle-Theme";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { SideBarTrigger } from "@/components/SIdebarTrigger";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -51,7 +53,8 @@ export default function RootLayout({
             />
             <section>
               <div className="flex gap-4 p-4 sticky top-0 w-full bg-background z-20">
-                <SidebarTrigger />
+                {/* <SidebarTrigger /> */}
+                <SideBarTrigger />
                 <div className="flex flex-1 justify-end">
                   <ModeToggle />
                 </div>
