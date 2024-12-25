@@ -34,10 +34,10 @@ export default function Login() {
     });
     console.log("Form Data client action : ", formAction);
     return (
-        <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
-            <div className="flex items-center justify-center py-12">
-                <div className="mx-auto grid w-[350px] gap-6">
-                    <div className="grid gap-2 text-center">
+        <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-6 xl:min-h-screen ">
+            <div className="flex items-center justify-center col-span-2 py-12">
+                <div className="mx-auto grid w-[300px] gap-6">
+                    <div className="grid gap-2 text-center ">
                         <h1 className="text-3xl font-bold">Login</h1>
                         <p className="text-balance text-muted-foreground">
                             Enter your Username below to login to your account
@@ -46,12 +46,12 @@ export default function Login() {
                     <form action={formAction}>
                         <div className="grid gap-4">
                             <div className="grid gap-2">
-                                <Label htmlFor="username">username</Label>
+                                <Label htmlFor="username">Username</Label>
                                 <Input
                                     id="username"
                                     name="username"
                                     type="text"
-                                    placeholder="PY-IDXXXXX"
+                                    placeholder="Please enter your username"
                                     required
                                 />
                             </div>
@@ -63,6 +63,7 @@ export default function Login() {
                                     id="password"
                                     name="password"
                                     type="password"
+                                    placeholder="Please enter your password"
                                     required
                                 />
                             </div>
@@ -71,9 +72,9 @@ export default function Login() {
                     </form>
                 </div>
             </div>
-            <div className="hidden bg-muted lg:block">
+            <div className="hidden bg-muted lg:block lg:col-span-4">
                 <Image
-                    src="/images/drawkit-grape-1.svg"
+                    src="/images/sarah-dorweiler.jpg"
                     alt="Image"
                     width="1920"
                     height="1080"

@@ -131,17 +131,17 @@ export const organizationsLink: TItemLink[] = [
 export const organizationLinks: TItemLink[] = [
   {
     name: "Branches",
-    href: "organization/branches",
+    href: "/dashboard/organization/branches",
     icon: <Building2 className="h-4 w-4" />,
   },
   {
     name: "Departements",
-    href: "organization/departements",
+    href: "/dashboard/organization/departements",
     icon: <Home className="h-4 w-4" />,
   },
   {
     name: "Office location",
-    href: "organization/office-location",
+    href: "/dashboard/organization/office-location",
     icon: <Pin className="h-4 w-4" />,
   },
 ];
@@ -150,17 +150,17 @@ export const organizationLinks: TItemLink[] = [
 export const settingLink: TItemLink[] = [
   {
     name: "Shift Daily",
-    href: "setting/shift",
+    href: "/dashboard/setting/shift",
     icon: <CalendarCheck className="h-4 w-4" />,
   },
   {
     name: "Shift Group",
-    href: "setting/shift-group",
+    href: "/dashboard/setting/shift-group",
     icon: <CalendarCheck2Icon className="h-4 w-4" />,
   },
   {
     name: "Overtime Reaseon",
-    href: "setting/overtime-reason",
+    href: "/dashboard/setting/overtime-reason",
     icon: <Clock1 className="h-4 w-4" />,
   },
 ];

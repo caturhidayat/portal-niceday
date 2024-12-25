@@ -2,19 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Sarala } from "next/font/google";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
-import {
-  employeesLink,
-  organizationLinks,
-  settingLink,
-  organizationsLink,
-  timeManagements,
-} from "@/lib/ListMenu";
+
 import { ThemeProvider } from "./theme-provider";
 import { ModeToggle } from "@/components/ModeToggle-Theme";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { SideBarTrigger } from "@/components/SIdebarTrigger";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -33,37 +23,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${sarala.className} antialiased`}
-        suppressHydrationWarning={true}
-      >
+      <body className={`${sarala.className} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <SidebarProvider>
-            <AppSidebar
-              employeesLinks={employeesLink}
-              organizationsLinks={organizationsLink}
-              organizationLinks={organizationLinks}
-              settingLinks={settingLink}
-              timeManagementsLinks={timeManagements}
-            />
-            <section>
-              <div className="flex gap-4 p-4 sticky top-0 w-full bg-background z-20">
-                {/* <SidebarTrigger /> */}
-                <SideBarTrigger />
-                <div className="flex flex-1 justify-end">
-                  <ModeToggle />
-                </div>
-              </div>
-              {/* <section className="p-4">{children}</section> */}
-              <main className="p-4">{children}</main>
-            </section>
-          </SidebarProvider>
-          <Toaster position="top-right" />
+          <main>{children}</main>
+          <Toaster richColors position="top-right" closeButton />
         </ThemeProvider>
       </body>
     </html>
