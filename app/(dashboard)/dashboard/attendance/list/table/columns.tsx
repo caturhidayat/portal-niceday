@@ -21,44 +21,61 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import FormEditAttendance from "../FormEditAttendance";
 
 export const columnsAttendance: ColumnDef<Attendance>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <IndeterminateCheckbox
-        {...{
-          checked: table.getIsAllRowsSelected(),
-          indeterminate: table.getIsSomeRowsSelected(),
-          onChange: table.getToggleAllRowsSelectedHandler(),
-        }}
-      />
-    ),
-    cell: ({ row }) => (
-      <div>
-        <IndeterminateCheckbox
-          {...{
-            checked: row.getIsSelected(),
-            disabled: !row.getCanSelect(),
-            indeterminate: row.getIsSomeSelected(),
-            onChange: row.getToggleSelectedHandler(),
-          }}
-        />
-      </div>
-    ),
-  },
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <IndeterminateCheckbox
+  //       {...{
+  //         checked: table.getIsAllRowsSelected(),
+  //         indeterminate: table.getIsSomeRowsSelected(),
+  //         onChange: table.getToggleAllRowsSelectedHandler(),
+  //       }}
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <div>
+  //       <IndeterminateCheckbox
+  //         {...{
+  //           checked: row.getIsSelected(),
+  //           disabled: !row.getCanSelect(),
+  //           indeterminate: row.getIsSomeSelected(),
+  //           onChange: row.getToggleSelectedHandler(),
+  //         }}
+  //       />
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: "id",
     header: "Attendance ID",
     cell: (info) => info.getValue(),
     footer: (props) => props.column.id,
   },
+  // {
+  //   accessorKey: "userId",
+  //   header: "User ID",
+  //   cell: (info) => info.getValue(),
+  //   footer: (props) => props.column.id,
+  // },
   {
-    accessorKey: "userId",
-    header: "User ID",
-    cell: (info) => info.getValue(),
-    footer: (props) => props.column.id,
+    accessorKey: "username",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+        >
+          NIK
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return <div className="ml-2">{row.getValue("username")}</div>;
+    },
   },
   {
-    accessorKey: "user",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
@@ -71,8 +88,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
       );
     },
     cell: ({ row }) => {
-      const user = row.getValue("user") as User;
-      return <div className="ml-2">{user.name}</div>;
+      return <div className="ml-2">{row.getValue("name")}</div>;
     },
   },
   {

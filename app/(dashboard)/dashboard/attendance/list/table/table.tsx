@@ -225,14 +225,9 @@ export default function TableAttendancesList({
             ))}
           </select>
         </div>
-        <div className="flex justify-end">
-          <Button
-            className="border rounded p-2 mb-2 bg-teal-500 text-white"
-            onClick={() => refreshData()}
-          >
-            Refresh Data
-          </Button>
-        </div>
+        {/* <div className="flex justify-end">
+          <Button onClick={() => refreshData()}>Refresh Data</Button>
+        </div> */}
       </div>
     </div>
   );
