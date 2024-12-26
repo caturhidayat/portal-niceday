@@ -15,10 +15,10 @@ import {
   Pin,
   ScrollText,
 } from "lucide-react";
-import { TItemLink } from "@/components/app-sidebar";
+
 
 // ! Employee Link Item
-export const employeesLink: TItemLink[] = [
+export const employeesLink = [
   {
     name: "Employee Information",
     href: "/dashboard/employee/information",
@@ -37,7 +37,7 @@ export const employeesLink: TItemLink[] = [
 ];
 
 // ! Time Management Link Item
-export const timeManagements: TItemLink[] = [
+export const timeManagements = [
   {
     name: "Attendance Entry Form",
     href: "/dashboard/attendance/entry-form",
@@ -109,7 +109,7 @@ export const timeManagements: TItemLink[] = [
 ];
 
 // ! Organization Link Item
-export const organizationsLink: TItemLink[] = [
+export const organizationsLink = [
   {
     name: "Organization",
     href: "/dashboard/organization",
@@ -128,7 +128,7 @@ export const organizationsLink: TItemLink[] = [
 ];
 
 // ! Organization Link Item
-export const organizationLinks: TItemLink[] = [
+export const organizationLinks = [
   {
     name: "Branches",
     href: "/dashboard/organization/branches",
@@ -147,7 +147,7 @@ export const organizationLinks: TItemLink[] = [
 ];
 
 // ! Setting Link Item
-export const settingLink: TItemLink[] = [
+export const settingLink = [
   {
     name: "Shift Daily",
     href: "/dashboard/setting/shift",
