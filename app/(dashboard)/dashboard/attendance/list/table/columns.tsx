@@ -16,46 +16,66 @@ import {
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Popover } from "@/components/ui/popover";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import FormEditAttendance from "../FormEditAttendance";
 
 export const columnsAttendance: ColumnDef<Attendance>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <IndeterminateCheckbox
-        {...{
-          checked: table.getIsAllRowsSelected(),
-          indeterminate: table.getIsSomeRowsSelected(),
-          onChange: table.getToggleAllRowsSelectedHandler(),
-        }}
-      />
-    ),
-    cell: ({ row }) => (
-      <div>
-        <IndeterminateCheckbox
-          {...{
-            checked: row.getIsSelected(),
-            disabled: !row.getCanSelect(),
-            indeterminate: row.getIsSomeSelected(),
-            onChange: row.getToggleSelectedHandler(),
-          }}
-        />
-      </div>
-    ),
-  },
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <IndeterminateCheckbox
+  //       {...{
+  //         checked: table.getIsAllRowsSelected(),
+  //         indeterminate: table.getIsSomeRowsSelected(),
+  //         onChange: table.getToggleAllRowsSelectedHandler(),
+  //       }}
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <div>
+  //       <IndeterminateCheckbox
+  //         {...{
+  //           checked: row.getIsSelected(),
+  //           disabled: !row.getCanSelect(),
+  //           indeterminate: row.getIsSomeSelected(),
+  //           onChange: row.getToggleSelectedHandler(),
+  //         }}
+  //       />
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: "id",
     header: "Attendance ID",
     cell: (info) => info.getValue(),
     footer: (props) => props.column.id,
   },
+  // {
+  //   accessorKey: "userId",
+  //   header: "User ID",
+  //   cell: (info) => info.getValue(),
+  //   footer: (props) => props.column.id,
+  // },
   {
-    accessorKey: "userId",
-    header: "User ID",
-    cell: (info) => info.getValue(),
-    footer: (props) => props.column.id,
+    accessorKey: "username",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+        >
+          NIK
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return <div className="ml-2">{row.getValue("username")}</div>;
+    },
   },
   {
-    accessorKey: "user",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
@@ -68,8 +88,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
       );
     },
     cell: ({ row }) => {
-      const user = row.getValue("user") as User;
-      return <div className="ml-2">{user.name}</div>;
+      return <div className="ml-2">{row.getValue("name")}</div>;
     },
   },
   {
@@ -93,7 +112,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
     filterFn: (row, id, filterValue) => {
       const date = new Date(Number(row.getValue(id)));
       const searchDate = new Date(filterValue);
-      
+
       // Compare only the date part (ignore time)
       return (
         date.getFullYear() === searchDate.getFullYear() &&
@@ -160,11 +179,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
       const isLate = row.getValue("isLate");
       return (
         <div className="ml-2">
-          {isLate ? (
-            <Badge variant={"destructive"}>Late</Badge>
-          ) : (
-            <Badge variant={"outline"}>No</Badge>
-          )}
+          {isLate ? <Badge variant={"destructive"}>LATE</Badge> : null}
         </div>
       );
     },
@@ -201,6 +216,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
       return <div className="ml-4">{String(shift.name)}</div>;
     },
   },
+
   // {
   //   accessorKey: "createdAt",
   //   header: ({ column }) => {
@@ -226,6 +242,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
   //     return <div className="ml-4">{date}</div>;
   //   },
   // },
+
   {
     id: "actions",
     cell: ({ row }) => {
@@ -247,7 +264,25 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
             >
               Copy Attendance ID
             </DropdownMenuItem>
-            <DropdownMenuItem>View user</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="ghost" className="w-full justify-start">
+                    Edit Attendance
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <FormEditAttendance
+                    attendance={{
+                      id: row.original.id,
+                      attendanceDate: new Date(row.original.attendanceDate),
+                      checkInTime: row.original.checkInTime,
+                      checkOutTime: row.original.checkOutTime,
+                    }}
+                  />
+                </DialogContent>
+              </Dialog>
+            </DropdownMenuItem>
             <DropdownMenuItem>View attendance details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

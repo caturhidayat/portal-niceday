@@ -21,6 +21,8 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  SearchIcon,
+  SearchXIcon,
 } from "lucide-react";
 import { Attendance } from "../../today/columns";
 import {
@@ -40,17 +42,18 @@ export default function TableAttendancesList({
   refreshData: () => void;
 }) {
   const [globalFilter, setGlobalFilter] = useState("");
-  const [date, setDate] = useState<Date | null>(null);
+  const [date, setDate] = useState<Date>();
+  const [find, setFind] = useState(false);
 
   return (
     <div className="space-y-4">
       <div className="flex items-center py-4 gap-2">
-        <Input
+        {/* <Input
           placeholder="Filter by name..."
           value={globalFilter ?? ""}
           onChange={(event) => setGlobalFilter(String(event.target.value))}
           className="max-w-sm"
-        />
+        /> */}
         <Popover>
           <PopoverTrigger asChild>
             <Button
@@ -61,28 +64,33 @@ export default function TableAttendancesList({
               )}
             >
               <CalendarIcon />
-              {date ? format(date, "PPP") : <span>Filter by date</span>}
+              {date ? format(date, "PP") : <span>Filter by date</span>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="p-0">
             <Calendar
               mode="single"
+              selected={date}
               onSelect={(event) => {
                 table.getColumn("attendanceDate")?.setFilterValue(event);
+                setDate(event);
               }}
               initialFocus
             />
           </PopoverContent>
         </Popover>
-        {/* <Input
-          type="date"
-          onChange={(event) => {
-            table
-              .getColumn("attendanceDate")
-              ?.setFilterValue(event.target.value);
-          }}
-          className="max-w-sm"
-        /> */}
+        <Button
+          variant={find ? "destructive" : "default"}
+          className="flex items-center flex-end space-x-2"
+          onClick={() => setFind(!find)}
+        >
+          {find ? (
+            <SearchXIcon className="h-4 w-4" />
+          ) : (
+            <SearchIcon className="h-4 w-4" />
+          )}
+          Find
+        </Button>
       </div>
       <div className="h-2" />
       <Table>
@@ -98,7 +106,7 @@ export default function TableAttendancesList({
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                        {header.column.getCanFilter() ? (
+                        {find && header.column.getCanFilter() ? (
                           <div className="pt-1 px-1">
                             <Filter column={header.column} table={table} />
                           </div>
@@ -217,14 +225,9 @@ export default function TableAttendancesList({
             ))}
           </select>
         </div>
-        <div className="flex justify-end">
-          <Button
-            className="border rounded p-2 mb-2 bg-teal-500 text-white"
-            onClick={() => refreshData()}
-          >
-            Refresh Data
-          </Button>
-        </div>
+        {/* <div className="flex justify-end">
+          <Button onClick={() => refreshData()}>Refresh Data</Button>
+        </div> */}
       </div>
     </div>
   );

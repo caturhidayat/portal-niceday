@@ -17,6 +17,15 @@ import { columnsAttendance } from "./table/columns";
 import { getAttendance } from "./action";
 import { Attendance } from "../today/columns";
 import TableAttendancesList from "./table/table";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import FormCreateAttendance from "../entry-form/form-create-attendance";
+import FormEntryAttendance from "./FormCreateAttendance";
 
 export default function Page() {
   const [data, setData] = useState<Attendance[]>([]);
@@ -60,7 +69,21 @@ export default function Page() {
   });
   return (
     <div className="grid gap-4 p-6">
-      <h1 className="py-4 font-bold text-xl">Attendance List</h1>
+      <h1 className="font-bold text-xl">Attendance List</h1>
+      <div className="flex justify-end">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>Entry Attendance</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogTitle>
+              <h1>Entry Attendance</h1>
+            </DialogTitle>
+            {/* <FormCreateAttendance /> */}
+            <FormEntryAttendance />
+          </DialogContent>
+        </Dialog>
+      </div>
       <div>
         <TableAttendancesList table={table} refreshData={() => {}} />
       </div>

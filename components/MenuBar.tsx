@@ -46,123 +46,124 @@ import {
 } from "@/components/ui/menubar";
 import { Button } from "./ui/button";
 import { removeSession } from "@/lib/auth/sessions";
+import { JSX } from "react";
 
-const employees: { title: string; href: string; icon?: JSX.Element }[] = [
+const employees: { name: string; href: string; icon?: JSX.Element }[] = [
   {
-    title: "Employee Information",
+    name: "Employee Information",
     href: "/dashboard/employee/information",
     icon: <FileUser className="w-4 h-4 text-primary" />,
   },
-//   {
-//     title: "Employee Requests",
-//     href: "/dashboard/employee/requests",
-//     icon: <CalendarCog className="w-4 h-4 text-primary" />,
-//   },
+  //   {
+  //     title: "Employee Requests",
+  //     href: "/dashboard/employee/requests",
+  //     icon: <CalendarCog className="w-4 h-4 text-primary" />,
+  //   },
   {
-    title: "Employee Report",
+    name: "Employee Report",
     href: "/dashboard/employee/report",
     icon: <ScrollText className="w-4 h-4 text-primary" />,
   },
 ];
 
 const timeManagements: {
-  title: string;
+  name: string;
   href: string;
   icon?: JSX.Element;
-  sub?: { title: string; href: string; icon: JSX.Element }[];
+  sub?: { name: string; href: string; icon: JSX.Element }[];
 }[] = [
   {
-    title: "Attendance Entry Form",
+    name: "Attendance Entry Form",
     href: "/dashboard/attendance/entry-form",
     icon: <CalendarPlus2 className="w-4 h-4 text-primary" />,
   },
   {
-    title: "Attendance List",
+    name: "Attendance List",
     href: "/dashboard/attendance/list",
     icon: <ListOrdered className="w-4 h-4 text-primary" />,
   },
-//   {
-//     title: "Attendance Correction Requests",
-//     href: "/dashboard/attendance/correction-requests",
-//     icon: <CalendarCog className="w-4 h-4 text-primary" />,
-//   },
+  //   {
+  //     title: "Attendance Correction Requests",
+  //     href: "/dashboard/attendance/correction-requests",
+  //     icon: <CalendarCog className="w-4 h-4 text-primary" />,
+  //   },
   {
-    title: "Attendance Edit",
+    name: "Attendance Edit",
     href: "/dashboard/attendance/edit",
     icon: <FilePenLine className="w-4 h-4 text-primary" />,
   },
-//   {
-//     title: "Attendance Data",
-//     href: "/dashboard/attendance/data",
-//     icon: <BoxIcon className="w-4 h-4 text-primary" />,
-//   },
+  //   {
+  //     title: "Attendance Data",
+  //     href: "/dashboard/attendance/data",
+  //     icon: <BoxIcon className="w-4 h-4 text-primary" />,
+  //   },
   {
-    title: "Overtime",
+    name: "Overtime",
     href: "",
     sub: [
       {
-        title: "Overtime List",
+        name: "Overtime List",
         href: "/dashboard/overtime",
         icon: <ListOrdered className="w-4 h-4 text-primary" />,
       },
       {
-        title: "Overtime Request",
+        name: "Overtime Request",
         href: "/dashboard/overtime/request",
         icon: <CalendarPlus2 className="w-4 h-4 text-primary" />,
       },
       {
-        title: "Overtime Cacellation",
+        name: "Overtime Cacellation",
         href: "/dashboard/overtime/cancellation",
         icon: <CircleX className="w-4 h-4 text-primary" />,
       },
     ],
   },
   {
-    title: "Leave",
+    name: "Leave",
     href: "",
     sub: [
       {
-        title: "Leave List",
+        name: "Leave List",
         href: "/dashboard/leaves",
         icon: <ListOrdered className="w-4 h-4 text-primary" />,
       },
       {
-        title: "Leave Request",
+        name: "Leave Request",
         href: "/dashboard/leaves/request",
         icon: <CalendarPlus2 className="w-4 h-4 text-primary" />,
       },
       {
-        title: "Leave Cacellation",
+        name: "Leave Cacellation",
         href: "/dashboard/leaves/cancellation",
         icon: <CircleX className="w-4 h-4 text-primary" />,
       },
     ],
   },
   {
-    title: "Employee Shifts",
+    name: "Employee Shifts",
     href: "/dashboard/attendance/shifts",
     icon: <CalendarClock className="w-4 h-4 text-primary" />,
   },
   {
-    title: "Employee Group Shifts",
+    name: "Employee Group Shifts",
     href: "/dashboard/attendance/group-shifts",
     icon: <Boxes className="w-4 h-4 text-primary" />,
   },
 ];
 
-const organizations: { title: string; href: string; icon: JSX.Element }[] = [
+const organizations: { name: string; href: string; icon: JSX.Element }[] = [
   {
-    title: "Organization",
+    name: "Organization",
     href: "/dashboard/organization",
     icon: <Building className="w-4 h-4 text-primary" />,
   },
   {
-    title: "Organization Structure",
+    name: "Organization Structure",
     href: "/dashboard/organization/structure",
     icon: <Building2 className="w-4 h-4 text-primary" />,
   },
   {
-    title: "Organization Shifts",
+    name: "Organization Shifts",
     href: "/dashboard/organization/shifts",
     icon: <Boxes className="w-4 h-4 text-primary" />,
   },
@@ -173,118 +174,126 @@ export function MenuBarNav() {
     await removeSession();
   };
   return (
-    <header className="sticky top-0  gap-4 border-b bg-background w-full flex px-4 z-10 items-center text-foreground">
-      <Menubar className="border-none gap-4">
-        <MenubarMenu>
-          <MenubarTrigger>
-            <SquareMenu className="w-4 h-4 text-primary mr-2" />
-            <span>Menu</span>
-          </MenubarTrigger>
-          <MenubarContent>
-            <Link href="/dashboard">
-              <MenubarItem>
-                Dashboard
-                <MenubarShortcut className="pl-2">
-                  <LayoutDashboardIcon className="w-4 h-4 text-primary" />
-                </MenubarShortcut>
-              </MenubarItem>
-            </Link>
-          </MenubarContent>
-        </MenubarMenu>
-        <MenubarMenu>
-          <MenubarTrigger>
-            <UsersRound className="w-4 h-4 text-primary mr-2" />
-            Employees{" "}
-          </MenubarTrigger>
-          <MenubarContent>
-            {employees.map((employee) => (
-              <Link key={employee.href} href={employee.href}>
+    <div className="sticky top-0 z-10">
+      <header className="flex bg-background items-center justify-center text-foreground px-4 z-10 border-b">
+        <div className="flex items-center py-2">
+          <Building className="w-4 h-4 mr-2" />
+          <span className="text-sm font-medium">PT. Puninar Yusen Logistics Indonesia</span>
+        </div>
+      </header>
+      <header className="gap-4 bg-background w-full flex px-4 z-10 items-center text-foreground border-b">
+        <Menubar className="border-none gap-4">
+          <MenubarMenu>
+            <MenubarTrigger>
+              <SquareMenu className="w-4 h-4 text-primary mr-2" />
+              <span>Menu</span>
+            </MenubarTrigger>
+            <MenubarContent>
+              <Link href="/dashboard">
                 <MenubarItem>
-                  {employee.title}
+                  Dashboard
                   <MenubarShortcut className="pl-2">
-                    {employee.icon}
+                    <LayoutDashboardIcon className="w-4 h-4 text-primary" />
                   </MenubarShortcut>
                 </MenubarItem>
               </Link>
-            ))}
-          </MenubarContent>
-        </MenubarMenu>
-        <MenubarMenu>
-          <MenubarTrigger>
-            <Hourglass className="w-4 h-4 text-primary mr-2" />
-            Time Management
-          </MenubarTrigger>
-          <MenubarContent>
-            {timeManagements.map((timeManagement) => (
-              <Link key={timeManagement.href} href={timeManagement.href}>
-                {timeManagement.sub ? (
-                  <MenubarSub>
-                    <MenubarSubTrigger>
-                      {timeManagement.title}
+            </MenubarContent>
+          </MenubarMenu>
+          <MenubarMenu>
+            <MenubarTrigger>
+              <UsersRound className="w-4 h-4 text-primary mr-2" />
+              Employees{" "}
+            </MenubarTrigger>
+            <MenubarContent>
+              {employees.map((employee) => (
+                <Link key={employee.href} href={employee.href}>
+                  <MenubarItem>
+                    {employee.name}
+                    <MenubarShortcut className="pl-2">
+                      {employee.icon}
+                    </MenubarShortcut>
+                  </MenubarItem>
+                </Link>
+              ))}
+            </MenubarContent>
+          </MenubarMenu>
+          <MenubarMenu>
+            <MenubarTrigger>
+              <Hourglass className="w-4 h-4 text-primary mr-2" />
+              Time Management
+            </MenubarTrigger>
+            <MenubarContent>
+              {timeManagements.map((timeManagement) => (
+                <Link key={timeManagement.href} href={timeManagement.href}>
+                  {timeManagement.sub ? (
+                    <MenubarSub>
+                      <MenubarSubTrigger>
+                        {timeManagement.name}
+                        <MenubarShortcut className="pl-2">
+                          {timeManagement.icon}
+                        </MenubarShortcut>
+                      </MenubarSubTrigger>
+                      <MenubarSubContent>
+                        {timeManagement.sub.map((sub) => (
+                          <Link key={sub.href} href={sub.href}>
+                            <MenubarItem>
+                              {sub.name}
+                              <MenubarShortcut className="pl-2">
+                                {sub.icon}
+                              </MenubarShortcut>
+                            </MenubarItem>
+                          </Link>
+                        ))}
+                      </MenubarSubContent>
+                    </MenubarSub>
+                  ) : (
+                    <MenubarItem>
+                      {timeManagement.name}
                       <MenubarShortcut className="pl-2">
                         {timeManagement.icon}
                       </MenubarShortcut>
-                    </MenubarSubTrigger>
-                    <MenubarSubContent>
-                      {timeManagement.sub.map((sub) => (
-                        <Link key={sub.href} href={sub.href}>
-                          <MenubarItem>
-                            {sub.title}
-                            <MenubarShortcut className="pl-2">
-                              {sub.icon}
-                            </MenubarShortcut>
-                          </MenubarItem>
-                        </Link>
-                      ))}
-                    </MenubarSubContent>
-                  </MenubarSub>
-                ) : (
-                  <MenubarItem>
-                    {timeManagement.title}
-                    <MenubarShortcut className="pl-2">
-                      {timeManagement.icon}
-                    </MenubarShortcut>
-                  </MenubarItem>
-                )}
-              </Link>
-            ))}
-          </MenubarContent>
-        </MenubarMenu>
-        <MenubarMenu>
-          <Link href="/dashboard/organization">
-            <Button variant="outline" className="border-none">
-              <Network className="w-4 h-4 text-primary mr-2" />
-              Organization
-            </Button>
-          </Link>
-          <Link href="/dashboard/setting">
-            <Button variant="outline" className="border-none">
-              <Settings className="w-4 h-4 text-primary mr-2" />
-              Setting
-            </Button>
-          </Link>
-        </MenubarMenu>
-      </Menubar>
-      <div className="ml-auto">
-        <Menubar className="border-none">
-          <MenubarMenu>
-            <MenubarTrigger>
-              <User className="w-4 h-4 text-primary mr-2" />
-            </MenubarTrigger>
-            <MenubarContent>
-              <button onClick={handleLogout} className="flex w-full">
-                <MenubarItem className="text-destructive w-full flex-1 cursor-pointer">
-                  Logout
-                  <MenubarShortcut>
-                    <LogOut className="w-4 h-4 text-destructive" />
-                  </MenubarShortcut>
-                </MenubarItem>
-              </button>
+                    </MenubarItem>
+                  )}
+                </Link>
+              ))}
             </MenubarContent>
           </MenubarMenu>
+          <MenubarMenu>
+            <Link href="/dashboard/organization">
+              <Button variant="outline" className="border-none">
+                <Network className="w-4 h-4 text-primary mr-2" />
+                Organization
+              </Button>
+            </Link>
+            <Link href="/dashboard/setting">
+              <Button variant="outline" className="border-none">
+                <Settings className="w-4 h-4 text-primary mr-2" />
+                Setting
+              </Button>
+            </Link>
+          </MenubarMenu>
         </Menubar>
-      </div>
-    </header>
+        <div className="ml-auto">
+          <Menubar className="border-none">
+            <MenubarMenu>
+              <MenubarTrigger>
+                <User className="w-4 h-4 text-primary mr-2" />
+              </MenubarTrigger>
+              <MenubarContent>
+                <button onClick={handleLogout} className="flex w-full">
+                  <MenubarItem className="text-destructive w-full flex-1 cursor-pointer">
+                    Logout
+                    <MenubarShortcut>
+                      <LogOut className="w-4 h-4 text-destructive" />
+                    </MenubarShortcut>
+                  </MenubarItem>
+                </button>
+              </MenubarContent>
+            </MenubarMenu>
+          </Menubar>
+        </div>
+      </header>
+    </div>
   );
 }
 
