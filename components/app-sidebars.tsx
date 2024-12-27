@@ -194,12 +194,16 @@ const data = {
       icon: UsersRound,
       items: [
         {
+          title: "Employee List",
+          url: "/dashboard/employees",
+        },
+        {
           title: "Employee Information",
-          url: "/dashboard/employee/information",
+          url: "/dashboard/employees/information",
         },
         {
           title: "Employee Report",
-          url: "/dashboard/employee/report",
+          url: "/dashboard/employees/report",
         },
       ],
     },
@@ -208,6 +212,10 @@ const data = {
       url: "#",
       icon: CalendarClock,
       items: [
+        // {
+        //   title: "Attendance",
+        //   url: "/dashboard/attendance",
+        // },
         {
           title: "Attendance Entry Form",
           url: "/dashboard/attendance/entry-form",
