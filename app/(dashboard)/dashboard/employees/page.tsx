@@ -16,7 +16,6 @@ import FormCreateEmployee from "./FormCreateEmployee";
 
 async function getEmployees(): Promise<User[]> {
   const response = await get("users");
-  // console.log("response :", response);
   return response as User[];
 }
 

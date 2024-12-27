@@ -3,11 +3,11 @@
 import { z } from "zod";
 
 const EmployeeSchema = z.object({
-  name: z.string(),
-  username: z.string(),
-  password: z.string(),
-  departmentId: z.string(),
-  branchId: z.string(),
+  name: z.string().min(1, { message: "Name is required" }),
+  username: z.string().min(8, { message: "Username must be at least 8 characters" }),
+  password: z.string().min(8, { message: "Password must be at least 8 characters" }),
+  departmentId: z.string().min(1, { message: "Department is required" }),
+  branchId: z.string().min(1, { message: "Branch is required" }),
 });
 
 export interface EmployeeFormData {
