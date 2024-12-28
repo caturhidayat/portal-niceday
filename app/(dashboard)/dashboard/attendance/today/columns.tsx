@@ -91,6 +91,9 @@ export type Attendance = {
   shiftId: string;
   officeLocationId: string;
 
+  department: string;
+  branch: string;
+
   createdAt: string;
   updatedAt: string;
 };
@@ -304,6 +307,20 @@ export const columns: ColumnDef<Attendance>[] = [
         return <div className="ml-4">--:--:--</div>;
       }
       return <div className="ml-4">{workHours}</div>;
+    },
+  },
+  {
+    accessorKey: "branch",
+    header: "Branch",
+    cell: ({ row }) => {
+      return <div className="ml-4">{row.getValue("branch")}</div>;
+    },
+  },
+  {
+    accessorKey: "department",
+    header: "Department",
+    cell: ({ row }) => {
+      return <div className="ml-4">{row.getValue("department")}</div>;
     },
   },
   // {

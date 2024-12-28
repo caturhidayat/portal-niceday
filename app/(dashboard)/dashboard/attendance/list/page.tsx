@@ -12,9 +12,9 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
 } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { columnsAttendance } from "./table/columns";
-import { getAttendance } from "./action";
+import { getAttendance } from "./actions";
 import { Attendance } from "../today/columns";
 import TableAttendancesList from "./table/table";
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/dialog";
 import FormCreateAttendance from "../entry-form/form-create-attendance";
 import FormEntryAttendance from "./FormCreateAttendance";
+import { DataTableC } from "../../employees/data-table";
 
 export default function Page() {
   const [data, setData] = useState<Attendance[]>([]);
@@ -68,25 +69,23 @@ export default function Page() {
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
   return (
-    <div className="grid gap-4 p-6">
+    <div className="container mx-auto">
       <h1 className="font-bold text-xl">Attendance List</h1>
-      <div className="flex justify-end">
+      <div className="flex justify-end py-2">
         <Dialog>
           <DialogTrigger asChild>
-            <Button>Entry Attendance</Button>
+            <Button>Create Attendance</Button>
           </DialogTrigger>
           <DialogContent>
-            <DialogTitle>
-              <h1>Entry Attendance</h1>
-            </DialogTitle>
-            {/* <FormCreateAttendance /> */}
+            <DialogTitle>Create Attendance</DialogTitle>
             <FormEntryAttendance />
           </DialogContent>
         </Dialog>
       </div>
-      <div>
-        <TableAttendancesList table={table} refreshData={() => {}} />
-      </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        {/* <TableAttendancesList table={table} refreshData={() => {}} /> */}
+        <DataTableC columns={columns} data={data} />
+      </Suspense>
     </div>
   );
 }

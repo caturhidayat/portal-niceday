@@ -1,7 +1,7 @@
 "use client";
 
 import { Column, ColumnDef, Table } from "@tanstack/react-table";
-import { HTMLProps, useEffect, useRef } from "react";
+import { HTMLProps, useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Attendance, Shift, User } from "../../today/columns";
 import { format } from "date-fns";
@@ -13,11 +13,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Popover } from "@/components/ui/popover";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import FormEditAttendance from "../FormEditAttendance";
 
 export const columnsAttendance: ColumnDef<Attendance>[] = [
@@ -45,12 +45,12 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
   //     </div>
   //   ),
   // },
-  {
-    accessorKey: "id",
-    header: "Attendance ID",
-    cell: (info) => info.getValue(),
-    footer: (props) => props.column.id,
-  },
+  // {
+  //   accessorKey: "id",
+  //   header: "Attendance ID",
+  //   cell: (info) => info.getValue(),
+  //   footer: (props) => props.column.id,
+  // },
   // {
   //   accessorKey: "userId",
   //   header: "User ID",
@@ -179,7 +179,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
       const isLate = row.getValue("isLate");
       return (
         <div className="ml-2">
-          {isLate ? <Badge variant={"destructive"}>LATE</Badge> : null}
+          {isLate ? <Badge variant={"destructive"}>Late</Badge> : null}
         </div>
       );
     },
@@ -203,6 +203,20 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
         return <div className="ml-4">--:--:--</div>;
       }
       return <div className="ml-4">{workHours}</div>;
+    },
+  },
+  {
+    accessorKey: "branch",
+    header: "Branch",
+    cell: ({ row }) => {
+      return <div className="ml-4">{row.getValue("branch")}</div>;
+    },
+  },
+  {
+    accessorKey: "department",
+    header: "Department",
+    cell: ({ row }) => {
+      return <div className="ml-4">{row.getValue("department")}</div>;
     },
   },
   {
@@ -247,49 +261,45 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
     id: "actions",
     cell: ({ row }) => {
       const attendance = row.original;
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [open, setOpen] = useState(false);
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open Menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel className="font-bold">Action</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(attendance.id)}
-            >
-              Copy Attendance ID
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="ghost" className="w-full justify-start">
-                    Edit Attendance
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <FormEditAttendance
-                    attendance={{
-                      id: row.original.id,
-                      attendanceDate: new Date(row.original.attendanceDate),
-                      checkInTime: row.original.checkInTime,
-                      checkOutTime: row.original.checkOutTime,
-                    }}
-                  />
-                </DialogContent>
-              </Dialog>
-            </DropdownMenuItem>
-            <DropdownMenuItem>View attendance details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div>
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setOpen(true)}>
+                  <Edit className="mr-2 h-4 w-4" />
+                  Edit
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <DialogContent>
+              <DialogTitle>Edit Attendance</DialogTitle>
+              <FormEditAttendance
+                attendance={{
+                  id: attendance.id,
+                  attendanceDate: attendance.attendanceDate,
+                  checkInTime: attendance.checkInTime,
+                  checkOutTime: attendance.checkOutTime,
+                }}
+                setOpen={setOpen}
+              />
+            </DialogContent>
+          </Dialog>
+        </div>
       );
     },
   },
-];
+] satisfies ColumnDef<Attendance>[];
 
 export function Filter({
   column,
@@ -348,7 +358,7 @@ export function IndeterminateCheckbox({
     if (typeof indeterminate === "boolean") {
       ref.current.indeterminate = !rest.checked && indeterminate;
     }
-  }, [ref, indeterminate]);
+  }, [ref, indeterminate, rest.checked]);
 
   return (
     <Input

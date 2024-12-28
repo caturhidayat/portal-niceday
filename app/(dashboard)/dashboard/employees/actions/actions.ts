@@ -1,21 +1,23 @@
 "use server";
 
+import { post } from "@/lib/fetch-wrapper";
+import { revalidateTag } from "next/cache";
 import { z } from "zod";
 
 const EmployeeSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   username: z.string().min(8, { message: "Username must be at least 8 characters" }),
   password: z.string().min(8, { message: "Password must be at least 8 characters" }),
-  departmentId: z.string().min(1, { message: "Department is required" }),
-  branchId: z.string().min(1, { message: "Branch is required" }),
+  departmentId: z.string().optional(),
+  branchId: z.string().optional(),
 });
 
 export interface EmployeeFormData {
   name: string;
   username: string;
   password: string;
-  departmentId: string;
-  branchId: string;
+  departmentId?: string | undefined;
+  branchId?: string | undefined;
 }
 
 export interface ActionResponseEmployee {
@@ -33,17 +35,22 @@ export default async function createEmployee(
   formData: FormData
 ): Promise<ActionResponseEmployee> {
   try {
-    const rawData = {
+    const rawData: any = {
       name: formData.get("name") as string,
       username: formData.get("username") as string,
       password: formData.get("password") as string,
-      departmentId: formData.get("departmentId") as string,
-      branchId: formData.get("branchId") as string,
     };
+
+    const departmentId = formData.get("departmentId") as string;
+    const branchId = formData.get("branchId") as string;
+
+    if (departmentId) rawData.departmentId = departmentId;
+    if (branchId) rawData.branchId = branchId;
 
     // Validate data
     const validatedData = EmployeeSchema.safeParse(rawData);
 
+    // Return error if data is invalid
     if (!validatedData.success) {
       return {
         success: false,
@@ -53,15 +60,14 @@ export default async function createEmployee(
       };
     }
 
-    // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(validatedData.data),
-    // });
+    // Submit data to server if data is valid
+    const res = await post("users/signup", formData);
 
-    console.log("validatedData.data", validatedData.data);
+    revalidateTag("employees");
+
+    console.log("res from server action : ", res);
+
+    console.log("validatedData.data :", validatedData.data);
 
     return {
       success: true,

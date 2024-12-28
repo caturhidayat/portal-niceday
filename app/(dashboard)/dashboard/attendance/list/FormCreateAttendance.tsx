@@ -34,9 +34,7 @@ export default function FormEntryAttendance() {
             <PopoverTrigger asChild>
               <Button variant="outline">
                 {date ? (
-                  <span>
-                    {format(date, "eeee, dd MMM-yyyy")}
-                  </span>
+                  <span>{format(date, "eeee, dd MMM-yyyy")}</span>
                 ) : (
                   <span>Pick a date</span>
                 )}

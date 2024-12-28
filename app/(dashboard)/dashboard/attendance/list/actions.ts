@@ -1,30 +1,53 @@
 "use server";
 
 import { revalidateTag } from "next/cache";
+import { get, put } from "@/lib/fetch-wrapper";
+import { Attendance } from "../today/columns";
 
 type AttendanceData = {
+  id: string;
   attendanceDate: Date;
   checkInTime: string;
   checkOutTime: string;
 };
 
-export async function updateAttendance(id: string, data: AttendanceData) {
-  try {
-    // TODO: Add your API call or database update logic here
-    // Example:
-    // const response = await fetch(`/api/attendance/${id}`, {
-    //   method: 'PUT',
-    //   body: JSON.stringify(data),
-    // });
-    
-    // if (!response.ok) {
-    //   throw new Error('Failed to update attendance');
-    // }
+export interface AttendanceFormData {
+  id: string;
+  attendanceDate: Date;
+  checkInTime: string;
+  checkOutTime: string;
+}
 
-    // Revalidate the attendance list page to show updated data
-    // revalidatePath("/dashboard/attendance/list");
+export interface ActionResponseAttendance {
+  success: boolean;
+  message: string;
+  errors?: {
+    [K in keyof AttendanceFormData]?: string[];
+  };
+  inputs?: AttendanceFormData;
+}
+
+export async function getAttendance(): Promise<Attendance[]> {
+  const response = await get("attendances", ["attendances"]);
+  return response as Attendance[];
+}
+
+export async function updateAttendance(
+  attendanceId: string,
+  data: AttendanceFormData
+): Promise<ActionResponseAttendance> {
+  try {
+    const formData = new FormData();
+    formData.append("attendanceDate", data.attendanceDate.toISOString());
+    formData.append("checkInTime", data.checkInTime);
+    formData.append("checkOutTime", data.checkOutTime);
+
+    await put(`attendances/${attendanceId}`, formData);
+
+    // Revalidate the attendance list to show updated data
     revalidateTag("attendances");
-    return { success: true };
+
+    return { success: true, message: "Attendance updated successfully" };
   } catch (error) {
     console.error("Error updating attendance:", error);
     throw error;

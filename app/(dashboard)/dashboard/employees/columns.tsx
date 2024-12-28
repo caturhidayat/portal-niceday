@@ -14,6 +14,46 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 import { format } from "date-fns";
 
+// model Department {
+//   id    Int    @id @default(autoincrement())
+//   name  String
+//   Users User[]
+
+//   createdAt BigInt @default(0)
+//   updatedAt BigInt @default(0)
+
+//   @@index([name])
+//   @@map("departments")
+// }
+
+// model Branch {
+//   id       Int     @id @default(autoincrement())
+//   name     String
+//   location String? // Optional: To store the location/address of the branch
+//   Users    User[]
+
+//   createdAt BigInt @default(0)
+//   updatedAt BigInt @default(0)
+
+//   @@index([name])
+//   @@map("branches")
+// }
+
+export type Departments = {
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type Branches = {
+  id: number;
+  name: string;
+  location: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type User = {
   id: string;
   name: string;

@@ -35,3 +35,13 @@ export const get = async <T>(path: string, tags?: string[]) => {
   });
   return res.json() as T;
 };
+
+export const put = async (path: string, data: FormData) => {
+  const token = await getHeaders();
+  const res = await fetch(`${API_URL}/${path}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...token },
+    body: JSON.stringify(Object.fromEntries(data)),
+  });
+  return res.json();
+};
