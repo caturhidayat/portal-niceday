@@ -12,7 +12,9 @@ import {
 import { format } from "date-fns";
 import { useState } from "react";
 
-export default function FormEntryAttendance() {
+export default function FormEntryAttendance(
+  {setIsOpen}: {setIsOpen: (open: boolean) => void}
+) {
   const [date, setDate] = useState<Date>();
   return (
     <div className="grid">

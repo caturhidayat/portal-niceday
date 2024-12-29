@@ -16,17 +16,8 @@ import { Suspense, useEffect, useState } from "react";
 import { columnsAttendance } from "./table/columns";
 import { getAttendance } from "./actions";
 import { Attendance } from "../today/columns";
-import TableAttendancesList from "./table/table";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import FormCreateAttendance from "../entry-form/form-create-attendance";
-import FormEntryAttendance from "./FormCreateAttendance";
 import { DataTableC } from "../../employees/data-table";
+import DialogCreate from "./DialogCreate";
 
 export default function Page() {
   const [data, setData] = useState<Attendance[]>([]);
@@ -72,15 +63,7 @@ export default function Page() {
     <div className="container mx-auto">
       <h1 className="font-bold text-xl">Attendance List</h1>
       <div className="flex justify-end py-2">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>Create Attendance</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogTitle>Create Attendance</DialogTitle>
-            <FormEntryAttendance />
-          </DialogContent>
-        </Dialog>
+        <DialogCreate />
       </div>
       <Suspense fallback={<div>Loading...</div>}>
         {/* <TableAttendancesList table={table} refreshData={() => {}} /> */}

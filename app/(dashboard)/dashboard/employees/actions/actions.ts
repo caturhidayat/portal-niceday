@@ -39,6 +39,8 @@ export default async function createEmployee(
       name: formData.get("name") as string,
       username: formData.get("username") as string,
       password: formData.get("password") as string,
+      departmentId: formData.get("departmentId") as string,
+      branchId: formData.get("branchId") as string,
     };
 
     const departmentId = formData.get("departmentId") as string;

@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import FormCreateEmployee from "./FormCreateEmployee";
+import DialogCreateEmployee from "./DialogCreateEmployee";
 
 async function getEmployees(): Promise<User[]> {
   const response = await get("users", ["employees"]);
@@ -40,18 +41,7 @@ export default async function Page() {
   return (
     <div className="container mx-auto">
       <div className="grid justify-end py-2">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>Create</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create Employee</DialogTitle>
-              <DialogDescription>Create new employee</DialogDescription>
-            </DialogHeader>
-            <FormCreateEmployee departements={departements} branches={branches} />
-          </DialogContent>
-        </Dialog>
+        <DialogCreateEmployee departements={departements} branches={branches} />
       </div>
       <Suspense fallback={<Loading />}>
         <DataTableC columns={columns} data={employees} />

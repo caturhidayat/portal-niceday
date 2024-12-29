@@ -31,14 +31,24 @@ const initialState = {
 export default function FormCreateEmployee({
   departements,
   branches,
+  setIsOpen,
 }: {
   departements: Departments[];
   branches: Branches[];
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [state, action, isPending] = useActionState(
     createEmployee,
     initialState
   );
+
+  console.log("state inputs : ", state?.inputs);
+
+  useEffect(() => {
+    if (state?.success) {
+      setIsOpen(false);
+    }
+  }, [state?.success, setIsOpen]);
 
   return (
     <div>
@@ -87,7 +97,7 @@ export default function FormCreateEmployee({
           </div>
           <div>
             <Label>Department</Label>
-            <Select>
+            <Select name="departmentId">
               <SelectTrigger>
                 <SelectValue placeholder="Select a department" />
               </SelectTrigger>
@@ -95,7 +105,7 @@ export default function FormCreateEmployee({
                 <SelectGroup>
                   <SelectLabel>Department</SelectLabel>
                   {departements.map((departement) => (
-                    <SelectItem key={departement.id} value={departement.name}>
+                    <SelectItem key={departement.id} value={departement.id.toString()}>
                       {departement.name}
                     </SelectItem>
                   ))}
@@ -110,7 +120,7 @@ export default function FormCreateEmployee({
           </div>
           <div>
             <Label>Branch</Label>
-            <Select>
+            <Select name="branchId">
               <SelectTrigger>
                 <SelectValue placeholder="Select a branch" />
               </SelectTrigger>
@@ -118,7 +128,7 @@ export default function FormCreateEmployee({
                 <SelectGroup>
                   <SelectLabel>Branch</SelectLabel>
                   {branches.map((branch) => (
-                    <SelectItem key={branch.id} value={branch.name}>
+                    <SelectItem key={branch.id} value={branch.id.toString()}>
                       {branch.name}
                     </SelectItem>
                   ))}
