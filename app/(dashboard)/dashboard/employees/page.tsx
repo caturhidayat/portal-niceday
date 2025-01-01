@@ -3,27 +3,17 @@ import { DataTableC } from "./data-table";
 import Loading from "@/app/loading";
 import { Branches, columns, Departments, User } from "./columns";
 import { get } from "@/lib/fetch-wrapper";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import FormCreateEmployee from "./FormCreateEmployee";
 import DialogCreateEmployee from "./DialogCreateEmployee";
 
 async function getEmployees(): Promise<User[]> {
   const response = await get("users", ["employees"]);
   return response as User[];
 }
-async function getDepartments(): Promise<Departments[]> {
+export async function getDepartments(): Promise<Departments[]> {
   const response = await get("departements");
   return response as Departments[];
 }
-async function getBranches(): Promise<Branches[]> {
+export async function getBranches(): Promise<Branches[]> {
   const response = await get("branches");
   return response as Branches[];
 }

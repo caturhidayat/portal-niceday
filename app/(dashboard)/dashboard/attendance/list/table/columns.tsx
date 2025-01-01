@@ -19,6 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { Popover } from "@/components/ui/popover";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import FormEditAttendance from "../FormEditAttendance";
+import DialogEditAttendance from "../DialogEditAttendance";
 
 export const columnsAttendance: ColumnDef<Attendance>[] = [
   // {
@@ -256,46 +257,40 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
   //     return <div className="ml-4">{date}</div>;
   //   },
   // },
+  {
+    id: "edit",
+    cell: ({ row }) => {
+      const attendance = row.original;
+      return <DialogEditAttendance attendance={attendance} />;
+    },
+  },
 
   {
     id: "actions",
     cell: ({ row }) => {
       const attendance = row.original;
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const [open, setOpen] = useState(false);
 
       return (
-        <div>
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setOpen(true)}>
-                  <Edit className="mr-2 h-4 w-4" />
-                  Edit
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open Menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel className="font-bold">Action</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(attendance.id)}
+            >
+              Copy Attendance ID
+            </DropdownMenuItem>
+            <DropdownMenuItem>View User</DropdownMenuItem>
 
-            <DialogContent>
-              <DialogTitle>Edit Attendance</DialogTitle>
-              <FormEditAttendance
-                attendance={{
-                  id: attendance.id,
-                  attendanceDate: attendance.attendanceDate,
-                  checkInTime: attendance.checkInTime,
-                  checkOutTime: attendance.checkOutTime,
-                }}
-                setOpen={setOpen}
-              />
-            </DialogContent>
-          </Dialog>
-        </div>
+            <DropdownMenuItem>View attendance details</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       );
     },
   },

@@ -30,7 +30,7 @@ export const post = async (path: string, data: FormData) => {
 export const get = async <T>(path: string, tags?: string[]) => {
   const token = await getHeaders();
   const res = await fetch(`${API_URL}/${path}`, {
-    headers: { ...token },
+    headers: { ...token, "Content-Type": "application/json" },
     next: { tags },
   });
   return res.json() as T;

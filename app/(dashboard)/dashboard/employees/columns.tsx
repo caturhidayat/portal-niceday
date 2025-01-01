@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenuContent,
   DropdownMenuItem,
@@ -13,38 +12,14 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 import { format } from "date-fns";
-
-// model Department {
-//   id    Int    @id @default(autoincrement())
-//   name  String
-//   Users User[]
-
-//   createdAt BigInt @default(0)
-//   updatedAt BigInt @default(0)
-
-//   @@index([name])
-//   @@map("departments")
-// }
-
-// model Branch {
-//   id       Int     @id @default(autoincrement())
-//   name     String
-//   location String? // Optional: To store the location/address of the branch
-//   Users    User[]
-
-//   createdAt BigInt @default(0)
-//   updatedAt BigInt @default(0)
-
-//   @@index([name])
-//   @@map("branches")
-// }
+import DialogEditEmployee from "./DialogEditEmployee";
 
 export type Departments = {
   id: number;
   name: string;
   createdAt: string;
   updatedAt: string;
-}
+};
 
 export type Branches = {
   id: number;
@@ -52,7 +27,7 @@ export type Branches = {
   location: string;
   createdAt: string;
   updatedAt: string;
-}
+};
 
 export type User = {
   id: string;
@@ -186,7 +161,7 @@ export const columns: ColumnDef<User>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const attendance = row.original;
+      const employee = row.original;
 
       return (
         <DropdownMenu>
@@ -200,9 +175,9 @@ export const columns: ColumnDef<User>[] = [
             <DropdownMenuLabel className="font-bold">Action</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(attendance.id)}
+              onClick={() => navigator.clipboard.writeText(employee.id)}
             >
-              Copy Attendance ID
+              Copy Employee ID
             </DropdownMenuItem>
             <DropdownMenuItem>View user</DropdownMenuItem>
             <DropdownMenuItem>View attendance details</DropdownMenuItem>
@@ -212,4 +187,3 @@ export const columns: ColumnDef<User>[] = [
     },
   },
 ];
-

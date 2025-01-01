@@ -201,10 +201,10 @@ const data = {
           title: "Employee Information",
           url: "/dashboard/employees/information",
         },
-        {
-          title: "Employee Report",
-          url: "/dashboard/employees/report",
-        },
+        // {
+        //   title: "Employee Report",
+        //   url: "/dashboard/employees/report",
+        // },
       ],
     },
     {

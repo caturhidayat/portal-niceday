@@ -10,18 +10,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DropdownMenu, DropdownMenuLabel } from "@radix-ui/react-dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ChevronsUpDown, MoreHorizontal } from "lucide-react";
 
-import { format, fromUnixTime } from "date-fns";
-
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
+import { format } from "date-fns";
 
 export type User = {
   id: string;
@@ -98,38 +89,32 @@ export type Attendance = {
   updatedAt: string;
 };
 
-// shiftName: item.shift?.name ?? null,
-//       shiftStartTime: item.shift?.startTime ?? null,
-//       shiftEndTime: item.shift?.endTime ?? null,
-//       name: item.user?.name ?? null,
-//       username: item.user?.username ?? null,
-//       officeLocationName: item.OfficeLocation?.name ?? null,
 
 export const columns: ColumnDef<Attendance>[] = [
-  //   {
-  //     id: "select",
-  //     header: ({ table }) => (
-  //       <Checkbox
-  //         checked={
-  //           table.getIsAllPageRowsSelected() ||
-  //           (table.getIsSomePageRowsSelected() && "indeterminate")
-  //         }
-  //         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-  //         aria-label="Select all"
-  //         className="translate-y-[2px]"
-  //       />
-  //     ),
-  //     cell: ({ row }) => (
-  //       <Checkbox
-  //         checked={row.getIsSelected()}
-  //         onCheckedChange={(value) => row.toggleSelected(!!value)}
-  //         aria-label="Select row"
-  //         className="translate-y-[2px]"
-  //       />
-  //     ),
-  //     enableSorting: false,
-  //     enableHiding: false,
-  //   },
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+          className="translate-y-[2px]"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+          className="translate-y-[2px]"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
   {
     accessorKey: "attendanceDate",
     header: ({ column }) => {
@@ -139,7 +124,7 @@ export const columns: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           Attendances Date
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -164,7 +149,7 @@ export const columns: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           NIK
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -181,7 +166,7 @@ export const columns: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -199,7 +184,7 @@ export const columns: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           Shift Start
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -224,7 +209,7 @@ export const columns: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           Shift End
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -249,7 +234,7 @@ export const columns: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           Check In
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -274,7 +259,7 @@ export const columns: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           Check Out
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -341,31 +326,31 @@ export const columns: ColumnDef<Attendance>[] = [
       return <div className="ml-4">{row.getValue("shiftName")}</div>;
     },
   },
-  //   {
-  //     accessorKey: "createdAt",
-  //     header: ({ column }) => {
-  //       return (
-  //         <Button
-  //           variant="ghost"
-  //           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
-  //         >
-  //           Created At
-  //           <ArrowUpDown className="ml-2 h-4 w-4" />
-  //         </Button>
-  //       );
-  //     },
-  //     cell: ({ row }) => {
-  //       const createdAt = row.getValue("createdAt");
-  //       const parsedDate = parseInt(createdAt as string);
+    {
+      accessorKey: "createdAt",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+          >
+            Created At
+            <ChevronsUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => {
+        const createdAt = row.getValue("createdAt");
+        const parsedDate = parseInt(createdAt as string);
 
-  //       if (isNaN(parsedDate)) {
-  //         return <div>Invalid date</div>;
-  //       }
+        if (isNaN(parsedDate)) {
+          return <div>Invalid date</div>;
+        }
 
-  //       const date = format(new Date(parsedDate), "dd/MM/yy - HH:mm");
-  //       return <div className="ml-4">{date}</div>;
-  //     },
-  //   },
+        const date = format(new Date(parsedDate), "dd/MM/yy - HH:mm");
+        return <div className="ml-4">{date}</div>;
+      },
+    },
   {
     id: "actions",
     cell: ({ row }) => {

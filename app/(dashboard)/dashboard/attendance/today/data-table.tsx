@@ -24,11 +24,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { DataTablePagination } from "@/components/table/data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
+import Loading from "@/app/loading";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -48,11 +49,18 @@ export function DataTableC<TData, TValue>({
     columns,
     state: {
       sorting,
-      columnVisibility,
       rowSelection,
       columnFilters,
     },
     enableRowSelection: true,
+    // initialState: {
+    //   columnVisibility: {
+    //     branch: false,
+    //     department: false,
+    //     shiftName: false,
+    //     createdAt: false,
+    //   },
+    // },
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -95,14 +103,16 @@ export function DataTableC<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="p-0 px-2">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+                  <Suspense fallback={<Loading />}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="p-0 px-2">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </Suspense>
                 </TableRow>
               ))
             ) : (
@@ -111,7 +121,7 @@ export function DataTableC<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center "
                 >
-                  <Alert variant={"destructive"}>
+                  <Alert>
                     <AlertTitle>No results.</AlertTitle>
                     <AlertDescription>No data to display.</AlertDescription>
                   </Alert>

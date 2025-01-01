@@ -65,10 +65,10 @@ export default function Page() {
       <div className="flex justify-end py-2">
         <DialogCreate />
       </div>
-      <Suspense fallback={<div>Loading...</div>}>
-        {/* <TableAttendancesList table={table} refreshData={() => {}} /> */}
-        <DataTableC columns={columns} data={data} />
-      </Suspense>
+      {/* <Suspense fallback={<div>Loading...</div>}> */}
+      {/* <TableAttendancesList table={table} refreshData={() => {}} /> */}
+      <DataTableC columns={columns} data={data} />
+      {/* </Suspense> */}
     </div>
   );
 }

@@ -1,7 +1,8 @@
 export default function Page() {
-    return (
-        <div>
-            <h1>Employee Report</h1>
-        </div>
-    );
+  return (
+    <div>
+      <p className="text-xl font-bold">Employee Report</p>
+      <p>This Page under construction</p>
+    </div>
+  );
 }
