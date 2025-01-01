@@ -6,9 +6,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   ColumnFiltersState,
+  FilterFn,
   getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
+  SortingFn,
+  sortingFns,
   SortingState,
   useReactTable,
   VisibilityState,
@@ -23,6 +29,51 @@ import { useState } from "react";
 import TableAttendancesList from "./table/table";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  compareItems,
+  RankingInfo,
+  rankItem,
+} from "@tanstack/match-sorter-utils";
+
+declare module "@tanstack/react-table" {
+  //add fuzzy filter to the filterFns
+  interface FilterFns {
+    fuzzy: FilterFn<unknown>;
+  }
+  interface FilterMeta {
+    itemRank: RankingInfo;
+  }
+}
+
+// Define a custom fuzzy filter function that will apply ranking info to rows (using match-sorter utils)
+const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+  // Rank the item
+  const itemRank = rankItem(row.getValue(columnId), value);
+
+  // Store the itemRank info
+  addMeta({
+    itemRank,
+  });
+
+  // Return if the item should be filtered in/out
+  return itemRank.passed;
+};
+
+// Define a custom fuzzy sort function that will sort by rank if the row has ranking information
+const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
+  let dir = 0;
+
+  // Only sort by rank if the column has ranking information
+  if (rowA.columnFiltersMeta[columnId]) {
+    dir = compareItems(
+      rowA.columnFiltersMeta[columnId]?.itemRank!,
+      rowB.columnFiltersMeta[columnId]?.itemRank!
+    );
+  }
+
+  // Provide an alphanumeric fallback for when the item ranks are equal
+  return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
+};
 
 export default function TableEdit({
   data,
@@ -40,32 +91,36 @@ export default function TableEdit({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [globalFilter, setGlobalFilter] = useState("");
 
-  // Tanstack table
-  const columns = columnsEditAttendance;
+  const columns = columnsEditAttendance
+
+  // Define table 
   const table = useReactTable({
     data,
     columns,
     state: {
       sorting,
-      // columnVisibility: {
-      //   isLate: false,
-      //   workHours: false,
-      //   branch: false,
-      //   department: false,
-      //   shiftName: false,
-      //   createdAt: false,
-      // },
+      columnVisibility,
       rowSelection,
       columnFilters,
+      globalFilter
     },
-    enableRowSelection: true, //enable row selection for all rows
-    // enableRowSelection: row => row.original.age > 18, // or enable row selection conditionally per row
+    filterFns: {
+      fuzzy: fuzzyFilter,
+    },
+    globalFilterFn: "fuzzy",
+    enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    debugTable: true,
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
@@ -142,14 +197,12 @@ export default function TableEdit({
         </ul>
       </div>
       <div className="rounded-lg lg:col-span-2">
-        {/* <ScrollArea type="auto" className="h-[800px]"> */}
         <TableAttendancesList
           table={table}
           branch={branch}
           departments={departments}
           rowSelection={rowSelection}
         />
-        {/* </ScrollArea> */}
       </div>
     </div>
   );

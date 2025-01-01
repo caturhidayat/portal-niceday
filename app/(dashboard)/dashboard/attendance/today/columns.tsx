@@ -123,7 +123,7 @@ export const columns: ColumnDef<Attendance>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
-          Attendances Date
+          Attd Date
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -283,17 +283,17 @@ export const columns: ColumnDef<Attendance>[] = [
       return <div className="ml-2">{isLate ? "Late" : null}</div>;
     },
   },
-  {
-    accessorKey: "workHours",
-    header: "Work Hours",
-    cell: ({ row }) => {
-      const workHours = row.getValue("workHours") as number;
-      if (isNaN(workHours)) {
-        return <div className="ml-4">--:--:--</div>;
-      }
-      return <div className="ml-4">{workHours}</div>;
-    },
-  },
+  // {
+  //   accessorKey: "workHours",
+  //   header: "Work Hours",
+  //   cell: ({ row }) => {
+  //     const workHours = row.getValue("workHours") as number;
+  //     if (isNaN(workHours)) {
+  //       return <div className="ml-4">--:--:--</div>;
+  //     }
+  //     return <div className="ml-4">{workHours}</div>;
+  //   },
+  // },
   {
     accessorKey: "branch",
     header: "Branch",
@@ -309,48 +309,37 @@ export const columns: ColumnDef<Attendance>[] = [
     },
   },
   // {
-  //     accessorKey: "officeLocationId",
-  //     header: "Office Location",
-  //     cell: ({ row }) => {
-  //         const officeLocationId = row.getValue("officeLocationId");
-  //         if (!officeLocationId) {
-  //             return <div className="ml-4">--</div>;
-  //         }
-  //         return <div className="ml-4">{String(officeLocationId)}</div>;
-  //     },
+  //   accessorKey: "shiftName",
+  //   header: "Shift Name",
+  //   cell: ({ row }) => {
+  //     return <div className="ml-4">{row.getValue("shiftName")}</div>;
+  //   },
   // },
-  {
-    accessorKey: "shiftName",
-    header: "Shift Name",
-    cell: ({ row }) => {
-      return <div className="ml-4">{row.getValue("shiftName")}</div>;
-    },
-  },
-    {
-      accessorKey: "createdAt",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
-          >
-            Created At
-            <ChevronsUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const createdAt = row.getValue("createdAt");
-        const parsedDate = parseInt(createdAt as string);
+    // {
+    //   accessorKey: "createdAt",
+    //   header: ({ column }) => {
+    //     return (
+    //       <Button
+    //         variant="ghost"
+    //         onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+    //       >
+    //         Created At
+    //         <ChevronsUpDown className="ml-2 h-4 w-4" />
+    //       </Button>
+    //     );
+    //   },
+    //   cell: ({ row }) => {
+    //     const createdAt = row.getValue("createdAt");
+    //     const parsedDate = parseInt(createdAt as string);
 
-        if (isNaN(parsedDate)) {
-          return <div>Invalid date</div>;
-        }
+    //     if (isNaN(parsedDate)) {
+    //       return <div>Invalid date</div>;
+    //     }
 
-        const date = format(new Date(parsedDate), "dd/MM/yy - HH:mm");
-        return <div className="ml-4">{date}</div>;
-      },
-    },
+    //     const date = format(new Date(parsedDate), "dd/MM/yy");
+    //     return <div className="ml-4">{date}</div>;
+    //   },
+    // },
   {
     id: "actions",
     cell: ({ row }) => {
@@ -372,8 +361,8 @@ export const columns: ColumnDef<Attendance>[] = [
             >
               Copy Attendance ID
             </DropdownMenuItem>
-            <DropdownMenuItem>View user</DropdownMenuItem>
-            <DropdownMenuItem>View attendance details</DropdownMenuItem>
+            {/* <DropdownMenuItem>View user</DropdownMenuItem> */}
+            {/* <DropdownMenuItem>View attendance details</DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       );

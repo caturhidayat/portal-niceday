@@ -40,6 +40,7 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
+
 declare module "@tanstack/react-table" {
   //add fuzzy filter to the filterFns
   interface FilterFns {

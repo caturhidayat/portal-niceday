@@ -13,11 +13,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ArrowUpDown, MoreHorizontal, Edit } from "lucide-react";
+import { ChevronsUpDown, MoreHorizontal, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Popover } from "@/components/ui/popover";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 // import FormEditAttendance from "../FormEditAttendance";
 // import DialogEditAttendance from "../DialogEditAttendance";
 
@@ -46,18 +45,6 @@ export const columnsEditAttendance: ColumnDef<Attendance>[] = [
       </div>
     ),
   },
-  // {
-  //   accessorKey: "id",
-  //   header: "Attendance ID",
-  //   cell: (info) => info.getValue(),
-  //   footer: (props) => props.column.id,
-  // },
-  // {
-  //   accessorKey: "userId",
-  //   header: "User ID",
-  //   cell: (info) => info.getValue(),
-  //   footer: (props) => props.column.id,
-  // },
   {
     accessorKey: "username",
     header: ({ column }) => {
@@ -67,7 +54,7 @@ export const columnsEditAttendance: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           NIK
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -84,7 +71,7 @@ export const columnsEditAttendance: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -100,8 +87,8 @@ export const columnsEditAttendance: ColumnDef<Attendance>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
-          Attendance Date
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          Attd Date
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -132,7 +119,7 @@ export const columnsEditAttendance: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           Check In
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -152,7 +139,7 @@ export const columnsEditAttendance: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           Check Out
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -172,7 +159,7 @@ export const columnsEditAttendance: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           Is Late
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -185,41 +172,41 @@ export const columnsEditAttendance: ColumnDef<Attendance>[] = [
       );
     },
   },
-  {
-    accessorKey: "workHours",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
-        >
-          Work Hours
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const workHours = row.getValue("workHours") as number;
-      if (isNaN(workHours)) {
-        return <div className="ml-4">--:--:--</div>;
-      }
-      return <div className="ml-4">{workHours}</div>;
-    },
-  },
-  {
-    accessorKey: "branch",
-    header: "Branch",
-    cell: ({ row }) => {
-      return <div className="ml-4">{row.getValue("branch")}</div>;
-    },
-  },
-  {
-    accessorKey: "department",
-    header: "Department",
-    cell: ({ row }) => {
-      return <div className="ml-4">{row.getValue("department")}</div>;
-    },
-  },
+  // {
+  //   accessorKey: "workHours",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+  //       >
+  //         Work Hours
+  //         <ChevronsUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  //   cell: ({ row }) => {
+  //     const workHours = row.getValue("workHours") as number;
+  //     if (isNaN(workHours)) {
+  //       return <div className="ml-4">--:--:--</div>;
+  //     }
+  //     return <div className="ml-4">{workHours}</div>;
+  //   },
+  // },
+  // {
+  //   accessorKey: "branch",
+  //   header: "Branch",
+  //   cell: ({ row }) => {
+  //     return <div className="ml-4">{row.getValue("branch")}</div>;
+  //   },
+  // },
+  // {
+  //   accessorKey: "department",
+  //   header: "Department",
+  //   cell: ({ row }) => {
+  //     return <div className="ml-4">{row.getValue("department")}</div>;
+  //   },
+  // },
   {
     id: "actions",
     cell: ({ row }) => {
@@ -317,5 +304,10 @@ export function IndeterminateCheckbox({
       className={className + "cursor-pointer"}
       {...rest}
     />
+    // <Checkbox
+    //   ref={ref}
+    //   className={className + "cursor-pointer"}
+    //   {...rest}
+    // />
   );
 }

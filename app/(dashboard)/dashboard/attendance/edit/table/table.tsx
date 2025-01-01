@@ -8,7 +8,7 @@ import {
   Table as ReactTable,
   useReactTable,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   columnsEditAttendance,
   Filter,
@@ -61,6 +61,11 @@ export default function TableAttendancesList({
   const [globalFilter, setGlobalFilter] = useState("");
   const [date, setDate] = useState<Date>();
   const [find, setFind] = useState(false);
+  const [dataTabel, setDataTabel] = useState<ReactTable<Attendance>>();
+
+  useEffect(() => {
+    setDataTabel(table);
+  }, [table]);
 
   return (
     <div className="space-y-4">
@@ -138,7 +143,7 @@ export default function TableAttendancesList({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows.map((row) => {
+          {table?.getRowModel().rows?.map((row) => {
             return (
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => {
@@ -157,7 +162,8 @@ export default function TableAttendancesList({
         </TableBody>
         <TableFooter>
           <TableRow>
-            <td className="p-2">
+            {/* <div> */}
+            <td className="px-2">
               <IndeterminateCheckbox
                 {...{
                   checked: table.getIsAllPageRowsSelected(),
@@ -166,7 +172,10 @@ export default function TableAttendancesList({
                 }}
               />
             </td>
-            <td colSpan={20}>Page Rows ({table.getRowModel().rows.length})</td>
+            <td colSpan={20}>
+              Select Page Rows ({table.getRowModel().rows.length})
+            </td>
+            {/* </div> */}
           </TableRow>
         </TableFooter>
       </Table>

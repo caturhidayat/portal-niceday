@@ -3,6 +3,8 @@ import { Attendance } from "../today/columns";
 import TableEdit from "./TableEdit";
 import { Branches, Departments } from "../../employees/columns";
 import TableAttendancesList from "./table/table";
+import { Suspense } from "react";
+import Loading from "@/app/loading";
 
 async function getAttendance(): Promise<Attendance[]> {
   const response = await get("attendances");
@@ -28,7 +30,13 @@ export default async function Page() {
   return (
     <div>
       <h2 className="text-xl font-bold pb-2">Update Mutiple Attendance</h2>
-      <TableEdit data={attendance} branch={branches} departments={departments} />
+      <Suspense fallback={<Loading />}>
+        <TableEdit
+          data={attendance}
+          branch={branches}
+          departments={departments}
+        />
+      </Suspense>
     </div>
   );
 }
