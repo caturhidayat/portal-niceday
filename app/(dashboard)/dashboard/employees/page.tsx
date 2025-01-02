@@ -9,11 +9,11 @@ async function getEmployees(): Promise<User[]> {
   const response = await get("users", ["employees"]);
   return response as User[];
 }
-export async function getDepartments(): Promise<Departments[]> {
+async function getDepartments(): Promise<Departments[]> {
   const response = await get("departements");
   return response as Departments[];
 }
-export async function getBranches(): Promise<Branches[]> {
+async function getBranches(): Promise<Branches[]> {
   const response = await get("branches");
   return response as Branches[];
 }

@@ -6,9 +6,13 @@ import { getHeaders, post } from "@/lib/fetch-wrapper";
 import { revalidateTag } from "next/cache";
 
 export default async function createShiftGroup(formData: any) {
+    const headers = await getHeaders();
     const response = await fetch(`${API_URL}/shift-group`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", ...getHeaders() },
+        headers: { 
+            "Content-Type": "application/json", 
+            ...headers 
+        },
         body: JSON.stringify(formData),
     });
 

@@ -14,10 +14,11 @@ export async function getSession() {
 // Set the session cookie
 export async function setSession(response: Response) {
   const setSessionHeader = response.headers.get("Set-Cookie");
+  const cookieStore = await cookies();
   // console.log("setSessionHeader", setSessionHeader);
   if (setSessionHeader) {
     const token = setSessionHeader.split(";")[0].split("=")[1];
-    cookies().set({
+    cookieStore.set({
       name: SESSION_COOKIE,
       value: token,
       secure: true,

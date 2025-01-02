@@ -2,10 +2,10 @@ import { get } from "@/lib/fetch-wrapper";
 import CreateOfficeLocationModal from "./create-dept-modal";
 import { columns } from "./table/columns";
 import { DataTable } from "./table/data-table";
-import dynamic from "next/dynamic";
-const MapDisplay = dynamic(() => import("@/components/MapDisplay"), {
-    ssr: false,
-});
+// import dynamic from "next/dynamic";
+// const MapDisplay = dynamic(() => import("@/components/MapDisplay"), {
+//     ssr: false,
+// });
 
 export type OfficeLocation = {
     id: number;

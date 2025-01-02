@@ -60,7 +60,7 @@ export default function MapDisplay({
         );
         const toggleDraggable = useCallback(() => {
             setDraggable((d: boolean) => !d);
-        }, [setDraggable]);
+        }, []);
 
         return (
             <Marker
