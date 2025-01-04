@@ -73,7 +73,7 @@ export default async function login(
       };
     }
 
-    setSession(res);
+    await setSession(res);
 
     // Get Set-Cookie from response headers
     // const setSessionHeader = res.headers.get("Set-Cookie");

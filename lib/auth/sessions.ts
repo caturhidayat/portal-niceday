@@ -18,11 +18,11 @@ export async function setSession(response: Response) {
   // console.log("setSessionHeader", setSessionHeader);
   if (setSessionHeader) {
     const token = setSessionHeader.split(";")[0].split("=")[1];
-    cookieStore.set({
-      name: SESSION_COOKIE,
-      value: token,
-      secure: true,
+    cookieStore.set(SESSION_COOKIE, token, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
       expires: new Date(jwtDecode(token).exp! * 1000),
     });
   }

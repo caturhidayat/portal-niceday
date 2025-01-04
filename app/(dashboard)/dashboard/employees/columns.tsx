@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DropdownMenu, DropdownMenuLabel } from "@radix-ui/react-dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, ChevronsUpDown, MoreHorizontal } from "lucide-react";
 
 import { format } from "date-fns";
 import DialogEditEmployee from "./DialogEditEmployee";
@@ -77,7 +77,7 @@ export const columns: ColumnDef<User>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           NIK
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
