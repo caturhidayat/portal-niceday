@@ -18,8 +18,9 @@ export default function DialogEditEmployee({ employee }: { employee: User }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={"ghost"}>
+        <Button>
           <Edit className="mr-2 h-4 w-4" />
+          Edit
         </Button>
       </DialogTrigger>
       <DialogContent>

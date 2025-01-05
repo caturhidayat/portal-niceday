@@ -4,6 +4,7 @@ import Loading from "@/app/loading";
 import { Branches, columns, Departments, User } from "./columns";
 import { get } from "@/lib/fetch-wrapper";
 import DialogCreateEmployee from "./DialogCreateEmployee";
+import DialogEditEmployee from "./DialogEditEmployee";
 
 async function getEmployees(): Promise<User[]> {
   const response = await get("users", ["employees"]);
@@ -30,7 +31,8 @@ export default async function Page() {
 
   return (
     <div className="container mx-auto">
-      <div className="grid justify-end py-2">
+      <div className="flex justify-end py-2 gap-2">
+        <DialogEditEmployee employee={employees[0]} />
         <DialogCreateEmployee departements={departements} branches={branches} />
       </div>
       <Suspense fallback={<Loading />}>

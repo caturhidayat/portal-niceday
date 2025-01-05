@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +12,7 @@ import {
 import FormCreateEmployee from "./FormCreateEmployee";
 import { Branches, Departments } from "./columns";
 import { useState } from "react";
+import { UserRoundPlus } from "lucide-react";
 
 export default function DialogCreateEmployee({
   departements,
@@ -20,18 +21,25 @@ export default function DialogCreateEmployee({
   departements: Departments[];
   branches: Branches[];
 }) {
-    const [ isOpen, setIsOpen ] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>Create</Button>
+        <Button>
+          <UserRoundPlus className="mr-2 h-4 w-4" />
+          Create User
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create Employee</DialogTitle>
           <DialogDescription>Create new employee</DialogDescription>
         </DialogHeader>
-        <FormCreateEmployee departements={departements} branches={branches} setIsOpen={setIsOpen} />
+        <FormCreateEmployee
+          departements={departements}
+          branches={branches}
+          setIsOpen={setIsOpen}
+        />
       </DialogContent>
     </Dialog>
   );

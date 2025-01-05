@@ -192,6 +192,7 @@ const data = {
       title: "Employees",
       url: "#",
       icon: UsersRound,
+      // iconColor: "text-sky-500",
       items: [
         {
           title: "Employee List",
@@ -211,6 +212,7 @@ const data = {
       title: "Time Management",
       url: "#",
       icon: CalendarClock,
+      // iconColor: "text-orange-500",
       items: [
         // {
         //   title: "Attendance",
@@ -269,6 +271,7 @@ const data = {
       title: "Organization",
       url: "#",
       icon: Building,
+      // iconColor: "text-violet-500",
       items: [
         {
           title: "Organization",
@@ -300,6 +303,7 @@ const data = {
       title: "Settings",
       url: "#",
       icon: Settings2,
+      // iconColor: "text-amber-500",
       items: [
         {
           title: "Shift Daily",
