@@ -43,12 +43,12 @@ export const columnsLeaves: ColumnDef<TLeave>[] = [
       </div>
     ),
   },
-  {
-    accessorKey: "id",
-    header: "Leave ID",
-    cell: (info) => info.getValue(),
-    footer: (props) => props.column.id,
-  },
+  // {
+  //   accessorKey: "id",
+  //   header: "Leave ID",
+  //   cell: (info) => info.getValue(),
+  //   footer: (props) => props.column.id,
+  // },
   // {
   //   accessorKey: "userId",
   //   header: "User ID",

@@ -1,7 +1,7 @@
 import { get } from "@/lib/fetch-wrapper";
 import { Attendance } from "../today/columns";
 import TableEdit from "./TableEdit";
-import { Branches, Departments } from "../../employees/columns";
+import { Branches, Departments } from "../../employees/table/columns";
 import TableAttendancesList from "./table/table";
 import { Suspense } from "react";
 import Loading from "@/app/loading";

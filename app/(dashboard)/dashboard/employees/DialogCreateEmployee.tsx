@@ -10,15 +10,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import FormCreateEmployee from "./FormCreateEmployee";
-import { Branches, Departments } from "./columns";
+import { Branches, Departments } from "./table/columns";
 import { useState } from "react";
 import { UserRoundPlus } from "lucide-react";
 
 export default function DialogCreateEmployee({
-  departements,
+  departments,
   branches,
 }: {
-  departements: Departments[];
+  departments: Departments[];
   branches: Branches[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +36,7 @@ export default function DialogCreateEmployee({
           <DialogDescription>Create new employee</DialogDescription>
         </DialogHeader>
         <FormCreateEmployee
-          departements={departements}
+          departments={departments}
           branches={branches}
           setIsOpen={setIsOpen}
         />

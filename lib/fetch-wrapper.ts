@@ -1,3 +1,5 @@
+// 'use server';
+
 import { cookies } from "next/headers";
 import { API_URL } from "./constant";
 import { getErrorMessage } from "./error";
@@ -36,12 +38,21 @@ export const get = async <T>(path: string, tags?: string[]) => {
   return res.json() as T;
 };
 
-export const put = async (path: string, data: FormData) => {
+export const put = async (path: string, id: string, data: FormData) => {
   const token = await getHeaders();
-  const res = await fetch(`${API_URL}/${path}`, {
-    method: "PUT",
+  const res = await fetch(`${API_URL}/${path}/${id}`, {
+    method: "PATCH",
     headers: { "Content-Type": "application/json", ...token },
     body: JSON.stringify(Object.fromEntries(data)),
+  });
+  return res.json();
+};
+
+export const del = async (path: string, id: string) => {
+  const token = await getHeaders();
+  const res = await fetch(`${API_URL}/${path}/${id}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", ...token },
   });
   return res.json();
 };

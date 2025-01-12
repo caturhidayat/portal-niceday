@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidateTag } from "next/cache";
-import { get, put } from "@/lib/fetch-wrapper";
+import { del, get, put } from "@/lib/fetch-wrapper";
 import { Attendance } from "../today/columns";
 
 type AttendanceData = {
@@ -27,11 +27,13 @@ export interface ActionResponseAttendance {
   inputs?: AttendanceFormData;
 }
 
+// Get all attendance
 export async function getAttendance(): Promise<Attendance[]> {
   const response = await get("attendances", ["attendances"]);
   return response as Attendance[];
 }
 
+// Update attendance
 export async function updateAttendance(
   attendanceId: string,
   data: AttendanceFormData
@@ -42,7 +44,7 @@ export async function updateAttendance(
     formData.append("checkInTime", data.checkInTime);
     formData.append("checkOutTime", data.checkOutTime);
 
-    await put(`attendances/${attendanceId}`, formData);
+    await put(`attendances`, attendanceId, formData);
 
     // Revalidate the attendance list to show updated data
     revalidateTag("attendances");
@@ -52,4 +54,11 @@ export async function updateAttendance(
     console.error("Error updating attendance:", error);
     throw error;
   }
+}
+
+// Delete attendance
+export async function deleteAttendance(attendanceId: string) {
+  console.log("delete attendance id : ", attendanceId);
+  await del("attendances", attendanceId);
+  revalidateTag("attendances");
 }

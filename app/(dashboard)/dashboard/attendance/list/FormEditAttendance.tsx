@@ -29,7 +29,6 @@ const initialState = {
 
 export default function FormEditAttendance({
   attendance,
-  setOpen,
 }: {
   attendance: {
     id: string;
@@ -37,7 +36,6 @@ export default function FormEditAttendance({
     checkInTime: string;
     checkOutTime: string;
   };
-  setOpen: (open: boolean) => void;
 }) {
   // const [state, action, isPending] = useActionState(
   //   updateAttendance,
@@ -45,9 +43,15 @@ export default function FormEditAttendance({
   // );
 
   console.log("attendance : ", attendance);
-  const checkInTimeFormatted = format(new Date(Number(attendance.checkInTime)), "HH:mm");
-  const checkOutTimeFormatted = format(new Date(Number(attendance.checkOutTime)), "HH:mm");
-  
+  const checkInTimeFormatted = format(
+    new Date(Number(attendance.checkInTime)),
+    "HH:mm"
+  );
+  const checkOutTimeFormatted = format(
+    new Date(Number(attendance.checkOutTime)),
+    "HH:mm"
+  );
+
   console.log("check in time formatted: ", checkInTimeFormatted);
   console.log("check out time formatted: ", checkOutTimeFormatted);
 

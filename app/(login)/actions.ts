@@ -74,7 +74,7 @@ export default async function login(
     }
 
     await setSession(res);
-
+    await new Promise((resolve) => setTimeout(resolve, 800))
     // Get Set-Cookie from response headers
     // const setSessionHeader = res.headers.get("Set-Cookie");
     // console.log("setSessionHeader", setSessionHeader);

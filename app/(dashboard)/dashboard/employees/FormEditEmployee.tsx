@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,7 +12,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Branches, Departments, User } from "./columns";
+import { Branches, Departments, User } from "./table/columns";
+import { useActionState, useState } from "react";
+
+import { updateEmployee } from "./actions/actions";
+import SelectInput from "./SelectInput";
+
+const initialState = {
+  success: false,
+  message: "",
+  inputs: {
+    name: "",
+    username: "",
+    departmentId: "",
+    branchId: "",
+  },
+};
 
 export default function FormEditEmployee({
   employee,
@@ -23,10 +38,54 @@ export default function FormEditEmployee({
   departments: Departments[];
   branches: Branches[];
 }) {
+  // const router = useRouter();
+  // const [loading, setLoading] = useState(false);
+
+  // async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  //   e.preventDefault();
+  //   setLoading(true);
+
+  //   try {
+  //     const formData = new FormData(e.currentTarget);
+  //     const response = await fetch(`/api/employees/${employee.id}`, {
+  //       method: "PUT",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         name: formData.get("name"),
+  //         username: formData.get("username"),
+  //         departmentId: Number(formData.get("departmentId")),
+  //         branchId: Number(formData.get("branchId")),
+  //       }),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error("Failed to update employee");
+  //     }
+
+  //     router.refresh();
+  //   } catch (error) {
+  //     console.error("Error updating employee:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
+
+  const [state, action, isPending] = useActionState(
+    updateEmployee,
+    initialState
+  );
+
+  console.log("Employee ID =======> : ", employee?.id);
+
   return (
     <div>
       <div>
-        <form className="space-y-4">
+        <form className="space-y-4" action={action}>
+          <div>
+            <Input type="hidden" name="id" defaultValue={employee?.id} />
+          </div>
           <div>
             <Label>Name</Label>
             <Input
@@ -35,12 +94,8 @@ export default function FormEditEmployee({
               placeholder="Enter Name"
               defaultValue={employee.name}
             />
-            {/* {state?.errors?.name && (
-                  <span className="text-red-500 text-xs">
-                    {state?.errors?.name}
-                  </span>
-                )} */}
           </div>
+          {/* {state.errors && <p>{state.errors?.name}</p>} */}
           <div>
             <Label>Username</Label>
             <Input
@@ -49,12 +104,8 @@ export default function FormEditEmployee({
               placeholder="Enter Username"
               defaultValue={employee.username}
             />
-            {/* {state?.errors?.username && (
-                  <span className="text-red-500 text-xs">
-                    {state?.errors?.username}
-                  </span>
-                )} */}
           </div>
+          {/* {state.errors && <p>{state.errors?.username}</p>} */}
           <div>
             <Label>Department</Label>
             <Select
@@ -67,23 +118,23 @@ export default function FormEditEmployee({
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Department</SelectLabel>
-                  {departments.map((department) => (
-                    <SelectItem
-                      key={department.id}
-                      value={department.id.toString()}
-                    >
-                      {department.name}
-                    </SelectItem>
-                  ))}
+                  {departments ? (
+                    departments.map((department) => (
+                      <SelectItem
+                        key={department.id}
+                        value={department.id.toString()}
+                      >
+                        {department.name}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="">No departments available</SelectItem>
+                  )}
                 </SelectGroup>
               </SelectContent>
             </Select>
-            {/* {state?.errors?.departmentId && (
-                  <span className="text-red-500 text-xs">
-                    {state?.errors?.departmentId}
-                  </span>
-                )} */}
           </div>
+          {/* {state.errors && <p>{state.errors?.departmentId}</p>} */}
           <div>
             <Label>Branch</Label>
             <Select
@@ -96,21 +147,23 @@ export default function FormEditEmployee({
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Branch</SelectLabel>
-                  {branches.map((branch) => (
-                    <SelectItem key={branch.id} value={branch.id.toString()}>
-                      {branch.name}
-                    </SelectItem>
-                  ))}
+                  {branches ? (
+                    branches.map((branch) => (
+                      <SelectItem key={branch.id} value={branch.id.toString()}>
+                        {branch.name}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="">No branches available</SelectItem>
+                  )}
                 </SelectGroup>
               </SelectContent>
             </Select>
-            {/* {state?.errors?.branchId && (
-                  <span className="text-red-500 text-xs">
-                    {state?.errors?.branchId}
-                  </span>
-                )} */}
           </div>
-          <Button type="submit">Submit</Button>
+          {/* {state.errors && <p>{state.errors?.branchId}</p>} */}
+          <Button type="submit" disabled={isPending}>
+            {isPending ? "Updating..." : "Update Employee"}
+          </Button>
         </form>
       </div>
     </div>

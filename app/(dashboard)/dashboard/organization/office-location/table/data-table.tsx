@@ -117,6 +117,20 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  if (table.getRowModel().rows.length === 0) {
+    return (
+      <div>
+        <div className="flex justify-center">
+          <Alert className="w-1/3">
+            <SearchX className="h-4 w-4" />
+            <AlertTitle>No results.</AlertTitle>
+            <AlertDescription>No Office Locations found.</AlertDescription>
+          </Alert>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="rounded-md border">
       <Table>
@@ -139,32 +153,15 @@ export function DataTable<TData, TValue>({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                <div className="flex justify-center">
-                  <Alert className="w-1/3" variant={"destructive"}>
-                    <SearchX className="h-4 w-4" />
-                    <AlertTitle>No results.</AlertTitle>
-                    <AlertDescription>No Departements found.</AlertDescription>
-                  </Alert>
-                </div>
-              </TableCell>
+          {table.getRowModel().rows.map((row) => (
+            <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+              {row.getVisibleCells().map((cell) => (
+                <TableCell key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
+              ))}
             </TableRow>
-          )}
+          ))}
         </TableBody>
       </Table>
     </div>

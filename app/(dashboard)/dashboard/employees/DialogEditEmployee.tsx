@@ -1,7 +1,4 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
-import { User } from "./columns";
 
 import {
   Dialog,
@@ -13,14 +10,22 @@ import {
 } from "@/components/ui/dialog";
 import { Edit } from "lucide-react";
 import FormEditEmployee from "./FormEditEmployee";
+import { Branches, Departments, User } from "./table/columns";
 
-export default function DialogEditEmployee({ employee }: { employee: User }) {
+export default function DialogEditEmployee({
+  employee,
+  departments,
+  branches,
+}: {
+  employee: User;
+  departments: Departments[];
+  branches: Branches[];
+}) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        <Button variant={"ghost"}>
           <Edit className="mr-2 h-4 w-4" />
-          Edit
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -29,11 +34,11 @@ export default function DialogEditEmployee({ employee }: { employee: User }) {
           <DialogDescription>Edit employee details</DialogDescription>
         </DialogHeader>
         <p>Content</p>
-        {/* <FormEditEmployee
+        <FormEditEmployee
           employee={employee}
           departments={departments}
           branches={branches}
-        /> */}
+        />
       </DialogContent>
     </Dialog>
   );

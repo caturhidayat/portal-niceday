@@ -4,9 +4,14 @@ import * as React from "react";
 import {
   Building,
   CalendarClock,
+  CircleArrowOutUpRight,
   FileUser,
+  Frame,
   GalleryVerticalEnd,
+  Map,
+  PieChart,
   Settings2,
+  Sheet,
   UsersRound,
 } from "lucide-react";
 
@@ -20,13 +25,14 @@ import {
 import { SidebarSwitch } from "./SIdebarSwitch";
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
+import { NavReports } from "./nav-project";
 
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "",
+    email: "",
+    avatar: "",
   },
   teams: [
     {
@@ -218,10 +224,10 @@ const data = {
         //   title: "Attendance",
         //   url: "/dashboard/attendance",
         // },
-        {
-          title: "Attendance Entry Form",
-          url: "/dashboard/attendance/entry-form",
-        },
+        // {
+        //   title: "Attendance Entry Form",
+        //   url: "/dashboard/attendance/entry-form",
+        // },
         {
           title: "Attendance List",
           url: "/dashboard/attendance/list",
@@ -245,6 +251,22 @@ const data = {
         },
 
         {
+          title: "Employee Shifts",
+          url: "/dashboard/attendance/shifts",
+        },
+        {
+          title: "Employee Group Shifts",
+          url: "/dashboard/attendance/group-shifts",
+        },
+      ],
+    },
+    {
+      title: "Leave",
+      url: "#",
+      icon: CircleArrowOutUpRight,
+      // iconColor: "text-rose-500",
+      items: [
+        {
           title: "Leave List",
           url: "/dashboard/leaves",
         },
@@ -256,16 +278,7 @@ const data = {
           title: "Leave Cancellation",
           url: "/dashboard/leaves/cancellation",
         },
-
-        {
-          title: "Employee Shifts",
-          url: "/dashboard/attendance/shifts",
-        },
-        {
-          title: "Employee Group Shifts",
-          url: "/dashboard/attendance/group-shifts",
-        },
-      ],
+      ]
     },
     {
       title: "Organization",
@@ -273,25 +286,25 @@ const data = {
       icon: Building,
       // iconColor: "text-violet-500",
       items: [
-        {
-          title: "Organization",
-          url: "/dashboard/organization",
-        },
-        {
-          title: "Organization Structure",
-          url: "/dashboard/organization/structure",
-        },
-        {
-          title: "Organization Shifts",
-          url: "/dashboard/organization/shifts",
-        },
+        // {
+        //   title: "Organization",
+        //   url: "/dashboard/organization",
+        // },
+        // {
+        //   title: "Organization Structure",
+        //   url: "/dashboard/organization/structure",
+        // },
+        // {
+        //   title: "Organization Shifts",
+        //   url: "/dashboard/organization/shifts",
+        // },
         {
           title: "Branches",
           url: "/dashboard/organization/branches",
         },
         {
           title: "Departments",
-          url: "/dashboard/organization/departements",
+          url: "/dashboard/organization/departments",
         },
         {
           title: "Office Location",
@@ -320,23 +333,13 @@ const data = {
       ],
     },
   ],
-  //   projects: [
-  //     {
-  //       name: "Design Engineering",
-  //       url: "#",
-  //       icon: Frame,
-  //     },
-  //     {
-  //       name: "Sales & Marketing",
-  //       url: "#",
-  //       icon: PieChart,
-  //     },
-  //     {
-  //       name: "Travel",
-  //       url: "#",
-  //       icon: Map,
-  //     },
-  //   ],
+  reports: [
+    {
+      name: "Attendance Report",
+      url: "/dashboard/reports/attendance",
+      icon: Sheet,
+    },
+  ],
 };
 
 export function AppSideBar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -347,6 +350,7 @@ export function AppSideBar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
+        <NavReports reports={data.reports} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

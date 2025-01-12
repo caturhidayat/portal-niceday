@@ -24,7 +24,7 @@ import { Users, X } from "lucide-react";
 import { DataTableC } from "../today/data-table";
 import { columnsEditAttendance } from "./table/columns";
 import { Attendance } from "../today/columns";
-import { Branches, Departments } from "../../employees/columns";
+import { Branches, Departments } from "../../employees/table/columns";
 import { useState } from "react";
 import TableAttendancesList from "./table/table";
 import { Badge } from "@/components/ui/badge";

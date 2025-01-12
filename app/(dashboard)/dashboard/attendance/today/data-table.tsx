@@ -37,6 +37,7 @@ import {
   RankingInfo,
   rankItem,
 } from "@tanstack/match-sorter-utils";
+import { Button } from "@/components/ui/button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -173,6 +174,9 @@ export function DataTableC<TData, TValue>({
                     </TableHead>
                   );
                 })}
+                <TableHead className="bg-accent">
+                  <Button variant={"ghost"}>Action</Button>
+                </TableHead>
               </TableRow>
             ))}
           </TableHeader>

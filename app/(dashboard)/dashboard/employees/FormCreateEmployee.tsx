@@ -14,7 +14,7 @@ import {
   SelectTrigger,
 } from "@/components/ui/select";
 import { SelectValue } from "@radix-ui/react-select";
-import { Branches, Departments } from "./columns";
+import { Branches, Departments } from "./table/columns";
 
 const initialState = {
   success: false,
@@ -29,11 +29,11 @@ const initialState = {
 };
 
 export default function FormCreateEmployee({
-  departements,
+  departments,
   branches,
   setIsOpen,
 }: {
-  departements: Departments[];
+  departments: Departments[];
   branches: Branches[];
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
@@ -104,9 +104,9 @@ export default function FormCreateEmployee({
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Department</SelectLabel>
-                  {departements.map((departement) => (
-                    <SelectItem key={departement.id} value={departement.id.toString()}>
-                      {departement.name}
+                  {departments.map((department) => (
+                    <SelectItem key={department.id} value={department.id.toString()}>
+                      {department.name}
                     </SelectItem>
                   ))}
                 </SelectGroup>

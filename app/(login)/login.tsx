@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import login from "./actions";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ShieldX } from "lucide-react";
+import { LoaderIcon, ShieldX } from "lucide-react";
 import { toast } from "sonner";
 import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -51,7 +51,7 @@ export default function Login() {
       <div className="flex items-center justify-center col-span-2 py-12">
         <div className="mx-auto grid w-[300px] gap-6">
           <div className="grid gap-2 text-center ">
-            <h1 className="text-3xl font-bold">Login</h1>
+            <h1 className="text-3xl font-bold">Sign In</h1>
             <p className="text-balance text-muted-foreground">
               Enter your Username below to login to your account
             </p>
@@ -85,7 +85,16 @@ export default function Login() {
                   <span id="password-error">{state.errors?.password[0]}</span>
                 )}
               </div>
-              <Button className="w-full">Login</Button>
+              <Button className="w-full" disabled={isPending}>
+                {isPending ? (
+                  <>
+                    <LoaderIcon className="h-4 w-4 animate-spin" />
+                    Signing In
+                  </>
+                ) : (
+                  "Sign In"
+                )}
+              </Button>
             </div>
             {state.errors && (
               <Alert variant={"destructive"} className="mt-4">

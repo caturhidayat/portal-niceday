@@ -110,9 +110,9 @@ export default function Page() {
   });
 
   return (
-    <div className="grid gap-4 p-4">
+    <div className="grid gap-4">
       <div>
-        <h1 className="py-4 font-bold text-xl">Leaves</h1>
+        <h1 className="font-bold text-xl">Leaves</h1>
       </div>
       <div>
         <TableLeavesList table={table} refreshData={() => {}} />

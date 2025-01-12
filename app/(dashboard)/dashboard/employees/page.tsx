@@ -1,17 +1,16 @@
 import { Suspense } from "react";
-import { DataTableC } from "./data-table";
+import { DataTableC } from "./table/data-table";
 import Loading from "@/app/loading";
-import { Branches, columns, Departments, User } from "./columns";
+import { Branches, columns, Departments, User } from "./table/columns";
 import { get } from "@/lib/fetch-wrapper";
 import DialogCreateEmployee from "./DialogCreateEmployee";
-import DialogEditEmployee from "./DialogEditEmployee";
 
 async function getEmployees(): Promise<User[]> {
-  const response = await get("users", ["employees"]);
+  const response = await get("users/employees", ["employees"]);
   return response as User[];
 }
 async function getDepartments(): Promise<Departments[]> {
-  const response = await get("departements");
+  const response = await get("departments");
   return response as Departments[];
 }
 async function getBranches(): Promise<Branches[]> {
@@ -21,22 +20,29 @@ async function getBranches(): Promise<Branches[]> {
 
 export default async function Page() {
   const employees = await getEmployees();
-  const [departements, branches] = await Promise.all([
+  const [departments, branches] = await Promise.all([
     getDepartments(),
     getBranches(),
   ]);
 
-  console.log("branches", branches);
-  console.log("departments", departements);
+  // console.log("branches", branches);
+  // console.log("departments", departments);
 
   return (
     <div className="container mx-auto">
+      <div>
+        <span className="font-bold text-xl">Employee List</span>
+      </div>
       <div className="flex justify-end py-2 gap-2">
-        <DialogEditEmployee employee={employees[0]} />
-        <DialogCreateEmployee departements={departements} branches={branches} />
+        <DialogCreateEmployee departments={departments} branches={branches} />
       </div>
       <Suspense fallback={<Loading />}>
-        <DataTableC columns={columns} data={employees} />
+        <DataTableC
+          columns={columns}
+          data={employees}
+          branches={branches}
+          departments={departments}
+        />
       </Suspense>
     </div>
   );

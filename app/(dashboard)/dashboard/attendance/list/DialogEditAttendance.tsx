@@ -1,6 +1,5 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
+
 import {
   Dialog,
   DialogContent,
@@ -9,11 +8,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Edit } from "lucide-react";
 import { Attendance } from "../today/columns";
-import { format } from "date-fns";
-import { Edit, Edit2 } from "lucide-react";
+import FormEditAttendance from "./FormEditAttendance";
 
 export default function DialogEditAttendance({
   attendance,
@@ -23,26 +20,17 @@ export default function DialogEditAttendance({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={"ghost"} className="w-full justify-start">
+        <Button variant={"ghost"}>
           <Edit className="mr-2 h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit Attendance</DialogTitle>
-          <DialogDescription>Edit attendance details</DialogDescription>
+          <DialogTitle>Edit Employee</DialogTitle>
+          <DialogDescription>Edit employee details</DialogDescription>
         </DialogHeader>
-        <form className="space-y-4">
-          <div className="space-y-2">
-            <Label>Check-in Time</Label>
-            <Input type="time" defaultValue={format(new Date(Number(attendance.checkInTime)), "HH:mm")} />
-          </div>
-          <div className="space-y-2">
-            <Label>Check-out Time</Label>
-            <Input type="time" defaultValue={format(new Date(Number(attendance.checkOutTime)), "HH:mm")} />
-          </div>
-          <Button type="submit">Save changes</Button>
-        </form>
+        <p>Content</p>
+        <FormEditAttendance attendance={attendance} />
       </DialogContent>
     </Dialog>
   );
