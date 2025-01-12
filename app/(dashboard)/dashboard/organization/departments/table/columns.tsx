@@ -2,9 +2,9 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { Departements } from "../page";
+import { Departments } from "../page";
 
-export const columns: ColumnDef<Departements>[] = [
+export const columns: ColumnDef<Departments>[] = [
     {
         accessorKey: "name",
         header: "Name",
