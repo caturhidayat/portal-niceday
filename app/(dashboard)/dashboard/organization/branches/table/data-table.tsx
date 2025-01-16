@@ -1,5 +1,6 @@
 "use client";
 
+import { DataTablePagination } from "@/components/table/data-table-pagination";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Table,
@@ -172,6 +173,7 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
+      <DataTablePagination table={table} />
     </div>
   );
 }

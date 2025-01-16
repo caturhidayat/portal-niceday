@@ -21,7 +21,7 @@ async function getBranches(): Promise<Branch[]> {
 export default async function Page() {
   const branches = await getBranches();
 
-  console.log("branches", branches);
+  console.log("branches = ", branches);
   return (
     <div className="grid gap-4">
       <div className="flex">

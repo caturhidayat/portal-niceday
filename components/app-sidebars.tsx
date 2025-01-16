@@ -208,6 +208,10 @@ const data = {
           title: "Employee Information",
           url: "/dashboard/employees/information",
         },
+        {
+          title: "Employee Shift",
+          url: "/dashboard/employees/shift",
+        },
         // {
         //   title: "Employee Report",
         //   url: "/dashboard/employees/report",
