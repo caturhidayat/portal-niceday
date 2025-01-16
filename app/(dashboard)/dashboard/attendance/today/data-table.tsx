@@ -26,7 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Suspense, useState } from "react";
+import { Suspense, useRef, useState } from "react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { DataTablePagination } from "@/components/table/data-table-pagination";
@@ -38,13 +38,12 @@ import {
   rankItem,
 } from "@tanstack/match-sorter-utils";
 import { Button } from "@/components/ui/button";
+import { writeFileXLSX, utils } from "xlsx";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
-
-
 
 declare module "@tanstack/react-table" {
   //add fuzzy filter to the filterFns
@@ -90,43 +89,15 @@ export function DataTableC<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const tbl = useRef<HTMLTableElement>(null);
+
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
 
-
-  // const table = useReactTable({
-  //   data,
-  //   columns,
-  //   state: {
-  //     sorting,
-  //     rowSelection,
-  //     columnFilters,
-  //   },
-  //   enableRowSelection: true,
-  //   // initialState: {
-  //   //   columnVisibility: {
-  //   //     branch: false,
-  //   //     department: false,
-  //   //     shiftName: false,
-  //   //     createdAt: false,
-  //   //   },
-  //   // },
-  //   onRowSelectionChange: setRowSelection,
-  //   onSortingChange: setSorting,
-  //   onColumnFiltersChange: setColumnFilters,
-  //   onColumnVisibilityChange: setColumnVisibility,
-  //   getCoreRowModel: getCoreRowModel(),
-  //   getFilteredRowModel: getFilteredRowModel(),
-  //   getPaginationRowModel: getPaginationRowModel(),
-  //   getSortedRowModel: getSortedRowModel(),
-  //   getFacetedRowModel: getFacetedRowModel(),
-  //   getFacetedUniqueValues: getFacetedUniqueValues(),
-  // });
-
-  // Define table 
+  // Define table
   const table = useReactTable({
     data,
     columns,
@@ -135,7 +106,7 @@ export function DataTableC<TData, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
-      globalFilter
+      globalFilter,
     },
     filterFns: {
       fuzzy: fuzzyFilter,
@@ -158,7 +129,7 @@ export function DataTableC<TData, TValue>({
     <div className="space-y-4">
       <DataTableToolbar table={table} />
       <div className="rounded-md border">
-        <Table>
+        <Table ref={tbl}>
           <TableHeader className="bg-accent">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -214,6 +185,17 @@ export function DataTableC<TData, TValue>({
             )}
           </TableBody>
         </Table>
+        {/* <Button
+        className="mt-2 flex justify-end gap-2"
+          onClick={() => {
+            // const wb = utils.table_to_book(tbl.current);
+            const wb = utils.table_to_book(table);
+
+            writeFileXLSX(wb, "Attendance.xlsx");
+          }}
+        >
+          Export To Excel
+        </Button> */}
         <DataTablePagination table={table} />
       </div>
     </div>
