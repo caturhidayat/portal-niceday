@@ -29,32 +29,32 @@ export type Shift = {
 };
 
 export const columns: ColumnDef<Shift>[] = [
-    {
-        id: "select",
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) =>
-                    table.toggleAllPageRowsSelected(!!value)
-                }
-                aria-label="Select all"
-                className="translate-y-[2px]"
-            />
-        ),
-        cell: ({ row }) => (
-            <Checkbox
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
-                className="translate-y-[2px]"
-            />
-        ),
-        enableSorting: false,
-        enableHiding: false,
-    },
+    // {
+    //     id: "select",
+    //     header: ({ table }) => (
+    //         <Checkbox
+    //             checked={
+    //                 table.getIsAllPageRowsSelected() ||
+    //                 (table.getIsSomePageRowsSelected() && "indeterminate")
+    //             }
+    //             onCheckedChange={(value) =>
+    //                 table.toggleAllPageRowsSelected(!!value)
+    //             }
+    //             aria-label="Select all"
+    //             className="translate-y-[2px]"
+    //         />
+    //     ),
+    //     cell: ({ row }) => (
+    //         <Checkbox
+    //             checked={row.getIsSelected()}
+    //             onCheckedChange={(value) => row.toggleSelected(!!value)}
+    //             aria-label="Select row"
+    //             className="translate-y-[2px]"
+    //         />
+    //     ),
+    //     enableSorting: false,
+    //     enableHiding: false,
+    // },
     {
         accessorKey: "name",
         header: ({ column }) => (
@@ -122,7 +122,7 @@ export const columns: ColumnDef<Shift>[] = [
                 return <div>Invalid date</div>;
             }
 
-            const date = format(new Date(parsedDate), "dd/MM/yyyy HH:mm:ss");
+            const date = format(new Date(parsedDate), "dd/MM/yyyy");
             return <div className="ml-4">{date}</div>;
         },
     },
@@ -136,15 +136,15 @@ export const columns: ColumnDef<Shift>[] = [
             const parsedDate = parseInt(updatedAt as string);
 
             if (isNaN(parsedDate)) {
-                return <div>Invalid date</div>;
+                return <div className="ml-4">-</div>;
             }
 
-            const date = format(new Date(parsedDate), "dd/MM/yyyy HH:mm:ss");
+            const date = format(new Date(parsedDate), "dd/MM/yyyy");
             return <div className="ml-4">{date}</div>;
         },
     },
-    {
-        id: "actions",
-        cell: ({ row }) => <DataTableRowActions row={row} />,
-    },
+    // {
+    //     id: "actions",
+    //     cell: ({ row }) => <DataTableRowActions row={row} />,
+    // },
 ];

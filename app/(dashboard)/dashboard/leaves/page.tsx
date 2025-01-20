@@ -73,8 +73,8 @@ export default function Page() {
 
   useEffect(() => {
     async function getData() {
-      const leaves = await getLeaves();
-      setData(leaves);
+      // const leaves = await getLeaves();
+      // setData(leaves);
     }
 
     getData();

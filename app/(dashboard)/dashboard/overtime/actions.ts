@@ -1,6 +1,6 @@
 "use server";
 
-import { put } from "@/lib/fetch-wrapper";
+import { put, get } from "@/lib/fetch-wrapper";
 import { revalidateTag } from "next/cache";
 
 export interface OvertimeFormData {
@@ -34,6 +34,17 @@ export interface ActionResponseOvertime {
   inputs?: OvertimeFormData;
 }
 
+export interface AttendanceData {
+  id: string;
+  userId: string;
+  attendanceDate: number;
+  clockIn: string;
+  clockOut: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export async function approveOvertime(id: string) {
   const status = OvertimeStatus.COMPLETED;
   const formData = new FormData();
@@ -56,6 +67,28 @@ export async function approveOvertime(id: string) {
     return {
       success: false,
       message: "Failed to approve overtime",
+    };
+  }
+}
+
+export async function getAttendanceData(employeeIds: string[], date: Date) {
+  try {
+    const timestamp = date.getTime();
+    const ids = employeeIds.join(',');
+    
+    const data = await get<AttendanceData[]>(`attendances?ids=${ids}&date=${timestamp}`);
+    
+    return {
+      success: true,
+      data,
+      message: 'Attendance data fetched successfully'
+    };
+  } catch (error) {
+    console.error('Error fetching attendance:', error);
+    return {
+      success: false,
+      data: [],
+      message: error instanceof Error ? error.message : 'Failed to fetch attendance data'
     };
   }
 }

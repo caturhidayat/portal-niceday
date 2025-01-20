@@ -8,11 +8,6 @@ import { format } from "date-fns";
 import { DataTableColumnHeader } from "@/components/table/data-table-column-header";
 import { DataTableRowActions } from "@/components/table/data-table-row-action";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-
-
-
 export type ShiftGroup = {
     id: string;
     name: string;
@@ -76,7 +71,7 @@ export const columns: ColumnDef<ShiftGroup>[] = [
                 return <div>Invalid date</div>;
             }
 
-            const date = format(new Date(parsedDate), "dd/MM/yyyy HH:mm:ss");
+            const date = format(new Date(parsedDate), "dd/MM/yyyy");
             return <div className="ml-4">{date}</div>;
         },
     },
@@ -90,15 +85,15 @@ export const columns: ColumnDef<ShiftGroup>[] = [
             const parsedDate = parseInt(updatedAt as string);
 
             if (isNaN(parsedDate)) {
-                return <div>Invalid date</div>;
+                return <div>-</div>;
             }
 
-            const date = format(new Date(parsedDate), "dd/MM/yyyy HH:mm:ss");
+            const date = format(new Date(parsedDate), "dd/MM/yyyy");
             return <div className="ml-4">{date}</div>;
         },
     },
-    {
-        id: "actions",
-        cell: ({ row }) => <DataTableRowActions row={row} />,
-    },
+    // {
+    //     id: "actions",
+    //     cell: ({ row }) => <DataTableRowActions row={row} />,
+    // },
 ];

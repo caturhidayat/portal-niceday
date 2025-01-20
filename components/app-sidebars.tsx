@@ -331,9 +331,13 @@ const data = {
           url: "/dashboard/setting/shift-group",
         },
         {
-          title: "Overtime Reason",
-          url: "/dashboard/setting/overtime-reason",
+          title: "Shift Employee",
+          url: "/dashboard/setting/shift-employee",
         },
+        // {
+        //   title: "Overtime Reason",
+        //   url: "/dashboard/setting/overtime-reason",
+        // },
       ],
     },
   ],

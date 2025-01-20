@@ -30,13 +30,14 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { DataTablePagination } from "./data-table-pagination";
+
 import { DataTableToolbar } from "./data-table-toolbar";
 import {
   compareItems,
   RankingInfo,
   rankItem,
 } from "@tanstack/match-sorter-utils";
+import { DataTablePagination } from "@/components/table/data-table-pagination";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -47,9 +48,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "../ui/alert-dialog";
-import { deleteShiftGroup } from "@/app/(dashboard)/dashboard/setting/shift-group/actions";
+} from "@/components/ui/alert-dialog";
 import { Trash2 } from "lucide-react";
+import { deleteShiftGroup } from "../actions";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -179,6 +180,11 @@ export function DataTableC<TData extends { id: string }, TValue>({
                     ))}
 
                     <TableCell className="p-0 px-2">
+                      {/* <DialogEditEmployee
+                        employee={row.original}
+                        departments={departments}
+                        branches={branches}
+                      /> */}
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button variant="ghost">
@@ -198,7 +204,7 @@ export function DataTableC<TData extends { id: string }, TValue>({
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={async () => {
-                                  // await deleteAttendance(row.original.id);
+                                  await deleteShiftGroup(row.original.id);
                                   table.resetRowSelection();
                                 }}
                               >

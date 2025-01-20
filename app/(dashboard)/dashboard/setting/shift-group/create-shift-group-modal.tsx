@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function CreateShiftGroupModal() {
   return (
@@ -20,12 +21,14 @@ export default function CreateShiftGroupModal() {
         <DialogTrigger asChild>
           <Button>Create Shift Group</Button>
         </DialogTrigger>
-        <DialogContent className="h-3/6">
+        <DialogContent className="max-w-[600px]">
           <DialogHeader>
             <DialogTitle>Create Shift Group</DialogTitle>
             <DialogDescription>Create new shift group</DialogDescription>
           </DialogHeader>
-          <FormCreateShiftGroup />
+          <ScrollArea className="flex-1 overflow-y-auto pr-4">
+            <FormCreateShiftGroup />
+          </ScrollArea>
         </DialogContent>
       </Dialog>
     </div>
