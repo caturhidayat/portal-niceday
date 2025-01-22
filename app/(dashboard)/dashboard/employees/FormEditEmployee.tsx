@@ -27,6 +27,7 @@ const initialState = {
     username: "",
     departmentId: "",
     branchId: "",
+    vendorId: "",
   },
 };
 
@@ -181,11 +182,11 @@ export default function FormEditEmployee({
                 </SelectGroup>
               </SelectContent>
             </Select>
-            {state?.errors?.vendorId && (
+            {/* {state?.errors?.vendorId && (
               <span className="text-red-500 text-xs">
                 {state?.errors?.vendorId}
               </span>
-            )}
+            )} */}
           </div>
           <Button type="submit" disabled={isPending}>
             {isPending ? "Updating..." : "Update Employee"}
