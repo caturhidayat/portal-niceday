@@ -17,6 +17,7 @@ import { useActionState, useState } from "react";
 
 import { updateEmployee } from "./actions/actions";
 import SelectInput from "./SelectInput";
+import { Vendor } from "../organization/vendor/table/columns";
 
 const initialState = {
   success: false,
@@ -33,10 +34,12 @@ export default function FormEditEmployee({
   employee,
   departments,
   branches,
+  vendors,
 }: {
   employee: User;
   departments: Departments[];
   branches: Branches[];
+  vendors: Vendor[];
 }) {
   // const router = useRouter();
   // const [loading, setLoading] = useState(false);
@@ -161,6 +164,29 @@ export default function FormEditEmployee({
             </Select>
           </div>
           {/* {state.errors && <p>{state.errors?.branchId}</p>} */}
+          <div>
+            <Label>Vendor</Label>
+            <Select name="vendorId">
+              <SelectTrigger>
+                <SelectValue placeholder="Select a vendor" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Vendor</SelectLabel>
+                  {vendors.map((vendor) => (
+                    <SelectItem key={vendor.id} value={vendor.id.toString()}>
+                      {vendor.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            {state?.errors?.vendorId && (
+              <span className="text-red-500 text-xs">
+                {state?.errors?.vendorId}
+              </span>
+            )}
+          </div>
           <Button type="submit" disabled={isPending}>
             {isPending ? "Updating..." : "Update Employee"}
           </Button>

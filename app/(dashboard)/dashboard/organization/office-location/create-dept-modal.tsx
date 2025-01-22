@@ -10,7 +10,13 @@ import {
     DrawerPortal,
     DrawerTitle,
 } from "@/components/ui/drawer";
-import MapDisplay from "@/components/MapDisplay";
+// import MapDisplay from "@/components/MapDisplay";
+
+import dynamic from "next/dynamic";
+const MapDisplay = dynamic(() => import("@/components/MapDisplay"), {
+    ssr: false,
+});
+
 
 // Map Import
 import "leaflet/dist/leaflet.css";

@@ -126,23 +126,23 @@ export const columns: ColumnDef<Shift>[] = [
             return <div className="ml-4">{date}</div>;
         },
     },
-    {
-        accessorKey: "updatedAt",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Updated At" />
-        ),
-        cell: ({ row }) => {
-            const updatedAt = row.getValue("updatedAt");
-            const parsedDate = parseInt(updatedAt as string);
+    // {
+    //     accessorKey: "updatedAt",
+    //     header: ({ column }) => (
+    //         <DataTableColumnHeader column={column} title="Updated At" />
+    //     ),
+    //     cell: ({ row }) => {
+    //         const updatedAt = row.getValue("updatedAt");
+    //         const parsedDate = parseInt(updatedAt as string);
 
-            if (isNaN(parsedDate)) {
-                return <div className="ml-4">-</div>;
-            }
+    //         if (isNaN(parsedDate)) {
+    //             return <div></div>;
+    //         }
 
-            const date = format(new Date(parsedDate), "dd/MM/yyyy");
-            return <div className="ml-4">{date}</div>;
-        },
-    },
+    //         const date = format(new Date(parsedDate), "dd/MM/yyyy");
+    //         return <div className="ml-4">{date}</div>;
+    //     },
+    // },
     // {
     //     id: "actions",
     //     cell: ({ row }) => <DataTableRowActions row={row} />,

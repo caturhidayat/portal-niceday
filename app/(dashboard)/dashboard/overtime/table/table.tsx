@@ -2,10 +2,8 @@
 
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
 import { useState } from "react";
-import { Person } from "./makeData";
 import { Filter, IndeterminateCheckbox, Overtime } from "./columns";
 
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -35,10 +33,8 @@ import { format } from "date-fns";
 
 export default function TableAttendancesList({
   table,
-  refreshData,
 }: {
   table: ReactTable<Overtime>;
-  refreshData: () => void;
 }) {
   const [globalFilter, setGlobalFilter] = useState("");
   const [date, setDate] = useState<Date>();
@@ -47,12 +43,6 @@ export default function TableAttendancesList({
   return (
     <div className="space-y-4">
       <div>
-        {/* <Input
-          placeholder="Filter by name..."
-          value={globalFilter ?? ""}
-          onChange={(event) => setGlobalFilter(String(event.target.value))}
-          className="max-w-sm"
-        /> */}
         <Popover>
           <PopoverTrigger asChild>
             <Button

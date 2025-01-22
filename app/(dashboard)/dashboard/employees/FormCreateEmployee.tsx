@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { SelectValue } from "@radix-ui/react-select";
 import { Branches, Departments } from "./table/columns";
+import { Vendor } from "../organization/vendor/table/columns";
 
 const initialState = {
   success: false,
@@ -31,10 +32,12 @@ const initialState = {
 export default function FormCreateEmployee({
   departments,
   branches,
+  vendors,
   setIsOpen,
 }: {
   departments: Departments[];
   branches: Branches[];
+  vendors: Vendor[];
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [state, action, isPending] = useActionState(
@@ -138,6 +141,29 @@ export default function FormCreateEmployee({
             {state?.errors?.branchId && (
               <span className="text-red-500 text-xs">
                 {state?.errors?.branchId}
+              </span>
+            )}
+          </div>
+          <div>
+            <Label>Vendor</Label>
+            <Select name="vendorId">
+              <SelectTrigger>
+                <SelectValue placeholder="Select a vendor" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Vendor</SelectLabel>
+                  {vendors.map((vendor) => (
+                    <SelectItem key={vendor.id} value={vendor.id.toString()}>
+                      {vendor.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            {state?.errors?.vendorId && (
+              <span className="text-red-500 text-xs">
+                {state?.errors?.vendorId}
               </span>
             )}
           </div>

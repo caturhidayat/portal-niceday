@@ -189,13 +189,13 @@ export const columnsLeaves: ColumnDef<TLeave>[] = [
     header: "Reason",
     cell: (info) => info.getValue(),
   },
-  {
-    accessorKey: "approvedById",
-    header: "Approved By",
-    cell: ({ row }) => {
-      return <div className="ml-2">{row.getValue("approvedById")}</div>;
-    },
-  },
+  // {
+  //   accessorKey: "approvedById",
+  //   header: "Approved By",
+  //   cell: ({ row }) => {
+  //     return <div className="ml-2">{row.getValue("approvedById")}</div>;
+  //   },
+  // },
   {
     id: "actions",
     cell: ({ row }) => {

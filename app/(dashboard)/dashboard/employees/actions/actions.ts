@@ -12,16 +12,18 @@ const EmployeeSchema = z.object({
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),
-  departmentId: z.string().optional(),
-  branchId: z.string().optional(),
+  departmentId: z.string().min(1, { message: "Department is required" }),
+  branchId: z.string().min(1, { message: "Branch is required" }),
+  vendorId: z.string().min(1, { message: "Vendor is required" }),
 });
 
 export interface EmployeeFormData {
   name: string;
   username: string;
   password: string;
-  departmentId?: string | undefined;
-  branchId?: string | undefined;
+  departmentId?: string;
+  branchId?: string;
+  vendorId?: string;
 }
 
 export interface ActionResponseEmployee {
@@ -45,13 +47,16 @@ export default async function createEmployee(
       password: formData.get("password") as string,
       departmentId: formData.get("departmentId") as string,
       branchId: formData.get("branchId") as string,
+      vendorId: formData.get("vendorId") as string,
     };
 
     const departmentId = formData.get("departmentId") as string;
     const branchId = formData.get("branchId") as string;
+    const vendorId = formData.get("vendorId") as string;
 
     if (departmentId) rawData.departmentId = departmentId;
     if (branchId) rawData.branchId = branchId;
+    if (vendorId) rawData.vendorId = vendorId;
 
     // Validate data
     const validatedData = EmployeeSchema.safeParse(rawData);
@@ -112,7 +117,6 @@ export interface ActionResponseUpdateEmployee {
   };
   inputs?: EmployeeFormUpdateData;
 }
-
 
 // Action for update employee
 export async function updateEmployee(
@@ -178,7 +182,6 @@ export async function updateEmployee(
   }
 }
 
-
 // Action for delete employee
 export async function deleteEmployee(id: string) {
   try {
@@ -196,12 +199,6 @@ export async function deleteEmployee(id: string) {
     };
   }
 }
-
-
-
-
-
-
 
 // Wrapper function for get data select input
 export async function getData<T>(path: string): Promise<T[]> {

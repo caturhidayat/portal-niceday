@@ -60,6 +60,8 @@ export default async function createShiftGroup(_prevState: ActionResponseShiftGr
             shiftName,
         });
 
+        console.log("validatedData : ", validatedData)
+
         // Return error if data is invalid
         if (!validatedData.success) {
             return {

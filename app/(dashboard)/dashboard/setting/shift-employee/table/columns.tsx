@@ -126,29 +126,4 @@ export const columns: ColumnDef<User>[] = [
       return <div className="ml-2">{row.getValue("shiftName")}</div>;
     },
   },
-  // {
-  //   accessorKey: "createdAt",
-  //   header: ({ column }) => {
-  //     return (
-  //       <Button
-  //         variant="ghost"
-  //         onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
-  //       >
-  //         Created At
-  //         <ChevronsUpDown className="ml-2 h-4 w-4" />
-  //       </Button>
-  //     );
-  //   },
-  //   cell: ({ row }) => {
-  //     const createdAt = row.getValue("createdAt");
-  //     const parsedDate = parseInt(createdAt as string);
-
-  //     if (isNaN(parsedDate)) {
-  //       return <div>Invalid date</div>;
-  //     }
-
-  //     const date = format(new Date(parsedDate), "dd/MM/yy - HH:mm");
-  //     return <div className="ml-4">{date}</div>;
-  //   },
-  // },
 ];

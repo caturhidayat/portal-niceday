@@ -49,7 +49,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Trash2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import { deleteShiftGroup } from "../actions";
 
 interface DataTableProps<TData, TValue> {
@@ -185,7 +185,10 @@ export function DataTableC<TData extends { id: string }, TValue>({
                         departments={departments}
                         branches={branches}
                       /> */}
-                      <AlertDialog>
+                      <Button variant="ghost">
+                        <Edit className="mr-2 h-4 w-4" />
+                      </Button>
+                      {/* <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button variant="ghost">
                             <Trash2 className="mr-2 h-4 w-4 text-red-600" />
@@ -213,7 +216,7 @@ export function DataTableC<TData extends { id: string }, TValue>({
                             </AlertDialogFooter>
                           </AlertDialogHeader>
                         </AlertDialogContent>
-                      </AlertDialog>
+                      </AlertDialog> */}
                     </TableCell>
                   </TableRow>
                 );

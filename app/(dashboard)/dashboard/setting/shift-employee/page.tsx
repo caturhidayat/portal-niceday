@@ -36,8 +36,8 @@ export default async function ShiftEmployee() {
         <DataTableC
           columns={columns}
           data={employees}
-          branches={branches}
-          departments={departments}
+        //   branches={branches}
+        //   departments={departments}
           shiftGroups={shiftGroups}
         />
       </div>

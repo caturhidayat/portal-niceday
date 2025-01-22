@@ -76,7 +76,7 @@ export async function getAttendanceData(employeeIds: string[], date: Date) {
     const timestamp = date.getTime();
     const ids = employeeIds.join(',');
     
-    const data = await get<AttendanceData[]>(`attendances?ids=${ids}&date=${timestamp}`);
+    const data = await get<AttendanceData[]>(`attendances/?ids=${ids}&date=${timestamp}`);
     
     return {
       success: true,

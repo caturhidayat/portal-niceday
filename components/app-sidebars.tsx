@@ -201,16 +201,16 @@ const data = {
       // iconColor: "text-sky-500",
       items: [
         {
-          title: "Employee List",
+          title: "Add Employee",
           url: "/dashboard/employees",
         },
+        // {
+        //   title: "Employee Information",
+        //   url: "/dashboard/employees/information",
+        // },
         {
-          title: "Employee Information",
-          url: "/dashboard/employees/information",
-        },
-        {
-          title: "Employee Shift",
-          url: "/dashboard/employees/shift",
+          title: "Employee List",
+          url: "/dashboard/employees/list",
         },
         // {
         //   title: "Employee Report",
@@ -282,7 +282,7 @@ const data = {
           title: "Leave Cancellation",
           url: "/dashboard/leaves/cancellation",
         },
-      ]
+      ],
     },
     {
       title: "Organization",
@@ -309,6 +309,10 @@ const data = {
         {
           title: "Departments",
           url: "/dashboard/organization/departments",
+        },
+        {
+          title: "Vendor",
+          url: "/dashboard/organization/vendor",
         },
         {
           title: "Office Location",

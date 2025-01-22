@@ -11,15 +11,18 @@ import {
 import { Edit } from "lucide-react";
 import FormEditEmployee from "./FormEditEmployee";
 import { Branches, Departments, User } from "./table/columns";
+import { Vendor } from "../organization/vendor/table/columns";
 
 export default function DialogEditEmployee({
   employee,
   departments,
   branches,
+  vendors,
 }: {
   employee: User;
   departments: Departments[];
   branches: Branches[];
+  vendors: Vendor[];
 }) {
   return (
     <Dialog>
@@ -38,6 +41,7 @@ export default function DialogEditEmployee({
           employee={employee}
           departments={departments}
           branches={branches}
+          vendors={vendors}
         />
       </DialogContent>
     </Dialog>

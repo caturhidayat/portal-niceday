@@ -24,13 +24,13 @@ export default async function Page() {
   console.log("branches = ", branches);
   return (
     <div className="grid gap-4">
-      <div className="flex">
-        <div className="">
-          <CreateBranchModal />
-        </div>
+      <div className="grid">
+        <h1 className="py-4 font-bold text-xl">Branches</h1>
+      </div>
+      <div className="flex justify-end">
+        <CreateBranchModal />
       </div>
       <div className=" grid grid-cols-1">
-        <h1 className="py-4 font-bold text-xl">Branches</h1>
         <Suspense fallback={<Loading />}>
           <DataTable columns={columns} data={branches} />
         </Suspense>

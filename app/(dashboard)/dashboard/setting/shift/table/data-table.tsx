@@ -2,22 +2,26 @@
 
 import {
   ColumnDef,
+  ColumnFiltersState,
+  VisibilityState,
   flexRender,
   getCoreRowModel,
   useReactTable,
   getPaginationRowModel,
   SortingState,
   getSortedRowModel,
-  SortingFn,
-  FilterFn,
-  sortingFns,
-  ColumnFiltersState,
+  getFilteredRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
-  getFilteredRowModel,
-  VisibilityState,
+  FilterFn,
+  SortingFn,
+  sortingFns,
 } from "@tanstack/react-table";
-
+import {
+  rankItem,
+  compareItems,
+  RankingInfo,
+} from "@tanstack/match-sorter-utils";
 import {
   Table,
   TableBody,
@@ -26,15 +30,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import {
-  RankingInfo,
-  rankItem,
-  compareItems,
-} from "@tanstack/match-sorter-utils";
+import { DataTablePagination } from "@/components/table/data-table-pagination";
+import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -46,14 +46,38 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Trash2 } from "lucide-react";
+import {
+  CalendarIcon,
+  CalendarPlus,
+  Check,
+  ChevronsUpDown,
+  CirclePlus,
+  Trash2,
+} from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
+import createShiftEmployee, { deleteShift } from "../actions";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-// Fuzzy search function
 declare module "@tanstack/react-table" {
   //add fuzzy filter to the filterFns
   interface FilterFns {
@@ -98,15 +122,27 @@ export function DataTable<TData extends { id: string }, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  // Tanstack table state
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
+  const [open, setOpen] = useState(false);
+  const [date, setDate] = useState<Date>();
 
+  // Define table
   const table = useReactTable({
     data,
     columns,
+    initialState: {
+      sorting: [
+        {
+          id: "username",
+          desc: true,
+        },
+      ],
+    },
     state: {
       sorting,
       columnVisibility,
@@ -133,7 +169,6 @@ export function DataTable<TData extends { id: string }, TValue>({
 
   return (
     <div className="space-y-4">
-      {/* <DataTableToolbar table={table} /> */}
       <div className="rounded-md border">
         <Table>
           <TableHeader className="bg-accent">
@@ -151,64 +186,70 @@ export function DataTable<TData extends { id: string }, TValue>({
                     </TableHead>
                   );
                 })}
+                <TableHead className="bg-accent">
+                  <Button variant={"ghost"}>Action</Button>
+                </TableHead>
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="p-0">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                  <TableCell>
+              table.getRowModel().rows.map((row) => {
+                return (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="p-0 px-2">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+
+                    <TableCell className="p-0 px-2">
                     <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="ghost">
-                          <Trash2 className="mr-2 h-4 w-4 text-red-600" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Are you sure you want to delete this shift group?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This action cannot be undone. This will permanently
-                            delete your shift group.
-                          </AlertDialogDescription>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              className="bg-red-600 text-white"
-                              onClick={async () => {
-                                // table.resetRowSelection();
-                              }}
-                            >
-                              Delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogHeader>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </TableCell>
-                </TableRow>
-              ))
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost">
+                            <Trash2 className="mr-2 h-4 w-4 text-red-600" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you sure you want to delete this shift?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete your shift.
+                            </AlertDialogDescription>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={async () => {
+                                  await deleteShift(row.original.id);
+                                  table.resetRowSelection();
+                                }}
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogHeader>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             ) : (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
                   className="h-24 text-center "
                 >
-                  <Alert variant={"destructive"}>
+                  <Alert>
                     <AlertTitle>No results.</AlertTitle>
                     <AlertDescription>No data to display.</AlertDescription>
                   </Alert>
@@ -217,24 +258,7 @@ export function DataTable<TData extends { id: string }, TValue>({
             )}
           </TableBody>
         </Table>
-        <div className="flex items-center justify-end space-x-4 py-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previews
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
+        <DataTablePagination table={table} />
       </div>
     </div>
   );

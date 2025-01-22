@@ -52,12 +52,14 @@ import {
 import { Trash2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { deleteAttendance } from "../../attendance/list/actions";
+import { Vendor } from "../../organization/vendor/table/columns";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   branches: Branches[];
   departments: Departments[];
+  vendors: Vendor[];
 }
 
 declare module "@tanstack/react-table" {
@@ -105,6 +107,7 @@ export function DataTableC<TData extends User, TValue>({
   data,
   branches,
   departments,
+  vendors,
 }: DataTableProps<TData, TValue>) {
   // Tanstack table state
   const [rowSelection, setRowSelection] = useState({});
@@ -197,8 +200,9 @@ export function DataTableC<TData extends User, TValue>({
                         employee={row.original}
                         departments={departments}
                         branches={branches}
+                        vendors={vendors}
                       />
-                      <AlertDialog>
+                      {/* <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button variant="ghost">
                             <Trash2 className="mr-2 h-4 w-4 text-red-600" />
@@ -226,7 +230,7 @@ export function DataTableC<TData extends User, TValue>({
                             </AlertDialogFooter>
                           </AlertDialogHeader>
                         </AlertDialogContent>
-                      </AlertDialog>
+                      </AlertDialog> */}
                     </TableCell>
                   </TableRow>
                 );

@@ -12,7 +12,14 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { CalendarIcon, Check, ChevronsUpDown, Loader, Loader2, Save } from "lucide-react";
+import {
+  CalendarIcon,
+  Check,
+  ChevronsUpDown,
+  Loader,
+  Loader2,
+  Save,
+} from "lucide-react";
 import { useActionState, useEffect, useState } from "react";
 import { Shift } from "../shift/table/columns";
 import { get } from "@/lib/fetch-wrapper";
@@ -49,21 +56,16 @@ const initialState: ActionResponseShiftGroup = {
   },
 };
 
-export default function FormCreateShiftGroup() {
+export default function FormCreateShiftGroup({
+  shifts,
+}: {
+  shifts: Shift[];
+}) {
   const [date, setDate] = useState<Date>();
   const [displayShift, setDisplayShift] = useState(false);
   const [cycleLength, setCycleLength] = useState(0);
   const [open, setOpen] = useState<Record<number, boolean>>({});
   const [value, setValue] = useState<Record<number, string>>({});
-  const [shifts, setShifts] = useState<Shift[]>([]);
-
-  useEffect(() => {
-    const getShiftsData = async () => {
-      const shifts = await getAllShift();
-      setShifts(shifts);
-    };
-    getShiftsData();
-  }, []);
 
   const [state, action, isPending] = useActionState(
     createShiftGroup,

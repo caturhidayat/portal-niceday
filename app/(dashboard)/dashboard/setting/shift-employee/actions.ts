@@ -100,7 +100,7 @@ export default async function createShiftEmployee(data: { userId: string, shiftG
     // Validate data
 
     // Convert startDate to epoch
-    data.startDate = convertTimeToEpoch(data.startDate!).toString();
+    // data.startDate = convertTimeToEpoch(data.startDate!).toString();
 
     // transform formData to FormData
     const formData = new FormData();
@@ -110,7 +110,7 @@ export default async function createShiftEmployee(data: { userId: string, shiftG
         }
     });
 
-    console.log("Form Data server action : ", formData);
+    console.log("Form Data server action ==> : ", formData);
 
     const res = await post("users-shift", formData);
 

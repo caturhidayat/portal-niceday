@@ -13,13 +13,16 @@ import FormCreateEmployee from "./FormCreateEmployee";
 import { Branches, Departments } from "./table/columns";
 import { useState } from "react";
 import { UserRoundPlus } from "lucide-react";
+import { Vendor } from "../organization/vendor/table/columns";
 
 export default function DialogCreateEmployee({
   departments,
   branches,
+  vendors,
 }: {
   departments: Departments[];
   branches: Branches[];
+  vendors: Vendor[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -38,6 +41,7 @@ export default function DialogCreateEmployee({
         <FormCreateEmployee
           departments={departments}
           branches={branches}
+          vendors={vendors}
           setIsOpen={setIsOpen}
         />
       </DialogContent>

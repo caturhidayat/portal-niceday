@@ -22,13 +22,15 @@ export default async function Departments() {
 
   return (
     <div className="grid gap-4">
-      <div className="flex">
+      <div className="grid">
+        <h1 className="py-4 font-bold text-xl">Departements</h1>
+      </div>
+      <div className="flex justify-end">
         <CreateDeptModal />
       </div>
       <div className="grid grid-cols-1">
-        <h1 className="py-4 font-bold text-xl">Departements</h1>
         <Suspense fallback={<Loading />}>
-          <DataTable data={dept} columns={columns} />
+          <DataTable columns={columns} data={dept} />
         </Suspense>
       </div>
     </div>

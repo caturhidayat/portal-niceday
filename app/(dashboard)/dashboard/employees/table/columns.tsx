@@ -41,35 +41,13 @@ export type User = {
   department: string;
   branchId: number;
   branch: string;
+  vendorId: number;
+  vendor: string;
   createdAt: string;
   updatedAt: string;
 };
 
 export const columns: ColumnDef<User>[] = [
-  //   {
-  //     id: "select",
-  //     header: ({ table }) => (
-  //       <Checkbox
-  //         checked={
-  //           table.getIsAllPageRowsSelected() ||
-  //           (table.getIsSomePageRowsSelected() && "indeterminate")
-  //         }
-  //         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-  //         aria-label="Select all"
-  //         className="translate-y-[2px]"
-  //       />
-  //     ),
-  //     cell: ({ row }) => (
-  //       <Checkbox
-  //         checked={row.getIsSelected()}
-  //         onCheckedChange={(value) => row.toggleSelected(!!value)}
-  //         aria-label="Select row"
-  //         className="translate-y-[2px]"
-  //       />
-  //     ),
-  //     enableSorting: false,
-  //     enableHiding: false,
-  //   },
   {
     accessorKey: "username",
     header: ({ column }) => {
@@ -123,9 +101,36 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "branch",
-    header: "Branch",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+        >
+          Branch
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       return <div className="ml-2">{row.getValue("branch")}</div>;
+    },
+  },
+  {
+    accessorKey: "vendor",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+        >
+          Vendor
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return <div className="ml-2">{row.getValue("vendor")}</div>;
     },
   },
   // {
@@ -160,44 +165,4 @@ export const columns: ColumnDef<User>[] = [
       return <div className="ml-4">{date}</div>;
     },
   },
-  // {
-  //   id: "edit",
-  //   header: "Edit",
-  //   cell: ({ row }) => {
-  //     return (
-  //       <DialogEditEmployee
-  //         employee={row.original}
-  //         departments={departments}
-  //         branches={branches}
-  //       />
-  //     );
-  //   },
-  // },
-  // {
-  //   id: "actions",
-  //   header: "Actions",
-  //   cell: ({ row }) => {
-  //     const employee = row.original;
-
-  //     return (
-  //       <DropdownMenu>
-  //         <DropdownMenuTrigger asChild>
-  //           <Button variant="ghost" className="h-8 w-8 p-0">
-  //             <span className="sr-only">Open Menu</span>
-  //             <MoreHorizontal className="h-4 w-4" />
-  //           </Button>
-  //         </DropdownMenuTrigger>
-  //         <DropdownMenuContent align="end">
-  //           <DropdownMenuLabel className="font-bold">Action</DropdownMenuLabel>
-  //           <DropdownMenuSeparator />
-  //           <DropdownMenuItem
-  //             onClick={() => navigator.clipboard.writeText(employee.id)}
-  //           >
-  //             Copy ID
-  //           </DropdownMenuItem>
-  //         </DropdownMenuContent>
-  //       </DropdownMenu>
-  //     );
-  //   },
-  // },
 ];

@@ -49,12 +49,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
+  CalendarCog,
   CalendarIcon,
   CalendarPlus,
   Check,
   ChevronsUpDown,
-  CirclePlus,
-  Trash2,
 } from "lucide-react";
 import {
   Popover,
@@ -69,18 +68,18 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import DialogAssignShiftGroup from "../DialogAssignShiftGroup";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import createShiftEmployee from "../actions";
+import DialogAssignShift from "../DialogAssignShift";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  branches: Branches[];
-  departments: Departments[];
+  // branches: Branches[];
+  // departments: Departments[];
   shiftGroups: ShiftGroup[];
 }
 
@@ -127,8 +126,8 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
 export function DataTableC<TData extends User, TValue>({
   columns,
   data,
-  branches,
-  departments,
+  // branches,
+  // departments,
   shiftGroups,
 }: DataTableProps<TData, TValue>) {
   // Tanstack table state
@@ -198,7 +197,7 @@ export function DataTableC<TData extends User, TValue>({
                   );
                 })}
                 <TableHead className="bg-accent">
-                  <Button variant={"ghost"}>Action</Button>
+                  <Button variant={"ghost"}>Assign / Update Shift</Button>
                 </TableHead>
               </TableRow>
             ))}
@@ -221,23 +220,20 @@ export function DataTableC<TData extends User, TValue>({
                     ))}
 
                     <TableCell className="p-0 px-2">
-                      {/* <DialogEditEmployee
-                        employee={row.original}
-                        departments={departments}
-                        branches={branches}
-                      /> */}
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button variant="link">
-                            <CalendarPlus className="mr-2 h-4 w-4" />
-                            Assign Shift
-                          </Button>
+                          {row.original.shiftName ? (
+                            <Button variant="link">
+                              <CalendarCog className="mr-2 h-4 w-4" />
+                              Change Shift
+                            </Button>
+                          ) : null}
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Assign Shift</AlertDialogTitle>
+                            <AlertDialogTitle>Change Shift</AlertDialogTitle>
                             <AlertDialogDescription>
-                              Please select shift group and start date for {" "}
+                              Please select shift group and start date for{" "}
                               <strong>
                                 {row.original.username} - {row.original.name}
                               </strong>
@@ -362,13 +358,172 @@ export function DataTableC<TData extends User, TValue>({
                                     startDate: date,
                                   });
 
-                                  const startDate = new Date(date!).getTime().toString();
+                                  // const startDate = new Date(date!)
+                                  //   .getTime()
+                                  //   .toString();
 
                                   await createShiftEmployee({
                                     userId: row.original.id,
                                     shiftGroupId: selectShiftGroup?.id,
-                                    startDate: startDate,
-                                  })
+                                    startDate: date?.getTime().toString(),
+                                  });
+                                  // await table.resetRowSelection();
+                                }}
+                              >
+                                Update Shift
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogHeader>
+                        </AlertDialogContent>
+                      </AlertDialog>
+
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          {!row.original?.shiftName ? (
+                            <Button variant="link">
+                              <CalendarPlus className="mr-2 h-4 w-4" />
+                              Assign Shift
+                            </Button>
+                          ) : null}
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Update Shift</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Please select shift group and start date for{" "}
+                              <strong>
+                                {row.original.username} - {row.original.name}
+                              </strong>
+                            </AlertDialogDescription>
+
+                            <div className="flex flex-col gap-2 pt-4">
+                              <Label htmlFor="startDate" className="w-60">
+                                Start Date
+                              </Label>
+                              <Popover>
+                                <PopoverTrigger asChild>
+                                  <Button
+                                    variant={"outline"}
+                                    className={cn(
+                                      " text-left font-normal",
+                                      "flex-grow"
+                                    )}
+                                  >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {date ? (
+                                      format(date, "eeee, dd MMM-yyyy")
+                                    ) : (
+                                      <span>Pick a date to start shift</span>
+                                    )}
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent>
+                                  <Calendar
+                                    mode="single"
+                                    selected={date}
+                                    onSelect={(newDate) => {
+                                      setDate(newDate);
+                                      if (newDate) {
+                                        const epochMillis = newDate.getTime();
+                                        const hiddenInput =
+                                          document.getElementById(
+                                            "hiddenStartDate"
+                                          ) as HTMLInputElement;
+                                        if (hiddenInput) {
+                                          hiddenInput.value =
+                                            epochMillis.toString();
+                                        }
+                                      }
+                                    }}
+                                    disabled={(date) =>
+                                      date > new Date() ||
+                                      date < new Date("1900-01-01")
+                                    }
+                                    initialFocus
+                                  />
+                                </PopoverContent>
+                              </Popover>
+                              <input
+                                type="hidden"
+                                id="hiddenStartDate"
+                                name="startDate"
+                              />
+                            </div>
+
+                            <Popover open={open} onOpenChange={setOpen}>
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  role="combobox"
+                                  aria-expanded={open}
+                                  className="w-full justify-between"
+                                >
+                                  {selectShiftGroup
+                                    ? selectShiftGroup.name
+                                    : "Select Shift Group"}
+                                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-[600px] p-0">
+                                <Command>
+                                  <CommandInput placeholder="Search shift group..." />
+                                  <CommandList>
+                                    <CommandEmpty>
+                                      No shift group found.
+                                    </CommandEmpty>
+                                    <CommandGroup>
+                                      {shiftGroups.map((shiftGroup) => (
+                                        <CommandItem
+                                          key={shiftGroup.id}
+                                          value={shiftGroup.name}
+                                          onSelect={(currentValue) => {
+                                            const selectedShiftGroup =
+                                              shiftGroups.find(
+                                                (group) =>
+                                                  group.name === currentValue
+                                              );
+                                            setSelectShiftGroup(
+                                              selectedShiftGroup
+                                            );
+                                            setOpen(false);
+                                          }}
+                                        >
+                                          <Check
+                                            className={`mr-2 h-4 w-4 ${
+                                              selectShiftGroup?.id ===
+                                              shiftGroup.id
+                                                ? "opacity-100"
+                                                : "opacity-0"
+                                            }`}
+                                          />
+                                          {shiftGroup.name}
+                                        </CommandItem>
+                                      ))}
+                                    </CommandGroup>
+                                  </CommandList>
+                                </Command>
+                              </PopoverContent>
+                            </Popover>
+
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={async () => {
+                                  console.log("submit data : ", {
+                                    userId: row.original.id,
+                                    shiftGroupId: selectShiftGroup?.id,
+                                    startDate: date,
+                                  });
+
+                                  // const startDate = new Date(date!)
+                                  //   .getTime()
+                                  //   .toString();
+
+                                  await createShiftEmployee({
+                                    userId: row.original.id,
+                                    shiftGroupId: selectShiftGroup?.id,
+                                    startDate: date?.getTime().toString(),
+                                  });
                                   // await table.resetRowSelection();
                                 }}
                               >

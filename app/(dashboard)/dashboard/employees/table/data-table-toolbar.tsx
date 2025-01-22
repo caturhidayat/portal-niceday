@@ -53,6 +53,14 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
+        <Input
+          placeholder="Filter by Vendor..."
+          value={(table.getColumn("vendor")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("vendor")?.setFilterValue(event.target.value)
+          }
+          className="h-8 w-[150px] lg:w-[250px]"
+        />
         {isFiltered && (
           <Button
             variant="ghost"

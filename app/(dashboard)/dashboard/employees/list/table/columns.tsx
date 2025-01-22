@@ -31,6 +31,8 @@ export type User = {
   department: string;
   branchId: number;
   branch: string;
+  vendorId: number;
+  vendor: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -92,6 +94,23 @@ export const columns: ColumnDef<User>[] = [
     header: "Branch",
     cell: ({ row }) => {
       return <div className="ml-2">{row.getValue("branch")}</div>;
+    },
+  },
+  {
+    accessorKey: "vendor",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+        >
+          Vendor
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return <div className="ml-2">{row.getValue("vendor")}</div>;
     },
   },
   {
