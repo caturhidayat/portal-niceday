@@ -70,19 +70,19 @@ export function OvertimeData({
                 {data.map((entry) => (
                   <TableRow key={entry.id}>
                     <TableCell></TableCell>
-                    <TableCell>{entry.employeeName}</TableCell>
-                    <TableCell>{entry.shift}</TableCell>
+                    <TableCell>{entry.attendanceDate}</TableCell>
+                    <TableCell>{entry.status}</TableCell>
                     <TableCell>
                       <div className="flex justify-center gap-4">
-                        <span>{entry.shiftTimeStart}</span>
-                        <span>{entry.shiftTimeEnd}</span>
+                        <span>{entry.clockIn}</span>
+                        <span>{entry.clockOut}</span>
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="flex justify-center gap-4">
+                      {/* <div className="flex justify-center gap-4">
                         <span>{entry.actualTimeStart}</span>
                         <span>{entry.actualTimeEnd}</span>
-                      </div>
+                      </div> */}
                     </TableCell>
                     <TableCell>
                       <div className="flex justify-center gap-2">
