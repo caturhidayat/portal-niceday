@@ -249,7 +249,7 @@ export function DataTableOvertime<TData extends Overtime, TValue>({
                                 date{" "}
                                 <strong>
                                   {format(
-                                    new Date(+row.original.overtimeDate),
+                                    new Date(+row.original?.overtimeDate),
                                     "yyyy-MM-dd"
                                   )}
                                 </strong>

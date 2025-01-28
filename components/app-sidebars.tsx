@@ -264,26 +264,26 @@ const data = {
         },
       ],
     },
-    {
-      title: "Leave",
-      url: "#",
-      icon: CircleArrowOutUpRight,
-      // iconColor: "text-rose-500",
-      items: [
-        {
-          title: "Leave List",
-          url: "/dashboard/leaves",
-        },
-        {
-          title: "Leave Request",
-          url: "/dashboard/leaves/request",
-        },
-        {
-          title: "Leave Cancellation",
-          url: "/dashboard/leaves/cancellation",
-        },
-      ],
-    },
+    // {
+    //   title: "Leave",
+    //   url: "#",
+    //   icon: CircleArrowOutUpRight,
+    //   // iconColor: "text-rose-500",
+    //   items: [
+    //     {
+    //       title: "Leave List",
+    //       url: "/dashboard/leaves",
+    //     },
+    //     {
+    //       title: "Leave Request",
+    //       url: "/dashboard/leaves/request",
+    //     },
+    //     {
+    //       title: "Leave Cancellation",
+    //       url: "/dashboard/leaves/cancellation",
+    //     },
+    //   ],
+    // },
     {
       title: "Organization",
       url: "#",

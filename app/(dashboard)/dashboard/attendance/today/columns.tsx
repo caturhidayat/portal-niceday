@@ -72,9 +72,9 @@ export type Attendance = {
   isLate: boolean;
   workHours: number;
   shiftName: string;
-  shiftStartTime: string;
-  shiftEndTime: string;
-  name: string;
+  shiftStart: string;
+  shiftEnd: string;
+  fullName: string;
   username: string;
   officeLocationName: string;
 

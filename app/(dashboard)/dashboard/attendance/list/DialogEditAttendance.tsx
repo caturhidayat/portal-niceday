@@ -26,10 +26,9 @@ export default function DialogEditAttendance({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit Employee</DialogTitle>
-          <DialogDescription>Edit employee details</DialogDescription>
+          <DialogTitle>Edit Attendance</DialogTitle>
+          <DialogDescription>Edit attendance Employee</DialogDescription>
         </DialogHeader>
-        <p>Content</p>
         <FormEditAttendance attendance={attendance} />
       </DialogContent>
     </Dialog>

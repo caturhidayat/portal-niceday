@@ -13,6 +13,10 @@ async function getOvertime(): Promise<Overtime[]> {
   const response = await get("overtimes", ["overtimes"]);
   return response as Overtime[];
 }
+async function getAttendances(): Promise<Overtime[]> {
+  const response = await get("attendances", ["attendances"]);
+  return response as Overtime[];
+}
 
 // async function getDepartments(): Promise<Departments[]> {
 //   const response = await get("departments");
@@ -25,6 +29,7 @@ async function getOvertime(): Promise<Overtime[]> {
 
 export default async function Page() {
   const overtime = await getOvertime();
+  const attendances = await getAttendances();
   // console.log("overtime get", overtime);
   return (
     <div className="container mx-auto">
@@ -32,10 +37,11 @@ export default async function Page() {
         <DialogCreateOvertime />
       </div>
       <Suspense fallback={<Loading />}>
-        <DataTableOvertime
+        {/* <DataTableOvertime
           columns={columns}
           data={overtime}
-        />
+        /> */}
+        <DataTableOvertime columns={columns} data={attendances} />
       </Suspense>
     </div>
   );

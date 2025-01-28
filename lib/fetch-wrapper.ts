@@ -13,7 +13,7 @@ export const post = async (path: string, data: FormData) => {
   // const body = data instanceof FormData ? Object.fromEntries(data) : data;
 
   const token = await getHeaders();
-  console.log("request body ", data);
+  console.log("request body wrapper : ", data);
   const res = await fetch(`${API_URL}/${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json", ...token },
@@ -30,7 +30,7 @@ export const post = async (path: string, data: FormData) => {
 };
 
 export const postRaw = async (path: string, formData: FormData) => {
-  console.log("formData : ", formData);
+  console.log("formData raw wrapper: ", formData);
   
   const token = await getHeaders();
   const data = JSON.parse(formData.get('data') as string);
