@@ -38,7 +38,7 @@ import {
 } from "@/components/ui/select";
 import { User } from "../../attendance/today/columns";
 import { AttendanceData, getAttendanceData } from "../actions";
-import { OvertimeData } from "../table old/overtime-data";
+import { OvertimeData } from "../table/overtime-data";
 
 export default function FormCreateMultiEmployee({
   employees,
