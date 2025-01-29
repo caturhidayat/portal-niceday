@@ -27,12 +27,15 @@ import { getAttendancesReports } from "../actions";
 //   overtimeRemark: string | null;
 //   overtimeStatus: string | null;
 // }
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-export default async function PreviewReport(props: {
-  searchParams: { startDate: string; endDate: string };
+// type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+export default async function PreviewReport({
+  searchParams,
+}: {
+  searchParams: Promise<{ startDate: string; endDate: string }>;
 }) {
-  const params = props.searchParams;
+  const params = await searchParams;
   const startDate = params.startDate;
   const endDate = params.endDate;
   const data = await getAttendancesReports(startDate, endDate);

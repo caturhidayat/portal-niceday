@@ -10,8 +10,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Plus } from "lucide-react";
-import { AttendanceData } from "../actions";
+import { AttendanceData } from "../../../overtime/actions";
+
+
 
 interface OvertimeEntry {
   id: number;
