@@ -170,7 +170,7 @@ export function DataTableAttendanceReports<TData extends Attendance, TValue>({
               writeFileXLSX(wb, `Reports_Attendances_${startDate}_${endDate}.xlsx`);
             }}>
             <FileSpreadsheet className="mr-2 h-4 w-4" />
-            Export XLSX
+            Export to XLSX
           </Button>
       </div>
       {/* <DataTableToolbar table={table} /> */}

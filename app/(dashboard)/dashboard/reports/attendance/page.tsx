@@ -32,10 +32,15 @@ export default function AttendanceReport() {
     const endDate = Date.parse(date.to.toISOString());
     const url = `/reports/attendance/preview?startDate=${startDate}&endDate=${endDate}`;
 
+    // window.open(
+    //   url,
+    //   "_blank",
+    //   "width=screen.width,height=screen.height,menubar=no,toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes"
+    // );
     window.open(
       url,
       "_blank",
-      "width=screen.width,height=screen.height,menubar=no,toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes"
+      `width=1600,height=1200,menubar=no,toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes`
     );
   };
 
