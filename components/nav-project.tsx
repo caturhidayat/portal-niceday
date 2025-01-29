@@ -33,6 +33,7 @@ export function NavReports({
     name: string;
     url: string;
     icon: LucideIcon;
+    iconColor: string;
   }[];
 }) {
   const { isMobile } = useSidebar();
@@ -45,7 +46,7 @@ export function NavReports({
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
               <Link href={item.url}>
-                <item.icon />
+                <item.icon className={item.iconColor} />
                 <span>{item.name}</span>
               </Link>
             </SidebarMenuButton>

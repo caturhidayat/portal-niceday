@@ -198,7 +198,7 @@ const data = {
       title: "Employees",
       url: "#",
       icon: UsersRound,
-      // iconColor: "text-sky-500",
+      iconColor: "text-sky-500",
       items: [
         {
           title: "Add Employee",
@@ -222,7 +222,7 @@ const data = {
       title: "Time Management",
       url: "#",
       icon: CalendarClock,
-      // iconColor: "text-orange-500",
+      iconColor: "text-lime-500",
       items: [
         // {
         //   title: "Attendance",
@@ -288,7 +288,7 @@ const data = {
       title: "Organization",
       url: "#",
       icon: Building,
-      // iconColor: "text-violet-500",
+      iconColor: "text-violet-500",
       items: [
         // {
         //   title: "Organization",
@@ -324,7 +324,7 @@ const data = {
       title: "Settings",
       url: "#",
       icon: Settings2,
-      // iconColor: "text-amber-500",
+      iconColor: "text-amber-500",
       items: [
         {
           title: "Shift Daily",
@@ -347,9 +347,10 @@ const data = {
   ],
   reports: [
     {
-      name: "Attendance Report",
+      name: "Report",
       url: "/dashboard/reports/attendance",
       icon: Sheet,
+      iconColor: "text-teal-500",
     },
   ],
 };
