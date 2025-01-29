@@ -236,10 +236,10 @@ const data = {
           title: "Attendance List",
           url: "/dashboard/attendance/list",
         },
-        {
-          title: "Attendance Edit",
-          url: "/dashboard/attendance/edit",
-        },
+        // {
+        //   title: "Attendance Edit",
+        //   url: "/dashboard/attendance/edit",
+        // },
 
         {
           title: "Overtime List",
@@ -249,10 +249,10 @@ const data = {
           title: "Overtime Request",
           url: "/dashboard/overtime/request",
         },
-        {
-          title: "Overtime Cancellation",
-          url: "/dashboard/overtime/cancellation",
-        },
+        // {
+        //   title: "Overtime Cancellation",
+        //   url: "/dashboard/overtime/cancellation",
+        // },
 
         {
           title: "Employee Shifts",
@@ -338,10 +338,10 @@ const data = {
           title: "Shift Employee",
           url: "/dashboard/setting/shift-employee",
         },
-        // {
-        //   title: "Overtime Reason",
-        //   url: "/dashboard/setting/overtime-reason",
-        // },
+        {
+          title: "Overtime Reason",
+          url: "/dashboard/setting/overtime-reason",
+        },
       ],
     },
   ],

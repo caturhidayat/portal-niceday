@@ -33,27 +33,29 @@ import {
 import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { DataTablePagination } from "@/components/table/data-table-pagination";
+import { DataTableToolbar } from "./data-table-toolbar";
 import { Button } from "@/components/ui/button";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { BadgeCheck, Trash2 } from "lucide-react";
-import { Overtime } from "./columns";
-import { DataTableToolbar } from "@/components/table/data-table-toolbar";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+
+
 import { format } from "date-fns";
-import { approveOvertime } from "../actions";
+import { OvertimeReasonsType } from "../../setting/overtime-reason/table/columns";
+import { Attendance } from "../../attendance/today/columns";
+import { BadgeCheck, CalendarCheck, CalendarX } from "lucide-react";
+import { approveOvertime, rejectOvertime } from "../actions";
+
+enum RequestStatus {
+  PENDING = "PENDING",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
+  CANCELLED = "CANCELLED"
+}
+
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  overtimeReasons: OvertimeReasonsType[];
 }
 
 declare module "@tanstack/react-table" {
@@ -96,40 +98,32 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
   return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
 };
 
-export function DataTableOvertime<TData extends Overtime, TValue>({
+export function DataTableOvertime<TData extends Attendance, TValue>({
   columns,
   data,
+  overtimeReasons
 }: DataTableProps<TData, TValue>) {
   // Tanstack table state
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [globalFilter, setGlobalFilter] = useState("");
 
   // Define table
   const table = useReactTable({
     data,
     columns,
-    initialState: {
-      sorting: [
-        {
-          id: "username",
-          desc: true,
-        },
-      ],
-    },
     state: {
       sorting,
       columnVisibility,
       rowSelection,
       columnFilters,
-      globalFilter,
     },
-    filterFns: {
-      fuzzy: fuzzyFilter,
+    initialState: {
+      pagination: {
+        pageSize: 20,
+      },
     },
-    globalFilterFn: "fuzzy",
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -141,6 +135,9 @@ export function DataTableOvertime<TData extends Overtime, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    filterFns: {
+      fuzzy: fuzzyFilter,
+    },
   });
 
   return (
@@ -163,7 +160,8 @@ export function DataTableOvertime<TData extends Overtime, TValue>({
                     </TableHead>
                   );
                 })}
-                <TableHead className="bg-accent"></TableHead>
+                <TableHead>Approve</TableHead>
+                <TableHead>Reject</TableHead>
               </TableRow>
             ))}
           </TableHeader>
@@ -176,101 +174,106 @@ export function DataTableOvertime<TData extends Overtime, TValue>({
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="p-0 px-2">
+                      <TableCell key={cell.id} className="p-3 px-2">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
                         )}
                       </TableCell>
                     ))}
-
-                    <TableCell className="p-0 px-2">
-                      {/* <DialogEditOvertime overtime={row.original} /> */}
-                      {/* <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="ghost">
-                            <Trash2 className="mr-2 h-4 w-4 text-red-600" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>
-                              Are you sure you want to delete this overtime?
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This action cannot be undone. This will
-                              permanently delete your overtime.
-                            </AlertDialogDescription>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                              // onClick={async () => {
-                              //   await deleteAttendance(row.original.id);
-                              //   table.resetRowSelection();
-                              // }}
-                              >
-                                Delete
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogHeader>
-                        </AlertDialogContent>
-                      </AlertDialog> */}
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          {row.original.status === "COMPLETED" ? (
-                            <Button variant="link" disabled>
-                              <BadgeCheck className="mr-2 h-4 w-4 text-green-600" />
-                              Approved
+                    <TableCell>
+                      {row.original.overtimeStatus === "PENDING" && (
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              variant={"ghost"}
+                              size="sm"
+                              // disabled={!row.original.checkOutTime}
+                            >
+                              <CalendarCheck className="h-4 w-4 text-green-500" />
                             </Button>
-                          ) : (
-                            <Button variant="link">
-                              <BadgeCheck className="mr-2 h-4 w-4 text-green-600" />
-                              Approve
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>
+                                Approve this Overtime?
+                              </DialogTitle>
+                            </DialogHeader>
+                            <div>
+                              <Alert>
+                                <AlertTitle>
+                                  Details Attendance
+                                </AlertTitle>
+                                <AlertDescription>
+                                  <div className="grid gap-2 pt-2">
+                                    <span>
+                                    Shift - {format(new Date(+row.original.shiftStart), 'HH:mm')} - {format(new Date(+row.original.shiftEnd), 'HH:mm')}
+                                    </span>
+                                    <span>
+                                    Actual Attendance - {format(new Date(+row.original.checkInTime), 'HH:mm')} - {format(new Date(+row.original.checkOutTime), 'HH:mm')}
+                                    </span>
+                                    <span className="text-green-500">
+                                    Overtime - {format(new Date(+row.original.overtimeStart), 'HH:mm')} - {format(new Date(+row.original.overtimeEnd), 'HH:mm')}
+                                    </span>
+                                  </div>
+                                </AlertDescription>
+                              </Alert>
+                            </div>
+                            <Button onClick={async () => {
+                              await approveOvertime(row.original.overtimeId)
+                            }}>
+                              Approve Overtime Request
                             </Button>
-                          )}
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>
-                              Are you sure you want to approve this overtime?
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This action cannot be undone. This will approve
-                              your overtime.
-                            </AlertDialogDescription>
-                            <Alert>
-                              <BadgeCheck className="mr-2 h-4 w-4 text-green-600" />
-                              <AlertTitle className="text-bold">
-                                Approve
-                              </AlertTitle>
-                              <AlertDescription>
-                                Approve the overtime of
-                                <strong> {row.original.name} </strong> for the
-                                date{" "}
-                                <strong>
-                                  {format(
-                                    new Date(+row.original?.overtimeDate),
-                                    "yyyy-MM-dd"
-                                  )}
-                                </strong>
-                              </AlertDescription>
-                            </Alert>
-                            <div className="text-sm text-green-600 py-4"></div>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                className="bg-green-600"
-                                onClick={async () => {
-                                  await approveOvertime(row.original.id);
-                                  table.resetRowSelection();
-                                }}
-                              >
-                                Approve
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogHeader>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                          </DialogContent>
+                        </Dialog>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                    {row.original.overtimeStatus === "PENDING" && (
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              // disabled={!row.original.checkOutTime}
+                            >
+                              <CalendarX className="h-4 w-4 text-destructive" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>
+                                Approve this Overtime?
+                              </DialogTitle>
+                            </DialogHeader>
+                            <div>
+                              <Alert>
+                                <AlertTitle>
+                                  Details Attendance
+                                </AlertTitle>
+                                <AlertDescription>
+                                  <div className="grid gap-2 pt-2">
+                                    <span>
+                                    Shift - {format(new Date(+row.original.shiftStart), 'HH:mm')} - {format(new Date(+row.original.shiftEnd), 'HH:mm')}
+                                    </span>
+                                    <span>
+                                    Actual Attendance - {format(new Date(+row.original.checkInTime), 'HH:mm')} - {format(new Date(+row.original.checkOutTime), 'HH:mm')}
+                                    </span>
+                                    <span className="text-destructive">
+                                    Overtime - {format(new Date(+row.original.overtimeStart), 'HH:mm')} - {format(new Date(+row.original.overtimeEnd), 'HH:mm')}
+                                    </span>
+                                  </div>
+                                </AlertDescription>
+                              </Alert>
+                            </div>
+                            <Button className="bg-destructive text-muted hover:bg-red-600 hover:text-destructive-foreground" onClick={async () => {
+                              await rejectOvertime(row.original.overtimeId)
+                            }}>
+                              Reject Overtime Request
+                            </Button>
+                          </DialogContent>
+                        </Dialog>
+                      )}
                     </TableCell>
                   </TableRow>
                 );
@@ -278,7 +281,7 @@ export function DataTableOvertime<TData extends Overtime, TValue>({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={columns.length + 1}
                   className="h-24 text-center "
                 >
                   <Alert>

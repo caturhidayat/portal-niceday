@@ -13,16 +13,17 @@ export interface OvertimeFormData {
   endTime: string;
   totalHours: number;
   overtimeRateId: string;
-  status: string;
+  status: RequestStatus;
   createdAt: string;
   updatedAt: string;
   deletedAt: string;
 }
 
-enum OvertimeStatus {
-  SCHEDULED = "SCHEDULED",
-  COMPLETED = "COMPLETED",
-  CANCELLED = "CANCELLED",
+enum RequestStatus {
+  PENDING = "PENDING",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
+  CANCELLED = "CANCELLED"
 }
 
 export interface ActionResponseOvertime {
@@ -40,13 +41,14 @@ export interface AttendanceData {
   attendanceDate: number;
   clockIn: string;
   clockOut: string;
-  status: string;
+  status: RequestStatus;
   createdAt: string;
   updatedAt: string;
 }
 
+// ! Approve Overtime
 export async function approveOvertime(id: string) {
-  const status = OvertimeStatus.COMPLETED;
+  const status = RequestStatus.APPROVED;
   const formData = new FormData();
   formData.append("status", status);
 
@@ -54,7 +56,32 @@ export async function approveOvertime(id: string) {
   console.log("id : ", id);
 
   try {
-    const res = await put("overtimes", id, formData);
+    const res = await put("overtimes/approve", id, formData);
+
+    console.log("res from server action : ", res);
+
+    revalidateTag("overtimes");
+    return {
+      success: true,
+      message: "Overtime has been approved successfully",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to approve overtime",
+    };
+  }
+}
+export async function rejectOvertime(id: string) {
+  const status = RequestStatus.REJECTED;
+  const formData = new FormData();
+  formData.append("status", status);
+
+  console.log("dataToSend : ", formData);
+  console.log("id : ", id);
+
+  try {
+    const res = await put("overtimes/reject", id, formData);
 
     console.log("res from server action : ", res);
 

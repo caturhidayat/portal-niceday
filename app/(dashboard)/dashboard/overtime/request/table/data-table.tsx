@@ -17,7 +17,11 @@ import {
   SortingFn,
   sortingFns,
 } from "@tanstack/react-table";
-
+import {
+  rankItem,
+  compareItems,
+  RankingInfo,
+} from "@tanstack/match-sorter-utils";
 import {
   Table,
   TableBody,
@@ -26,23 +30,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Suspense, useRef, useState } from "react";
-
+import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { DataTablePagination } from "@/components/table/data-table-pagination";
+
+import { Attendance } from "../../../attendance/today/columns";
 import { DataTableToolbar } from "./data-table-toolbar";
-import Loading from "@/app/loading";
-import {
-  compareItems,
-  RankingInfo,
-  rankItem,
-} from "@tanstack/match-sorter-utils";
 import { Button } from "@/components/ui/button";
-import { writeFileXLSX, utils } from "xlsx";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import FormCreateOvertime from "../FormCreateOvertime";
+import { OvertimeReasonsType } from "../../../setting/overtime-reason/table/columns";
+import { format } from "date-fns";
+
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  overtimeReasons: OvertimeReasonsType[];
 }
 
 declare module "@tanstack/react-table" {
@@ -85,17 +89,16 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
   return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
 };
 
-export function DataTableC<TData, TValue>({
+export function DataTableOvertime<TData extends Attendance, TValue>({
   columns,
   data,
+  overtimeReasons
 }: DataTableProps<TData, TValue>) {
-  const tbl = useRef<HTMLTableElement>(null);
-
+  // Tanstack table state
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [globalFilter, setGlobalFilter] = useState("");
 
   // Define table
   const table = useReactTable({
@@ -106,17 +109,12 @@ export function DataTableC<TData, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
-      globalFilter,
     },
     initialState: {
       pagination: {
-        pageSize: 20
+        pageSize: 20,
       },
     },
-    filterFns: {
-      fuzzy: fuzzyFilter,
-    },
-    globalFilterFn: "fuzzy",
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -128,13 +126,16 @@ export function DataTableC<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    filterFns: {
+      fuzzy: fuzzyFilter,
+    },
   });
 
   return (
     <div className="space-y-4">
       <DataTableToolbar table={table} />
       <div className="rounded-md border">
-        <Table ref={tbl}>
+        <Table>
           <TableHeader className="bg-accent">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -150,35 +151,75 @@ export function DataTableC<TData, TValue>({
                     </TableHead>
                   );
                 })}
-                <TableHead className="bg-accent">
-                  <Button variant={"ghost"}>Action</Button>
-                </TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  <Suspense fallback={<Loading />}>
+              table.getRowModel().rows.map((row) => {
+                return (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="p-2 px-2">
+                      <TableCell key={cell.id} className="p-3 px-2">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
                         )}
                       </TableCell>
                     ))}
-                  </Suspense>
-                </TableRow>
-              ))
+                    <TableCell>
+                      {!row.original.overtimeStatus && (
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              disabled={!row.original.checkOutTime}
+                            >
+                              Request Overtime
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Create Overtime Request</DialogTitle>
+                            </DialogHeader>
+                            <div>
+                              <Alert>
+                                <AlertTitle>
+                                  Details Attendance
+                                </AlertTitle>
+                                <AlertDescription>
+                                  <div className="grid">
+                                    <span>
+                                    Shift - {format(new Date(+row.original.shiftStart), 'HH:mm')} - {format(new Date(+row.original.shiftEnd), 'HH:mm')}
+                                    </span>
+                                    <span>
+                                    Actual Attendance - {format(new Date(+row.original.checkInTime), 'HH:mm')} - {format(new Date(+row.original.checkOutTime), 'HH:mm')}
+                                    </span>
+                                  </div>
+                                </AlertDescription>
+                              </Alert>
+                            </div>
+                            <FormCreateOvertime
+                              attendance={row.original}
+                              attendanceDate={row.original.attendanceDate}
+                              overtimeReasons={overtimeReasons}
+                            />
+                          </DialogContent>
+                        </Dialog>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={columns.length + 1}
                   className="h-24 text-center "
                 >
                   <Alert>
@@ -190,17 +231,6 @@ export function DataTableC<TData, TValue>({
             )}
           </TableBody>
         </Table>
-        {/* <Button
-        className="mt-2 flex justify-end gap-2"
-          onClick={() => {
-            // const wb = utils.table_to_book(tbl.current);
-            const wb = utils.table_to_book(table);
-
-            writeFileXLSX(wb, "Attendance.xlsx");
-          }}
-        >
-          Export To Excel
-        </Button> */}
         <DataTablePagination table={table} />
       </div>
     </div>
