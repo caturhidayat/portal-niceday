@@ -169,8 +169,9 @@ export function DataTableAttendance<TData extends Attendance, TValue>({
                   );
                 })}
                 <TableHead className="bg-accent">
-                  <Button variant={"ghost"}>Action</Button>
+                  <Button variant={"ghost"}>Acton</Button>
                 </TableHead>
+                
               </TableRow>
             ))}
           </TableHeader>
