@@ -38,7 +38,6 @@ import {
 } from "@/components/ui/select";
 import { User } from "../../attendance/today/columns";
 import { AttendanceData, getAttendanceData } from "../actions";
-import { OvertimeData } from "../table/overtime-data";
 
 export default function FormCreateMultiEmployee({
   employees,
@@ -289,11 +288,11 @@ export default function FormCreateMultiEmployee({
               </Button>
             </div>
 
-            <div>
+            {/* <div>
               {attendanceData.length !== 0 ? (
                 <OvertimeData data={attendanceData} />
               ) : null}
-            </div>
+            </div> */}
           </CardContent>
           {/* <CardFooter>
             <Button>Submit Overtime</Button>

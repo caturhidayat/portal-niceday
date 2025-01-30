@@ -1,8 +1,10 @@
-'use client';
+"use client";
 
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -26,8 +28,15 @@ export default function DialogCreate({
         <Button>Create Attendance</Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>Create Attendance</DialogTitle>
-        <FormEntryAttendance employees={employees} shifts={shifts} setIsOpen={setIsOpen}  />
+        <DialogHeader>
+          <DialogTitle>Create Attendance</DialogTitle>
+          <DialogDescription>Create new attendance</DialogDescription>
+        </DialogHeader>
+        <FormEntryAttendance
+          employees={employees}
+          shifts={shifts}
+          setIsOpen={setIsOpen}
+        />
       </DialogContent>
     </Dialog>
   );

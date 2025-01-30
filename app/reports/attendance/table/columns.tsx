@@ -2,18 +2,11 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { ChevronsUpDown } from "lucide-react";
-import { Attendance } from "../../attendance/today/columns";
+import { Attendance } from "@/app/(dashboard)/dashboard/attendance/today/columns";
 
 // Custom filter function for date range
 const dateRangeFilter = (row: any, columnId: string, filterValue: DateRange | undefined) => {
@@ -68,14 +61,14 @@ export const columns: ColumnDef<Attendance>[] = [
     },
     filterFn: dateRangeFilter,
   },
-  // {
-  //   accessorKey: "shiftName",
-  //   header: "Shift",
-  //   cell: ({ row }) => {
-  //     const shiftName = row.getValue("shiftName") as string;
-  //     return shiftName;
-  //   },
-  // },
+  {
+    accessorKey: "shiftName",
+    header: "Shift",
+    cell: ({ row }) => {
+      const shiftName = row.getValue("shiftName") as string;
+      return shiftName;
+    },
+  },
   {
     accessorKey: "shiftStart",
     header: "Shift Start",
@@ -145,6 +138,14 @@ export const columns: ColumnDef<Attendance>[] = [
     cell: ({ row }) => {
       const time = row.getValue("overtimeEnd") as string;
       return time ? <span style={{ color: "red" }}>{format(new Date(Number(time)), "HH:mm")}</span> : "-";
+    },
+  },
+  {
+    accessorKey: "overtimeTotalHours",
+    header: "Overtime Total Hours",
+    cell: ({ row }) => {
+      const hours = row.getValue("overtimeTotalHours") as number;
+      return hours ? `${hours} Minutes` : "-";
     },
   },
   {

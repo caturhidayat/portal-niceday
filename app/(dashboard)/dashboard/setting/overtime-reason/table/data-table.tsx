@@ -17,7 +17,11 @@ import {
   SortingFn,
   sortingFns,
 } from "@tanstack/react-table";
-
+import {
+  rankItem,
+  compareItems,
+  RankingInfo,
+} from "@tanstack/match-sorter-utils";
 import {
   Table,
   TableBody,
@@ -26,19 +30,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Suspense, useRef, useState } from "react";
-
+import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { DataTablePagination } from "@/components/table/data-table-pagination";
-import { DataTableToolbar } from "./data-table-toolbar";
-import Loading from "@/app/loading";
-import {
-  compareItems,
-  RankingInfo,
-  rankItem,
-} from "@tanstack/match-sorter-utils";
+
 import { Button } from "@/components/ui/button";
-import { writeFileXLSX, utils } from "xlsx";
+import { Trash2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { deleteOvertimeReason } from "../actions";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -85,17 +94,17 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
   return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
 };
 
-export function DataTableC<TData, TValue>({
+export function DataTableOvertimeReasons<TData extends { id: string }, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const tbl = useRef<HTMLTableElement>(null);
-
+  // Tanstack table state
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [globalFilter, setGlobalFilter] = useState("");
+
+  const [isOpen, setIsOpen] = useState(false);
 
   // Define table
   const table = useReactTable({
@@ -106,17 +115,12 @@ export function DataTableC<TData, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
-      globalFilter,
     },
     initialState: {
       pagination: {
-        pageSize: 20
+        pageSize: 20,
       },
     },
-    filterFns: {
-      fuzzy: fuzzyFilter,
-    },
-    globalFilterFn: "fuzzy",
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -128,13 +132,16 @@ export function DataTableC<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    filterFns: {
+      fuzzy: fuzzyFilter,
+    },
   });
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} />
+      {/* <DataTableToolbar table={table} /> */}
       <div className="rounded-md border">
-        <Table ref={tbl}>
+        <Table>
           <TableHeader className="bg-accent">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -150,35 +157,70 @@ export function DataTableC<TData, TValue>({
                     </TableHead>
                   );
                 })}
-                <TableHead className="bg-accent">
-                  <Button variant={"ghost"}>Action</Button>
-                </TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  <Suspense fallback={<Loading />}>
+              table.getRowModel().rows.map((row) => {
+                return (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="p-2 px-2">
+                      <TableCell key={cell.id} className="p-0 px-2">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
                         )}
                       </TableCell>
                     ))}
-                  </Suspense>
-                </TableRow>
-              ))
+                    <TableCell>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost">
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you sure you want to delete this?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete your account and remove your
+                              data from our servers.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <div className="flex justify-end space-x-2">
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction asChild>
+                              <Button
+                                onClick={async () => {
+                                  await deleteOvertimeReason(
+                                    row.original.id
+                                  );
+                                  setIsOpen(false);
+                                }}
+                              >
+                                Delete
+                              </Button>
+                            </AlertDialogAction>
+                          </div>
+                        </AlertDialogContent>
+                        <AlertDialogFooter></AlertDialogFooter>
+                      </AlertDialog>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={columns.length + 1}
                   className="h-24 text-center "
                 >
                   <Alert>
@@ -190,17 +232,6 @@ export function DataTableC<TData, TValue>({
             )}
           </TableBody>
         </Table>
-        {/* <Button
-        className="mt-2 flex justify-end gap-2"
-          onClick={() => {
-            // const wb = utils.table_to_book(tbl.current);
-            const wb = utils.table_to_book(table);
-
-            writeFileXLSX(wb, "Attendance.xlsx");
-          }}
-        >
-          Export To Excel
-        </Button> */}
         <DataTablePagination table={table} />
       </div>
     </div>

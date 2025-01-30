@@ -1,63 +1,22 @@
 "use client";
 
-import { Column, ColumnDef, Table } from "@tanstack/react-table";
+import {
+  Column,
+  ColumnDef,
+  Table,
+  createColumnHelper,
+} from "@tanstack/react-table";
 import { HTMLProps, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
-import { Attendance, Shift, User } from "../../today/columns";
+import { Attendance } from "../../today/columns";
 import { format } from "date-fns";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {  MoreHorizontal, Edit, ChevronsUpDown } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Popover } from "@/components/ui/popover";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import FormEditAttendance from "../FormEditAttendance";
-import DialogEditAttendance from "../DialogEditAttendance";
+
+const columnHelper = createColumnHelper<Attendance>();
 
 export const columnsAttendance: ColumnDef<Attendance>[] = [
-  // {
-  //   id: "select",
-  //   header: ({ table }) => (
-  //     <IndeterminateCheckbox
-  //       {...{
-  //         checked: table.getIsAllRowsSelected(),
-  //         indeterminate: table.getIsSomeRowsSelected(),
-  //         onChange: table.getToggleAllRowsSelectedHandler(),
-  //       }}
-  //     />
-  //   ),
-  //   cell: ({ row }) => (
-  //     <div>
-  //       <IndeterminateCheckbox
-  //         {...{
-  //           checked: row.getIsSelected(),
-  //           disabled: !row.getCanSelect(),
-  //           indeterminate: row.getIsSomeSelected(),
-  //           onChange: row.getToggleSelectedHandler(),
-  //         }}
-  //       />
-  //     </div>
-  //   ),
-  // },
-  // {
-  //   accessorKey: "id",
-  //   header: "Attendance ID",
-  //   cell: (info) => info.getValue(),
-  //   footer: (props) => props.column.id,
-  // },
-  // {
-  //   accessorKey: "userId",
-  //   header: "User ID",
-  //   cell: (info) => info.getValue(),
-  //   footer: (props) => props.column.id,
-  // },
   {
     accessorKey: "username",
     header: ({ column }) => {
@@ -76,7 +35,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
     },
   },
   {
-    accessorKey: "name",
+    accessorKey: "fullName",
     header: ({ column }) => {
       return (
         <Button
@@ -89,7 +48,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
       );
     },
     cell: ({ row }) => {
-      return <div className="ml-2">{row.getValue("name")}</div>;
+      return <div className="ml-2">{row.getValue("fullName")}</div>;
     },
   },
   {
@@ -123,6 +82,48 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
     },
     footer: (props) => props.column.id,
   },
+
+  {
+    accessorKey: "shiftStart",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+        >
+          Start Shift
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: (info) => (
+      <span className="p-2">
+        {format(new Date(Number(info.getValue())), "HH:mm")}
+      </span>
+    ),
+    footer: (props) => props.column.id,
+  },
+  {
+    accessorKey: "shiftEnd",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+        >
+          End Shift
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: (info) => (
+      <span className="p-2">
+        {format(new Date(Number(info?.getValue())), "HH:mm")}
+      </span>
+    ),
+    footer: (props) => props.column.id,
+  },
+
   {
     accessorKey: "checkInTime",
     header: ({ column }) => {
@@ -201,7 +202,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
     cell: ({ row }) => {
       const workHours = row.getValue("workHours") as number;
       if (isNaN(workHours)) {
-        return null
+        return null;
       }
       return <div className="ml-4">{workHours}</div>;
     },
@@ -221,14 +222,14 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
     },
   },
   {
-    accessorKey: "shift",
+    accessorKey: "shiftName",
     header: "Shift",
     cell: ({ row }) => {
-      const shift = row.getValue("shift") as Shift;
-      if (!shift) {
-        return null
+      const shiftName = row.getValue("shiftName") as string;
+      if (!shiftName) {
+        return null;
       }
-      return <div className="ml-4">{String(shift.name)}</div>;
+      return <div className="ml-4">{String(shiftName)}</div>;
     },
   },
 

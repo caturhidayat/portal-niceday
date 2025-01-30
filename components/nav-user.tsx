@@ -72,7 +72,7 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout}>
+            <DropdownMenuItem onClick={handleLogout} className="text-destructive">
               <LogOut />
               Log out
             </DropdownMenuItem>

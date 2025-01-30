@@ -14,10 +14,12 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
   FilterFn,
-  SortingFn,
-  sortingFns,
 } from "@tanstack/react-table";
-
+import {
+  rankItem,
+  compareItems,
+  RankingInfo,
+} from "@tanstack/match-sorter-utils";
 import {
   Table,
   TableBody,
@@ -26,23 +28,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Suspense, useRef, useState } from "react";
-
+import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { DataTablePagination } from "@/components/table/data-table-pagination";
-import { DataTableToolbar } from "./data-table-toolbar";
-import Loading from "@/app/loading";
-import {
-  compareItems,
-  RankingInfo,
-  rankItem,
-} from "@tanstack/match-sorter-utils";
+import { Attendance } from "@/app/(dashboard)/dashboard/attendance/today/columns";
+import { useRef } from "react";
+import { utils, writeFileXLSX } from "xlsx";
 import { Button } from "@/components/ui/button";
-import { writeFileXLSX, utils } from "xlsx";
+import { format } from "date-fns";
+import { FileSpreadsheet } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  start: string;
+  end: string;
 }
 
 declare module "@tanstack/react-table" {
@@ -69,33 +68,21 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return itemRank.passed;
 };
 
-// Define a custom fuzzy sort function that will sort by rank if the row has ranking information
-const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
-  let dir = 0;
 
-  // Only sort by rank if the column has ranking information
-  if (rowA.columnFiltersMeta[columnId]) {
-    dir = compareItems(
-      rowA.columnFiltersMeta[columnId]?.itemRank!,
-      rowB.columnFiltersMeta[columnId]?.itemRank!
-    );
-  }
-
-  // Provide an alphanumeric fallback for when the item ranks are equal
-  return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
-};
-
-export function DataTableC<TData, TValue>({
+export function DataTableAttendanceReports<TData extends Attendance, TValue>({
   columns,
   data,
+  start,
+  end
 }: DataTableProps<TData, TValue>) {
-  const tbl = useRef<HTMLTableElement>(null);
-
+  // Tanstack table state
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [globalFilter, setGlobalFilter] = useState("");
+
+  // Table reference
+  const tbl = useRef(null)
 
   // Define table
   const table = useReactTable({
@@ -106,17 +93,12 @@ export function DataTableC<TData, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
-      globalFilter,
     },
     initialState: {
       pagination: {
-        pageSize: 20
+        pageSize: 1000,
       },
     },
-    filterFns: {
-      fuzzy: fuzzyFilter,
-    },
-    globalFilterFn: "fuzzy",
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -128,11 +110,70 @@ export function DataTableC<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    filterFns: {
+      fuzzy: fuzzyFilter,
+    },
   });
 
+  // format date
+  const startDate = format(+start, 'yyyy-MM-dd');
+  const endDate = format(+end, 'yyyy-MM-dd');
+
   return (
-    <div className="space-y-4">
-      <DataTableToolbar table={table} />
+    <div className="space-y-4 p-6">
+      <div className="flex justify-end">
+          <Button className="bg-green-700 hover:bg-green-800" onClick={() => {
+              // Get headers from columns
+              const headers = columns.reduce((acc: { [key: string]: string }, column: any) => {
+                const header = typeof column.header === 'string' 
+                  ? column.header 
+                  : column.header === undefined 
+                    ? column.accessorKey 
+                    : typeof column.header === 'function'
+                      ? column.accessorKey.charAt(0).toUpperCase() + column.accessorKey.slice(1)
+                      : column.accessorKey;
+                acc[column.accessorKey] = header;
+                return acc;
+              }, {});
+
+              // Create worksheet from the data directly instead of table
+              const ws_data = table.getRowModel().rows.map(row => {
+                const rowData: any = {};
+                row.getVisibleCells().forEach(cell => {
+                  const columnId = cell.column.id;
+                  const value = cell.getValue();
+                  
+                  // Handle time columns specifically
+                  if (['shiftStart', 'shiftEnd', 'checkInTime', 'checkOutTime', 'overtimeStart', 'overtimeEnd'].includes(columnId)) {
+                    if (value) {
+                      rowData[headers[columnId] || columnId] = format(new Date(Number(value)), 'HH:mm');
+                    } else {
+                      rowData[headers[columnId] || columnId] = '-';
+                    }
+                  } else if (columnId === 'attendanceDate') {
+                    rowData[headers[columnId] || columnId] = format(new Date(Number(value)), 'dd/MM/yyyy');
+                  } else {
+                    rowData[headers[columnId] || columnId] = cell.getValue();
+                  }
+                });
+                return rowData;
+              });
+
+              // Create workbook and add worksheet
+              const wb = utils.book_new();
+              const ws = utils.json_to_sheet(ws_data);
+
+              // Add worksheet to workbook
+              utils.book_append_sheet(wb, ws, "Attendance Report");
+              
+              // write to XLSX
+              writeFileXLSX(wb, `Reports_Attendances_${startDate}_${endDate}.xlsx`);
+            }}>
+            <FileSpreadsheet className="mr-2 h-4 w-4" />
+            Export to XLSX
+          </Button>
+      </div>
+      {/* <DataTableToolbar table={table} /> */}
       <div className="rounded-md border">
         <Table ref={tbl}>
           <TableHeader className="bg-accent">
@@ -150,35 +191,32 @@ export function DataTableC<TData, TValue>({
                     </TableHead>
                   );
                 })}
-                <TableHead className="bg-accent">
-                  <Button variant={"ghost"}>Action</Button>
-                </TableHead>
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  <Suspense fallback={<Loading />}>
+              table.getRowModel().rows.map((row) => {
+                return (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="p-2 px-2">
+                      <TableCell key={cell.id} className="p-3 px-2">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
                         )}
                       </TableCell>
                     ))}
-                  </Suspense>
-                </TableRow>
-              ))
+                  </TableRow>
+                );
+              })
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={columns.length + 1}
                   className="h-24 text-center "
                 >
                   <Alert>
@@ -190,18 +228,6 @@ export function DataTableC<TData, TValue>({
             )}
           </TableBody>
         </Table>
-        {/* <Button
-        className="mt-2 flex justify-end gap-2"
-          onClick={() => {
-            // const wb = utils.table_to_book(tbl.current);
-            const wb = utils.table_to_book(table);
-
-            writeFileXLSX(wb, "Attendance.xlsx");
-          }}
-        >
-          Export To Excel
-        </Button> */}
-        <DataTablePagination table={table} />
       </div>
     </div>
   );

@@ -198,7 +198,7 @@ const data = {
       title: "Employees",
       url: "#",
       icon: UsersRound,
-      // iconColor: "text-sky-500",
+      iconColor: "text-sky-500",
       items: [
         {
           title: "Add Employee",
@@ -222,7 +222,7 @@ const data = {
       title: "Time Management",
       url: "#",
       icon: CalendarClock,
-      // iconColor: "text-orange-500",
+      iconColor: "text-lime-500",
       items: [
         // {
         //   title: "Attendance",
@@ -236,10 +236,10 @@ const data = {
           title: "Attendance List",
           url: "/dashboard/attendance/list",
         },
-        {
-          title: "Attendance Edit",
-          url: "/dashboard/attendance/edit",
-        },
+        // {
+        //   title: "Attendance Edit",
+        //   url: "/dashboard/attendance/edit",
+        // },
 
         {
           title: "Overtime List",
@@ -249,10 +249,10 @@ const data = {
           title: "Overtime Request",
           url: "/dashboard/overtime/request",
         },
-        {
-          title: "Overtime Cancellation",
-          url: "/dashboard/overtime/cancellation",
-        },
+        // {
+        //   title: "Overtime Cancellation",
+        //   url: "/dashboard/overtime/cancellation",
+        // },
 
         {
           title: "Employee Shifts",
@@ -264,31 +264,31 @@ const data = {
         },
       ],
     },
-    {
-      title: "Leave",
-      url: "#",
-      icon: CircleArrowOutUpRight,
-      // iconColor: "text-rose-500",
-      items: [
-        {
-          title: "Leave List",
-          url: "/dashboard/leaves",
-        },
-        {
-          title: "Leave Request",
-          url: "/dashboard/leaves/request",
-        },
-        {
-          title: "Leave Cancellation",
-          url: "/dashboard/leaves/cancellation",
-        },
-      ],
-    },
+    // {
+    //   title: "Leave",
+    //   url: "#",
+    //   icon: CircleArrowOutUpRight,
+    //   // iconColor: "text-rose-500",
+    //   items: [
+    //     {
+    //       title: "Leave List",
+    //       url: "/dashboard/leaves",
+    //     },
+    //     {
+    //       title: "Leave Request",
+    //       url: "/dashboard/leaves/request",
+    //     },
+    //     {
+    //       title: "Leave Cancellation",
+    //       url: "/dashboard/leaves/cancellation",
+    //     },
+    //   ],
+    // },
     {
       title: "Organization",
       url: "#",
       icon: Building,
-      // iconColor: "text-violet-500",
+      iconColor: "text-violet-500",
       items: [
         // {
         //   title: "Organization",
@@ -324,7 +324,7 @@ const data = {
       title: "Settings",
       url: "#",
       icon: Settings2,
-      // iconColor: "text-amber-500",
+      iconColor: "text-amber-500",
       items: [
         {
           title: "Shift Daily",
@@ -338,18 +338,19 @@ const data = {
           title: "Shift Employee",
           url: "/dashboard/setting/shift-employee",
         },
-        // {
-        //   title: "Overtime Reason",
-        //   url: "/dashboard/setting/overtime-reason",
-        // },
+        {
+          title: "Overtime Reason",
+          url: "/dashboard/setting/overtime-reason",
+        },
       ],
     },
   ],
   reports: [
     {
-      name: "Attendance Report",
+      name: "Report",
       url: "/dashboard/reports/attendance",
       icon: Sheet,
+      iconColor: "text-teal-500",
     },
   ],
 };
