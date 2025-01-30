@@ -72,7 +72,7 @@ export default async function createEmployee(
     }
 
     // Submit data to server if data is valid
-    const res = await post("users/signup", formData);
+    const res = await post("users", formData);
 
     revalidateTag("employees");
 
