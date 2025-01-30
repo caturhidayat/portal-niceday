@@ -1,92 +1,35 @@
-"use client";
-
-import {
-  ColumnFiltersState,
-  VisibilityState,
-  getCoreRowModel,
-  useReactTable,
-  getPaginationRowModel,
-  SortingState,
-  getSortedRowModel,
-  getFilteredRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-} from "@tanstack/react-table";
-import { useEffect, useState } from "react";
 import { columnsAttendance } from "./table/columns";
-import { getAttendance } from "./action";
-import { Attendance } from "../today/columns";
-import TableAttendancesList from "./table/table";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import FormCreateAttendance from "../entry-form/form-create-attendance";
-import FormEntryAttendance from "./FormCreateAttendance";
+import { Attendance, Shift, User } from "../today/columns";
+import DialogCreate from "./DialogCreate";
+import { DataTableAttendance } from "./table/data-table";
+import { get } from "@/lib/fetch-wrapper";
 
-export default function Page() {
-  const [data, setData] = useState<Attendance[]>([]);
+async function getAttendance(): Promise<Attendance[]> {
+  const response = await get("attendances", ["attendances"]);
+  return response as Attendance[];
+}
+async function getEmployees(): Promise<User[]> {
+  const response = await get("users/employees", ["employees"]);
+  return response as User[];
+}
+async function getShift(): Promise<Shift[]> {
+  const response = await get("shifts", ["shifts"]);
+  return response as Shift[];
+}
 
-  const [rowSelection, setRowSelection] = useState({});
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [sorting, setSorting] = useState<SortingState>([]);
+export default async function Page() {
+  const data = await getAttendance();
+  const [employees, shifts] = await Promise.all([getEmployees(), getShift()]);
 
-  useEffect(() => {
-    async function getData() {
-      const res = await getAttendance();
-      setData(res);
-    }
-    getData();
-  }, []);
-
-  const columns = columnsAttendance;
-
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    state: {
-      sorting,
-      columnVisibility,
-      rowSelection,
-      columnFilters,
-    },
-    enableRowSelection: true,
-    onRowSelectionChange: setRowSelection,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
-    // getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-  });
   return (
-    <div className="grid gap-4 p-6">
-      <h1 className="font-bold text-xl">Attendance List</h1>
-      <div className="flex justify-end">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>Entry Attendance</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogTitle>
-              <h1>Entry Attendance</h1>
-            </DialogTitle>
-            {/* <FormCreateAttendance /> */}
-            <FormEntryAttendance />
-          </DialogContent>
-        </Dialog>
+    <div className="grid gap-4">
+      <div className="space-y-2">
+        <span className="font-bold text-xl">Attendance List</span>
       </div>
-      <div>
-        <TableAttendancesList table={table} refreshData={() => {}} />
+      <div className="flex justify-end py-2">
+        <DialogCreate employees={employees} shifts={shifts} />
       </div>
+      <DataTableAttendance columns={columnsAttendance} data={data} />
     </div>
   );
 }

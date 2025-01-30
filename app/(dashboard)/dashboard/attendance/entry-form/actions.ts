@@ -9,7 +9,7 @@ import { revalidateTag } from "next/cache";
 // Get all Employee
 export async function getAllEmployee() {
     const res = await fetch(`${API_URL}/users`, {
-        headers: getHeaders(),
+        headers: await getHeaders(),
         next: {
             tags: ["employee"],
         }

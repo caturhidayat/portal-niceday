@@ -12,8 +12,15 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
-import { useEffect, useState } from "react";
+import {
+  CalendarIcon,
+  Check,
+  ChevronsUpDown,
+  Loader,
+  Loader2,
+  Save,
+} from "lucide-react";
+import { useActionState, useEffect, useState } from "react";
 import { Shift } from "../shift/table/columns";
 import { get } from "@/lib/fetch-wrapper";
 import {
@@ -24,7 +31,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import createShiftGroup from "./actions";
+import createShiftGroup, { ActionResponseShiftGroup } from "./actions";
 import { getAllShift } from "../shift/actions";
 
 export type ShiftGroup = {
@@ -37,60 +44,39 @@ export type ShiftGroup = {
   updatedAt: string;
 };
 
-export default function FormCreateShiftGroup() {
+const initialState: ActionResponseShiftGroup = {
+  success: false,
+  message: "",
+  inputs: {
+    name: "",
+    startDate: "",
+    description: "",
+    cycleLength: 0,
+    shiftName: [],
+  },
+};
+
+export default function FormCreateShiftGroup({
+  shifts,
+}: {
+  shifts: Shift[];
+}) {
   const [date, setDate] = useState<Date>();
   const [displayShift, setDisplayShift] = useState(false);
   const [cycleLength, setCycleLength] = useState(0);
   const [open, setOpen] = useState<Record<number, boolean>>({});
   const [value, setValue] = useState<Record<number, string>>({});
-  const [shifts, setShifts] = useState<Shift[]>([]);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const getShiftsData = async () => {
-      const shifts = await getAllShift();
-      setShifts(shifts);
-    };
-    getShiftsData();
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError(null); // Reset error state
-    const formData = new FormData(e.target as HTMLFormElement);
-    const formObject = Object.fromEntries(formData);
-
-    const payload = {
-      name: formObject.name as string,
-      description: formObject.description as string,
-      startDate: formObject.startDate as string,
-      cycleLength: Number(formObject.cycleLength),
-      shiftId: Array.from({ length: cycleLength }, (_, index) => {
-        const dayKey = `day-${index + 1}`;
-        return (
-          shifts.find((shift) => shift.name === formObject[dayKey])?.id || ""
-        );
-      }),
-    };
-
-    try {
-      await createShiftGroup(payload);
-      // Handle success - you could redirect or show success message
-    } catch (err) {
-      if (err instanceof Error) {
-        console.log("error bro :", err.message);
-        setError(err.message);
-      } else {
-        setError("An error occurred while creating shift group");
-      }
-    }
-  };
+  const [state, action, isPending] = useActionState(
+    createShiftGroup,
+    initialState
+  );
 
   return (
     <div>
       <ScrollArea className="mt-4 h-4/5">
         <div className="grid gap-2">
-          <form className="space-y-2" onSubmit={handleSubmit}>
+          <form className="space-y-2" action={action}>
             <div className="grid gap-4">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="name" className="w-60">
@@ -100,15 +86,15 @@ export default function FormCreateShiftGroup() {
                   id="name"
                   type="text"
                   name="name"
+                  defaultValue={state?.inputs?.name}
                   placeholder="Enter Name"
                   className="flex-grow"
                 />
               </div>
-              {error && (
-                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-                  {error}
-                </div>
+              {state?.errors?.name && (
+                <p className="text-sm text-red-600">{state?.errors?.name}</p>
               )}
+
               <div className="flex flex-col gap-2">
                 <Label htmlFor="description" className="w-60">
                   Description
@@ -117,10 +103,17 @@ export default function FormCreateShiftGroup() {
                   id="description"
                   type="text"
                   name="description"
+                  defaultValue={state?.inputs?.description}
                   placeholder="Enter Dedcription"
                   className="flex-grow"
                 />
               </div>
+              {state?.errors?.description && (
+                <p className="text-sm text-red-600">
+                  {state?.errors?.description}
+                </p>
+              )}
+
               <div className="flex flex-col gap-2">
                 <Label htmlFor="startDate" className="w-60">
                   Start Date
@@ -133,7 +126,7 @@ export default function FormCreateShiftGroup() {
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {date ? (
-                        format(date, "dd/MM/yy")
+                        format(date, "eeee, dd MMM-yyyy")
                       ) : (
                         <span>Pick a date</span>
                       )}
@@ -178,11 +171,17 @@ export default function FormCreateShiftGroup() {
                   className="flex-grow"
                 />
               </div>
+              {state?.errors?.cycleLength && (
+                <p className="text-sm text-red-600">
+                  {state?.errors?.cycleLength}
+                </p>
+              )}
+
               <Button
                 type="button"
                 onClick={() => setDisplayShift(!displayShift)}
               >
-                Add Shift
+                Display Shift
               </Button>
             </div>
             <div>
@@ -276,7 +275,14 @@ export default function FormCreateShiftGroup() {
                 ))}
             </div>
             <div className="flex justify-end ">
-              <Button type="submit">Save</Button>
+              <Button type="submit" disabled={isPending}>
+                {isPending ? (
+                  <Loader className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Save />
+                )}
+                Save
+              </Button>
             </div>
           </form>
         </div>

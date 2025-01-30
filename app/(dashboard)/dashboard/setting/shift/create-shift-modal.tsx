@@ -18,7 +18,7 @@ export default function CreateShiftModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button aria-haspopup>Create Shift</Button>
       </DialogTrigger>

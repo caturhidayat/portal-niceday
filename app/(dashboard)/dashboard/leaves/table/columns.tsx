@@ -43,12 +43,12 @@ export const columnsLeaves: ColumnDef<TLeave>[] = [
       </div>
     ),
   },
-  {
-    accessorKey: "id",
-    header: "Leave ID",
-    cell: (info) => info.getValue(),
-    footer: (props) => props.column.id,
-  },
+  // {
+  //   accessorKey: "id",
+  //   header: "Leave ID",
+  //   cell: (info) => info.getValue(),
+  //   footer: (props) => props.column.id,
+  // },
   // {
   //   accessorKey: "userId",
   //   header: "User ID",
@@ -189,13 +189,13 @@ export const columnsLeaves: ColumnDef<TLeave>[] = [
     header: "Reason",
     cell: (info) => info.getValue(),
   },
-  {
-    accessorKey: "approvedById",
-    header: "Approved By",
-    cell: ({ row }) => {
-      return <div className="ml-2">{row.getValue("approvedById")}</div>;
-    },
-  },
+  // {
+  //   accessorKey: "approvedById",
+  //   header: "Approved By",
+  //   cell: ({ row }) => {
+  //     return <div className="ml-2">{row.getValue("approvedById")}</div>;
+  //   },
+  // },
   {
     id: "actions",
     cell: ({ row }) => {
@@ -284,7 +284,7 @@ export function IndeterminateCheckbox({
     if (typeof indeterminate === "boolean") {
       ref.current.indeterminate = !rest.checked && indeterminate;
     }
-  }, [ref, indeterminate]);
+  }, [ref, indeterminate, rest.checked]);
 
   return (
     <Input

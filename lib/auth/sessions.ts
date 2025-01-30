@@ -1,26 +1,28 @@
-'use server';
+"use server";
 
 import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
 import { SESSION_COOKIE } from "../constant";
 import { redirect } from "next/navigation";
 
-
 export async function getSession() {
-  return !!cookies().get(SESSION_COOKIE)?.value;
+  const sessionCookie = (await cookies()).get(SESSION_COOKIE)?.value;
+  return sessionCookie;
+  // return !!cookies().get(SESSION_COOKIE)?.value;
 }
 
 // Set the session cookie
 export async function setSession(response: Response) {
   const setSessionHeader = response.headers.get("Set-Cookie");
+  const cookieStore = await cookies();
   // console.log("setSessionHeader", setSessionHeader);
   if (setSessionHeader) {
     const token = setSessionHeader.split(";")[0].split("=")[1];
-    cookies().set({
-      name: SESSION_COOKIE,
-      value: token,
-      secure: true,
+    cookieStore.set(SESSION_COOKIE, token, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
       expires: new Date(jwtDecode(token).exp! * 1000),
     });
   }
@@ -28,6 +30,8 @@ export async function setSession(response: Response) {
 
 // Remove the session cookie
 export async function removeSession() {
-  cookies().delete(SESSION_COOKIE);
+  // 'use server';
+  // const cookieStore = await cookies();
+  (await cookies()).delete(SESSION_COOKIE);
   redirect("/sign-in");
 }

@@ -1,11 +1,26 @@
 "use client";
 
 import { Column, ColumnDef, Table } from "@tanstack/react-table";
-import { HTMLProps, useEffect, useRef } from "react";
-import { Person } from "./makeData";
+import { HTMLProps, useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
+import { Attendance, Shift, User } from "../../today/columns";
+import { format } from "date-fns";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronsUpDown, MoreHorizontal, Edit } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+// import FormEditAttendance from "../FormEditAttendance";
+// import DialogEditAttendance from "../DialogEditAttendance";
 
-export const columnsEditAttendance: ColumnDef<Person>[] = [
+export const columnsEditAttendance: ColumnDef<Attendance>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -31,68 +46,197 @@ export const columnsEditAttendance: ColumnDef<Person>[] = [
     ),
   },
   {
-    header: "ID",
-    footer: (props) => props.column.id,
-    columns: [
-      {
-        accessorKey: "_id",
-        header: () => <span className="p-2">ID</span>,
-        cell: (info) => info.getValue(),
-        footer: (props) => props.column.id,
-      },
-    ],
+    accessorKey: "username",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+        >
+          NIK
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return <div className="ml-2">{row.getValue("username")}</div>;
+    },
   },
   {
-    header: "Name",
-    footer: (props) => props.column.id,
-    columns: [
-      {
-        accessorKey: "firstName",
-        header: () => <span className="p-2">First Name</span>,
-        cell: (info) => info.getValue(),
-        footer: (props) => props.column.id,
-      },
-      {
-        accessorFn: (row) => row.lastName,
-        id: "lastName",
-        header: () => <span className="p-2">Last Name</span>,
-        cell: (info) => info.getValue(),
-        footer: (props) => props.column.id,
-      },
-    ],
+    accessorKey: "name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+        >
+          Name
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return <div className="ml-2">{row.getValue("name")}</div>;
+    },
   },
   {
-    header: "Info",
+    accessorKey: "attendanceDate",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+        >
+          Attd Date
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: (row) => (
+      <span className="p-2">
+        {format(new Date(Number(row.getValue())), "yyyy-MM-dd")}
+      </span>
+    ),
+    filterFn: (row, id, filterValue) => {
+      const date = new Date(Number(row.getValue(id)));
+      const searchDate = new Date(filterValue);
+
+      // Compare only the date part (ignore time)
+      return (
+        date.getFullYear() === searchDate.getFullYear() &&
+        date.getMonth() === searchDate.getMonth() &&
+        date.getDate() === searchDate.getDate()
+      );
+    },
     footer: (props) => props.column.id,
-    columns: [
-      {
-        accessorKey: "age",
-        header: () => <span className="p-2">Age</span>,
-        footer: (props) => props.column.id,
-      },
-      {
-        header: "More Info",
-        columns: [
-          {
-            accessorKey: "visits",
-            header: () => <span className="p-2">Visits</span>,
-            footer: (props) => props.column.id,
-          },
-          {
-            accessorKey: "status",
-            header: () => <span className="p-2">Status</span>,
-            footer: (props) => props.column.id,
-          },
-          {
-            accessorKey: "progress",
-            header: () => <span className="p-2">Profile Progress</span>,
-            footer: (props) => props.column.id,
-          },
-        ],
-      },
-    ],
   },
-];
+  {
+    accessorKey: "checkInTime",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+        >
+          Check In
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: (info) => (
+      <span className="p-2">
+        {format(new Date(Number(info.getValue())), "HH:mm")}
+      </span>
+    ),
+    footer: (props) => props.column.id,
+  },
+  {
+    accessorKey: "checkOutTime",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+        >
+          Check Out
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: (info) => (
+      <span className="p-2">
+        {format(new Date(Number(info.getValue())), "HH:mm")}
+      </span>
+    ),
+    footer: (props) => props.column.id,
+  },
+  {
+    accessorKey: "isLate",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+        >
+          Is Late
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const isLate = row.getValue("isLate");
+      return (
+        <div className="ml-2">
+          {isLate ? <Badge variant={"destructive"}>Late</Badge> : null}
+        </div>
+      );
+    },
+  },
+  // {
+  //   accessorKey: "workHours",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+  //       >
+  //         Work Hours
+  //         <ChevronsUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  //   cell: ({ row }) => {
+  //     const workHours = row.getValue("workHours") as number;
+  //     if (isNaN(workHours)) {
+  //       return <div className="ml-4">--:--:--</div>;
+  //     }
+  //     return <div className="ml-4">{workHours}</div>;
+  //   },
+  // },
+  // {
+  //   accessorKey: "branch",
+  //   header: "Branch",
+  //   cell: ({ row }) => {
+  //     return <div className="ml-4">{row.getValue("branch")}</div>;
+  //   },
+  // },
+  // {
+  //   accessorKey: "department",
+  //   header: "Department",
+  //   cell: ({ row }) => {
+  //     return <div className="ml-4">{row.getValue("department")}</div>;
+  //   },
+  // },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const attendance = row.original;
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open Menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel className="font-bold">Action</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(attendance.id)}
+            >
+              Copy Attendance ID
+            </DropdownMenuItem>
+            <DropdownMenuItem>View User</DropdownMenuItem>
+
+            <DropdownMenuItem>View attendance details</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
+] satisfies ColumnDef<Attendance>[];
 
 export function Filter({
   column,
@@ -151,7 +295,7 @@ export function IndeterminateCheckbox({
     if (typeof indeterminate === "boolean") {
       ref.current.indeterminate = !rest.checked && indeterminate;
     }
-  }, [ref, indeterminate]);
+  }, [ref, indeterminate, rest.checked]);
 
   return (
     <Input
@@ -160,5 +304,10 @@ export function IndeterminateCheckbox({
       className={className + "cursor-pointer"}
       {...rest}
     />
+    // <Checkbox
+    //   ref={ref}
+    //   className={className + "cursor-pointer"}
+    //   {...rest}
+    // />
   );
 }
