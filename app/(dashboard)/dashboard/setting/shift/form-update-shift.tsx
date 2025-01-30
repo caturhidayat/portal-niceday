@@ -29,8 +29,8 @@ export default function FormEditShift({ setIsOpen, data }: { setIsOpen: any, dat
                 formData.set("endTime", convertTimeToEpoch(endTime).toString());
 
                 console.log("formData", formData);
-                const res = await createShift(formData);
-                console.log("response", res);
+                // const res = await createShift(formData);
+                // console.log("response", res);
 
                 setIsOpen(false);
             }}

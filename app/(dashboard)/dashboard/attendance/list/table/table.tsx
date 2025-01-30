@@ -47,7 +47,7 @@ export default function TableAttendancesList({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center py-4 gap-2">
+      <div>
         {/* <Input
           placeholder="Filter by name..."
           value={globalFilter ?? ""}

@@ -4,9 +4,14 @@ import * as React from "react";
 import {
   Building,
   CalendarClock,
+  CircleArrowOutUpRight,
   FileUser,
+  Frame,
   GalleryVerticalEnd,
+  Map,
+  PieChart,
   Settings2,
+  Sheet,
   UsersRound,
 } from "lucide-react";
 
@@ -20,13 +25,14 @@ import {
 import { SidebarSwitch } from "./SIdebarSwitch";
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
+import { NavReports } from "./nav-project";
 
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "",
+    email: "",
+    avatar: "",
   },
   teams: [
     {
@@ -192,34 +198,48 @@ const data = {
       title: "Employees",
       url: "#",
       icon: UsersRound,
+      iconColor: "text-sky-500",
       items: [
         {
-          title: "Employee Information",
-          url: "/dashboard/employee/information",
+          title: "Add Employee",
+          url: "/dashboard/employees",
         },
+        // {
+        //   title: "Employee Information",
+        //   url: "/dashboard/employees/information",
+        // },
         {
-          title: "Employee Report",
-          url: "/dashboard/employee/report",
+          title: "Employee List",
+          url: "/dashboard/employees/list",
         },
+        // {
+        //   title: "Employee Report",
+        //   url: "/dashboard/employees/report",
+        // },
       ],
     },
     {
       title: "Time Management",
       url: "#",
       icon: CalendarClock,
+      iconColor: "text-lime-500",
       items: [
-        {
-          title: "Attendance Entry Form",
-          url: "/dashboard/attendance/entry-form",
-        },
+        // {
+        //   title: "Attendance",
+        //   url: "/dashboard/attendance",
+        // },
+        // {
+        //   title: "Attendance Entry Form",
+        //   url: "/dashboard/attendance/entry-form",
+        // },
         {
           title: "Attendance List",
           url: "/dashboard/attendance/list",
         },
-        {
-          title: "Attendance Edit",
-          url: "/dashboard/attendance/edit",
-        },
+        // {
+        //   title: "Attendance Edit",
+        //   url: "/dashboard/attendance/edit",
+        // },
 
         {
           title: "Overtime List",
@@ -229,23 +249,10 @@ const data = {
           title: "Overtime Request",
           url: "/dashboard/overtime/request",
         },
-        {
-          title: "Overtime Cancellation",
-          url: "/dashboard/overtime/cancellation",
-        },
-
-        {
-          title: "Leave List",
-          url: "/dashboard/leaves",
-        },
-        {
-          title: "Leave Request",
-          url: "/dashboard/leaves/request",
-        },
-        {
-          title: "Leave Cancellation",
-          url: "/dashboard/leaves/cancellation",
-        },
+        // {
+        //   title: "Overtime Cancellation",
+        //   url: "/dashboard/overtime/cancellation",
+        // },
 
         {
           title: "Employee Shifts",
@@ -257,30 +264,55 @@ const data = {
         },
       ],
     },
+    // {
+    //   title: "Leave",
+    //   url: "#",
+    //   icon: CircleArrowOutUpRight,
+    //   // iconColor: "text-rose-500",
+    //   items: [
+    //     {
+    //       title: "Leave List",
+    //       url: "/dashboard/leaves",
+    //     },
+    //     {
+    //       title: "Leave Request",
+    //       url: "/dashboard/leaves/request",
+    //     },
+    //     {
+    //       title: "Leave Cancellation",
+    //       url: "/dashboard/leaves/cancellation",
+    //     },
+    //   ],
+    // },
     {
       title: "Organization",
       url: "#",
       icon: Building,
+      iconColor: "text-violet-500",
       items: [
-        {
-          title: "Organization",
-          url: "/dashboard/organization",
-        },
-        {
-          title: "Organization Structure",
-          url: "/dashboard/organization/structure",
-        },
-        {
-          title: "Organization Shifts",
-          url: "/dashboard/organization/shifts",
-        },
+        // {
+        //   title: "Organization",
+        //   url: "/dashboard/organization",
+        // },
+        // {
+        //   title: "Organization Structure",
+        //   url: "/dashboard/organization/structure",
+        // },
+        // {
+        //   title: "Organization Shifts",
+        //   url: "/dashboard/organization/shifts",
+        // },
         {
           title: "Branches",
           url: "/dashboard/organization/branches",
         },
         {
           title: "Departments",
-          url: "/dashboard/organization/departements",
+          url: "/dashboard/organization/departments",
+        },
+        {
+          title: "Vendor",
+          url: "/dashboard/organization/vendor",
         },
         {
           title: "Office Location",
@@ -292,6 +324,7 @@ const data = {
       title: "Settings",
       url: "#",
       icon: Settings2,
+      iconColor: "text-amber-500",
       items: [
         {
           title: "Shift Daily",
@@ -302,29 +335,24 @@ const data = {
           url: "/dashboard/setting/shift-group",
         },
         {
+          title: "Shift Employee",
+          url: "/dashboard/setting/shift-employee",
+        },
+        {
           title: "Overtime Reason",
           url: "/dashboard/setting/overtime-reason",
         },
       ],
     },
   ],
-  //   projects: [
-  //     {
-  //       name: "Design Engineering",
-  //       url: "#",
-  //       icon: Frame,
-  //     },
-  //     {
-  //       name: "Sales & Marketing",
-  //       url: "#",
-  //       icon: PieChart,
-  //     },
-  //     {
-  //       name: "Travel",
-  //       url: "#",
-  //       icon: Map,
-  //     },
-  //   ],
+  reports: [
+    {
+      name: "Report",
+      url: "/dashboard/reports/attendance",
+      icon: Sheet,
+      iconColor: "text-teal-500",
+    },
+  ],
 };
 
 export function AppSideBar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -335,6 +363,7 @@ export function AppSideBar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
+        <NavReports reports={data.reports} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

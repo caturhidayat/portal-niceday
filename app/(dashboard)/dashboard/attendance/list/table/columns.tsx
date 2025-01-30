@@ -1,62 +1,22 @@
 "use client";
 
-import { Column, ColumnDef, Table } from "@tanstack/react-table";
+import {
+  Column,
+  ColumnDef,
+  Table,
+  createColumnHelper,
+} from "@tanstack/react-table";
 import { HTMLProps, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
-import { Attendance, Shift, User } from "../../today/columns";
+import { Attendance } from "../../today/columns";
 import { format } from "date-fns";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Popover } from "@/components/ui/popover";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import FormEditAttendance from "../FormEditAttendance";
+
+const columnHelper = createColumnHelper<Attendance>();
 
 export const columnsAttendance: ColumnDef<Attendance>[] = [
-  // {
-  //   id: "select",
-  //   header: ({ table }) => (
-  //     <IndeterminateCheckbox
-  //       {...{
-  //         checked: table.getIsAllRowsSelected(),
-  //         indeterminate: table.getIsSomeRowsSelected(),
-  //         onChange: table.getToggleAllRowsSelectedHandler(),
-  //       }}
-  //     />
-  //   ),
-  //   cell: ({ row }) => (
-  //     <div>
-  //       <IndeterminateCheckbox
-  //         {...{
-  //           checked: row.getIsSelected(),
-  //           disabled: !row.getCanSelect(),
-  //           indeterminate: row.getIsSomeSelected(),
-  //           onChange: row.getToggleSelectedHandler(),
-  //         }}
-  //       />
-  //     </div>
-  //   ),
-  // },
-  {
-    accessorKey: "id",
-    header: "Attendance ID",
-    cell: (info) => info.getValue(),
-    footer: (props) => props.column.id,
-  },
-  // {
-  //   accessorKey: "userId",
-  //   header: "User ID",
-  //   cell: (info) => info.getValue(),
-  //   footer: (props) => props.column.id,
-  // },
   {
     accessorKey: "username",
     header: ({ column }) => {
@@ -66,7 +26,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           NIK
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -75,7 +35,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
     },
   },
   {
-    accessorKey: "name",
+    accessorKey: "fullName",
     header: ({ column }) => {
       return (
         <Button
@@ -83,12 +43,12 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
-      return <div className="ml-2">{row.getValue("name")}</div>;
+      return <div className="ml-2">{row.getValue("fullName")}</div>;
     },
   },
   {
@@ -99,8 +59,8 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
-          Attendance Date
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          Date
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -122,6 +82,48 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
     },
     footer: (props) => props.column.id,
   },
+
+  {
+    accessorKey: "shiftStart",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+        >
+          Start Shift
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: (info) => (
+      <span className="p-2">
+        {format(new Date(Number(info.getValue())), "HH:mm")}
+      </span>
+    ),
+    footer: (props) => props.column.id,
+  },
+  {
+    accessorKey: "shiftEnd",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+        >
+          End Shift
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: (info) => (
+      <span className="p-2">
+        {format(new Date(Number(info?.getValue())), "HH:mm")}
+      </span>
+    ),
+    footer: (props) => props.column.id,
+  },
+
   {
     accessorKey: "checkInTime",
     header: ({ column }) => {
@@ -131,7 +133,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           Check In
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -151,7 +153,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           Check Out
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -171,15 +173,15 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           Is Late
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
       const isLate = row.getValue("isLate");
       return (
-        <div className="ml-2">
-          {isLate ? <Badge variant={"destructive"}>LATE</Badge> : null}
+        <div className="">
+          {isLate ? <Badge variant={"destructive"}>Late</Badge> : null}
         </div>
       );
     },
@@ -193,103 +195,73 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
           Work Hours
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
       const workHours = row.getValue("workHours") as number;
       if (isNaN(workHours)) {
-        return <div className="ml-4">--:--:--</div>;
+        return null;
       }
       return <div className="ml-4">{workHours}</div>;
     },
   },
   {
-    accessorKey: "shift",
-    header: "Shift ID",
+    accessorKey: "branch",
+    header: "Branch",
     cell: ({ row }) => {
-      const shift = row.getValue("shift") as Shift;
-      if (!shift) {
-        return <div className="ml-4">--</div>;
+      return <div className="ml-4">{row.getValue("branch")}</div>;
+    },
+  },
+  {
+    accessorKey: "department",
+    header: "Department",
+    cell: ({ row }) => {
+      return <div className="ml-4">{row.getValue("department")}</div>;
+    },
+  },
+  {
+    accessorKey: "shiftName",
+    header: "Shift",
+    cell: ({ row }) => {
+      const shiftName = row.getValue("shiftName") as string;
+      if (!shiftName) {
+        return null;
       }
-      return <div className="ml-4">{String(shift.name)}</div>;
+      return <div className="ml-4">{String(shiftName)}</div>;
     },
   },
 
   // {
-  //   accessorKey: "createdAt",
-  //   header: ({ column }) => {
+  //   id: "actions",
+  //   cell: ({ row }) => {
+  //     const attendance = row.original;
+
   //     return (
-  //       <Button
-  //         variant="ghost"
-  //         onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
-  //       >
-  //         Created At
-  //         <ArrowUpDown className="ml-2 h-4 w-4" />
-  //       </Button>
+  //       <DropdownMenu>
+  //         <DropdownMenuTrigger asChild>
+  //           <Button variant="ghost" className="h-8 w-8 p-0">
+  //             <span className="sr-only">Open Menu</span>
+  //             <MoreHorizontal className="h-4 w-4" />
+  //           </Button>
+  //         </DropdownMenuTrigger>
+  //         <DropdownMenuContent align="end">
+  //           <DropdownMenuLabel className="font-bold">Action</DropdownMenuLabel>
+  //           <DropdownMenuSeparator />
+  //           <DropdownMenuItem
+  //             onClick={() => navigator.clipboard.writeText(attendance.id)}
+  //           >
+  //             Copy Attendance ID
+  //           </DropdownMenuItem>
+  //           <DropdownMenuItem>View User</DropdownMenuItem>
+  //           <DropdownMenuItem>View attendance details</DropdownMenuItem>
+  //         </DropdownMenuContent>
+  //       </DropdownMenu>
   //     );
   //   },
-  //   cell: ({ row }) => {
-  //     const createdAt = row.getValue("createdAt");
-  //     const parsedDate = parseInt(createdAt as string);
-
-  //     if (isNaN(parsedDate)) {
-  //       return <div>Invalid date</div>;
-  //     }
-
-  //     const date = format(new Date(parsedDate), "dd/MM/yy - HH:mm");
-  //     return <div className="ml-4">{date}</div>;
-  //   },
   // },
-
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const attendance = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open Menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel className="font-bold">Action</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(attendance.id)}
-            >
-              Copy Attendance ID
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="ghost" className="w-full justify-start">
-                    Edit Attendance
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <FormEditAttendance
-                    attendance={{
-                      id: row.original.id,
-                      attendanceDate: new Date(row.original.attendanceDate),
-                      checkInTime: row.original.checkInTime,
-                      checkOutTime: row.original.checkOutTime,
-                    }}
-                  />
-                </DialogContent>
-              </Dialog>
-            </DropdownMenuItem>
-            <DropdownMenuItem>View attendance details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
+] satisfies ColumnDef<Attendance>[];
 
 export function Filter({
   column,
@@ -348,7 +320,7 @@ export function IndeterminateCheckbox({
     if (typeof indeterminate === "boolean") {
       ref.current.indeterminate = !rest.checked && indeterminate;
     }
-  }, [ref, indeterminate]);
+  }, [ref, indeterminate, rest.checked]);
 
   return (
     <Input

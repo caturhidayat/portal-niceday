@@ -1,11 +1,20 @@
 "use client";
 
-import { flexRender, Table as ReactTable } from "@tanstack/react-table";
-import { useReducer, useState } from "react";
-import { Person } from "./makeData";
-import { Filter, IndeterminateCheckbox } from "./columns";
+import {
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  Table as ReactTable,
+  useReactTable,
+} from "@tanstack/react-table";
+import { useEffect, useState } from "react";
+import {
+  columnsEditAttendance,
+  Filter,
+  IndeterminateCheckbox,
+} from "./columns";
 
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -16,41 +25,99 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import {
+  CalendarIcon,
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  SearchIcon,
+  SearchXIcon,
 } from "lucide-react";
+import { Attendance } from "../../today/columns";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { Branches, Departments } from "../../../employees/table/columns";
+import { DataTableViewOptions } from "@/components/table/data-table-view-option";
 
-export default function TableEdit({
+export default function TableAttendancesList({
   table,
-  refreshData,
+  branch,
+  departments,
+  // refreshData,
+  rowSelection,
 }: {
-  table: ReactTable<Person>;
-  rowSelection: Object;
-  refreshData: () => void;
+  table: ReactTable<Attendance>;
+  branch: Branches[];
+  departments: Departments[];
+  // refreshData: () => void;
+  rowSelection: {};
 }) {
-  const rerender = useReducer(() => ({}), {})[1];
-
   const [globalFilter, setGlobalFilter] = useState("");
+  const [date, setDate] = useState<Date>();
+  const [find, setFind] = useState(false);
+  const [dataTabel, setDataTabel] = useState<ReactTable<Attendance>>();
+
+  useEffect(() => {
+    setDataTabel(table);
+  }, [table]);
 
   return (
     <div className="space-y-4">
-      <div>
-        <Input
+      <div className="flex items-center justify-between">
+        {/* <Input
+          placeholder="Filter by name..."
           value={globalFilter ?? ""}
-          onChange={(e) => {
-            const value = e.target.value;
-            setGlobalFilter(value);
-            table.setGlobalFilter(value);
-          }}
-          className="p-2 font-lg shadow border border-block"
-          placeholder="Search all columns..."
-        />
+          onChange={(event) => setGlobalFilter(String(event.target.value))}
+          className="max-w-sm"
+        /> */}
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-[280px] justify-start text-left font-normal",
+                !date && "text-muted-foreground"
+              )}
+            >
+              <CalendarIcon />
+              {date ? format(date, "PP") : <span>Filter by date</span>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="p-0">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={(event) => {
+                table.getColumn("attendanceDate")?.setFilterValue(event);
+                setDate(event);
+              }}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+        <div className="flex items-center justify-end gap-2">
+          <DataTableViewOptions table={table} />
+          <Button
+            variant={find ? "destructive" : "default"}
+            onClick={() => setFind(!find)}
+          >
+            {find ? (
+              <SearchXIcon className="h-4 w-4" />
+            ) : (
+              <SearchIcon className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
       </div>
       <div className="h-2" />
       <Table>
-        <TableHeader className="">
+        <TableHeader className="bg-accent">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id} className="">
               {headerGroup.headers.map((header) => {
@@ -62,7 +129,7 @@ export default function TableEdit({
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                        {header.column.getCanFilter() ? (
+                        {find && header.column.getCanFilter() ? (
                           <div className="pt-1 px-1">
                             <Filter column={header.column} table={table} />
                           </div>
@@ -76,7 +143,7 @@ export default function TableEdit({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows.map((row) => {
+          {table?.getRowModel().rows?.map((row) => {
             return (
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => {
@@ -95,7 +162,8 @@ export default function TableEdit({
         </TableBody>
         <TableFooter>
           <TableRow>
-            <td className="p-2">
+            {/* <div> */}
+            <td className="px-2">
               <IndeterminateCheckbox
                 {...{
                   checked: table.getIsAllPageRowsSelected(),
@@ -104,7 +172,10 @@ export default function TableEdit({
                 }}
               />
             </td>
-            <td colSpan={20}>Page Rows ({table.getRowModel().rows.length})</td>
+            <td colSpan={20}>
+              Select Page Rows ({table.getRowModel().rows.length})
+            </td>
+            {/* </div> */}
           </TableRow>
         </TableFooter>
       </Table>
@@ -181,14 +252,9 @@ export default function TableEdit({
             ))}
           </select>
         </div>
-        <div className="flex justify-end">
-          <Button
-            className="border rounded p-2 mb-2 bg-teal-500 text-white"
-            onClick={() => refreshData()}
-          >
-            Refresh Data
-          </Button>
-        </div>
+        {/* <div className="flex justify-end">
+          <Button onClick={() => refreshData()}>Refresh Data</Button>
+        </div> */}
       </div>
     </div>
   );
