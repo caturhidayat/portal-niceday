@@ -202,6 +202,6 @@ export async function updateAttendance(
 // Delete attendance
 export async function deleteAttendance(attendanceId: string) {
   console.log("delete attendance id : ", attendanceId);
-  await del("attendances", attendanceId);
+  await del("attendances/soft", attendanceId);
   revalidateTag("attendances");
 }
