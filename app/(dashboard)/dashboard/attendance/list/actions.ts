@@ -42,10 +42,10 @@ const setTimeFromString = (epochTimestamp: string, timeString: string) => {
   const [hours, minutes] = timeString.split(':').map(Number)
   
   // Buat Date object dari epoch timestamp
-  // const date = new Date(+epochTimestamp)
+  const date = new Date(+epochTimestamp)
   
   // Set jam dan menit
-  const withHours = setHours(epochTimestamp, hours)
+  const withHours = setHours(date, hours)
   const withMinutes = setMinutes(withHours, minutes)
   
   return withMinutes.getTime().toString();
