@@ -3,22 +3,25 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { parse, getTime } from "date-fns";
 
 import createShift from "./actions";
 import { useActionState } from "react";
 import { Loader, Save } from "lucide-react";
+import { startOfDay } from "date-fns";
 
 const initialState = {
   success: false,
   message: "",
   inputs: {
     name: "",
+    date: "",
     startTime: "",
     endTime: "",
     break: "",
   },
 };
+
+const date = startOfDay(new Date()).getTime().toString();
 
 export default function FormCreateShift({ setIsOpen }: { setIsOpen: any }) {
   const [state, action, isPending] = useActionState(createShift, initialState);
@@ -39,6 +42,14 @@ export default function FormCreateShift({ setIsOpen }: { setIsOpen: any }) {
           {state.errors?.name && (
             <p className="text-sm text-red-600">{state.errors.name}</p>
           )}
+          <div>
+            <Input
+              name="date"
+              type="date"
+              hidden
+              value={date}
+            />
+          </div>
           <div>
             <Label>Break (Minute)</Label>
             <Input
