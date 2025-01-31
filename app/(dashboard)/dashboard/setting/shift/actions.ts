@@ -82,11 +82,11 @@ export default async function createShift(
     // Convert valid data to FormData
     const submitData = new FormData();
     submitData.append("name", rawData.name);
-    // submitData.append("startTime", rawData.startTime);
-    // submitData.append("endTime", rawData.endTime);
+    submitData.append("startTime", rawData.startTime);
+    submitData.append("endTime", rawData.endTime);
     //   Convert time to epoch
-    submitData.set("startTime", setTimeFromString(rawData.date, rawData.startTime).toString());
-    submitData.set("endTime", setTimeFromString(rawData.date, rawData.endTime).toString());
+    // submitData.set("startTime", setTimeFromString(rawData.date, rawData.startTime).toString());
+    // submitData.set("endTime", setTimeFromString(rawData.date, rawData.endTime).toString());
     submitData.append("break", rawData.break);
 
     // Submit data to server if data is valid
