@@ -34,26 +34,26 @@ export default function FormCreateShift({ setIsOpen }: { setIsOpen: any }) {
     return withMinutes.getTime().toString();
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const name = formData.get('name') as string;
-    const startTime = formData.get('startTime') as string;
-    const endTime = formData.get('endTime') as string;
-    const breakTime = formData.get('break') as string;
+  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   const formData = new FormData(event.currentTarget);
+  //   const name = formData.get('name') as string;
+  //   const startTime = formData.get('startTime') as string;
+  //   const endTime = formData.get('endTime') as string;
+  //   const breakTime = formData.get('break') as string;
     
-    // Convert both times to epoch milliseconds
-    formData.set('name', name);
-    formData.set('startTime', convertTimeToEpoch(startTime));
-    formData.set('endTime', convertTimeToEpoch(endTime));
-    formData.set('break', breakTime);
+  //   // Convert both times to epoch milliseconds
+  //   formData.set('name', name);
+  //   formData.set('startTime', convertTimeToEpoch(startTime));
+  //   formData.set('endTime', convertTimeToEpoch(endTime));
+  //   formData.set('break', breakTime);
     
-    // Submit the form with converted times
-    action(formData);
-  };
+  //   // Submit the form with converted times
+  //   action(formData);
+  // };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form action={action}>
       <div className="space-y-4">
         <div className="grid gap-4">
           <div>
