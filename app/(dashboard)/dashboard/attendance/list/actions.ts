@@ -48,7 +48,7 @@ const setTimeFromString = (epochTimestamp: string, timeString: string) => {
   const withHours = setHours(date, hours)
   const withMinutes = setMinutes(withHours, minutes)
   
-  return withMinutes
+  return withMinutes.getTime().toString();
 }
 
 // Create Attendance
