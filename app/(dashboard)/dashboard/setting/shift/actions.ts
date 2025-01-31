@@ -4,7 +4,7 @@ import { del, get, post } from "@/lib/fetch-wrapper";
 import { revalidateTag } from "next/cache";
 import { Shift } from "./table/columns";
 import { z } from "zod";
-import { getTime, parse } from "date-fns";
+import { getTime, parse, setHours, setMinutes } from "date-fns";
 
 const ShiftSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -29,16 +29,32 @@ export interface ActionResponseShift {
   inputs?: ShiftFormData;
 }
 
-const convertTimeToEpoch = (time: string) => {
-  const parsedTime = parse(time, "HH:mm", new Date());
-  return getTime(parsedTime);
-};
+// const convertTimeToEpoch = (time: string) => {
+//   const parsedTime = parse(time, "HH:mm", new Date());
+//   return getTime(parsedTime);
+// };
+
+// Fungsi untuk mengatur waktu dari string format "HH:mm"
+const setTimeFromString = (epochTimestamp: string, timeString: string) => {
+  // Parse timeString format "HH:mm"
+  const [hours, minutes] = timeString.split(':').map(Number)
+  
+  // Buat Date object dari epoch timestamp
+  const date = new Date(epochTimestamp)
+  
+  // Set jam dan menit
+  const withHours = setHours(date, hours)
+  const withMinutes = setMinutes(withHours, minutes)
+  
+  return withMinutes
+}
 
 // Action for create employee
 export default async function createShift(
   _prevState: ActionResponseShift,
   formData: FormData
 ): Promise<ActionResponseShift> {
+  const today = new Date().getTime().toString();
   try {
     const rawData: any = {
       name: formData.get("name") as string,
@@ -48,8 +64,8 @@ export default async function createShift(
     };
 
     //   Convert time to epoch
-    formData.set("startTime", convertTimeToEpoch(rawData.startTime).toString());
-    formData.set("endTime", convertTimeToEpoch(rawData.endTime).toString());
+    formData.set("startTime", setTimeFromString(today, rawData.startTime).toString());
+    formData.set("endTime", setTimeFromString(today, rawData.endTime).toString());
 
     // Validate data
     const validatedData = ShiftSchema.safeParse(rawData);

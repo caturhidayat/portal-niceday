@@ -36,6 +36,21 @@ export interface ActionResponseAttendance {
   inputs?: AttendanceFormData;
 }
 
+// Fungsi untuk mengatur waktu dari string format "HH:mm"
+const setTimeFromString = (epochTimestamp: string, timeString: string) => {
+  // Parse timeString format "HH:mm"
+  const [hours, minutes] = timeString.split(':').map(Number)
+  
+  // Buat Date object dari epoch timestamp
+  const date = new Date(epochTimestamp)
+  
+  // Set jam dan menit
+  const withHours = setHours(date, hours)
+  const withMinutes = setMinutes(withHours, minutes)
+  
+  return withMinutes
+}
+
 // Create Attendance
 export async function createAttendance(
   _prevData: ActionResponseAttendance,
@@ -60,6 +75,8 @@ export async function createAttendance(
       isNextDay = true;
     }
 
+    const addOne = addDays(new Date(attendanceDate), 1).getTime().toString();
+
     console.log("diffTime server action : ", diffTime);
 
     // console.log("isNextDay server action : ", isNextDay);
@@ -67,23 +84,27 @@ export async function createAttendance(
     const rawData: any = {
       userId: formData.get("userId") as string,
       attendanceDate: attendanceDate,
-      startTime: new Date(
-        setMinutes(setHours(+attendanceDate, startHour), startMinute)
-      )
-        .getTime()
-        .toString(),
+      // startTime: new Date(
+      //   setMinutes(setHours(+attendanceDate, startHour), startMinute)
+      // )
+      //   .getTime()
+      //   .toString(),
+      // endTime: isNextDay
+      //   ? new Date(
+      //       addDays(
+      //         setMinutes(setHours(+attendanceDate, endHour), endMinute),
+      //         1
+      //       )
+      //     )
+      //       .getTime()
+      //       .toString()
+      //   : new Date(setMinutes(setHours(+attendanceDate, endHour), endMinute))
+      //       .getTime()
+      //       .toString(),
+      startTime: setTimeFromString(attendanceDate, startTime).toString(),
       endTime: isNextDay
-        ? new Date(
-            addDays(
-              setMinutes(setHours(+attendanceDate, endHour), endMinute),
-              1
-            )
-          )
-            .getTime()
-            .toString()
-        : new Date(setMinutes(setHours(+attendanceDate, endHour), endMinute))
-            .getTime()
-            .toString(),
+        ? setTimeFromString(attendanceDate, endTime).toString()
+        : setTimeFromString(addOne, endTime).toString(),
     };
 
     // console.log("rawData server action : ", rawData);
