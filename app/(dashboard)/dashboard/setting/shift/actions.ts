@@ -3,11 +3,12 @@
 import { del, get, post } from "@/lib/fetch-wrapper";
 import { revalidateTag } from "next/cache";
 import { Shift } from "./table/columns";
-import { z } from "zod";
+import { date, z } from "zod";
 import { getTime, parse, setHours, setMinutes } from "date-fns";
 
 const ShiftSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
+  date: z.string(),
   startTime: z.string(),
   endTime: z.string(),
   break: z.string(),
@@ -54,18 +55,18 @@ export default async function createShift(
   _prevState: ActionResponseShift,
   formData: FormData
 ): Promise<ActionResponseShift> {
-  const today = new Date().getTime().toString();
   try {
     const rawData: any = {
       name: formData.get("name") as string,
+      date: formData.get("date") as string,
       startTime: formData.get("startTime") as string,
       endTime: formData.get("endTime") as string,
       break: formData.get("break") as string,
     };
 
     //   Convert time to epoch
-    formData.set("startTime", setTimeFromString(today, rawData.startTime).toString());
-    formData.set("endTime", setTimeFromString(today, rawData.endTime).toString());
+    formData.set("startTime", setTimeFromString(rawData.date, rawData.startTime).toString());
+    formData.set("endTime", setTimeFromString(rawData.date, rawData.endTime).toString());
 
     // Validate data
     const validatedData = ShiftSchema.safeParse(rawData);

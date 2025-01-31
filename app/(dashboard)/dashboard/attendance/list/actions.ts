@@ -75,7 +75,7 @@ export async function createAttendance(
       isNextDay = true;
     }
 
-    const addOne = addDays(new Date(attendanceDate), 1).getTime().toString();
+    const addOne = addDays(attendanceDate, 1).getTime().toString();
 
     console.log("diffTime server action : ", diffTime);
 
