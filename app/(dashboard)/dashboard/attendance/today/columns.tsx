@@ -243,10 +243,10 @@ export const columns: ColumnDef<Attendance>[] = [
             const parsedDate = parseInt(checkInTime as string);
 
             if (isNaN(parsedDate)) {
-                return <div className="ml-4">--:--:--</div>;
+                return <div className="ml-4">--:--</div>;
             }
 
-            const date = format(new Date(parsedDate), "HH:mm:ss");
+            const date = format(new Date(parsedDate), "HH:mm");
             return <div className="ml-4">{date}</div>;
         },
     },
@@ -270,10 +270,10 @@ export const columns: ColumnDef<Attendance>[] = [
             const parsedDate = parseInt(checkOutTime as string);
 
             if (isNaN(parsedDate)) {
-                return <div className="ml-4">--:--:--</div>;
+                return <div className="ml-4">--:--</div>;
             }
 
-            const date = format(new Date(parsedDate), "HH:mm:ss");
+            const date = format(new Date(parsedDate), "HH:mm");
             return <div className="ml-4">{date}</div>;
         },
     },

@@ -137,11 +137,22 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
         </Button>
       );
     },
-    cell: (info) => (
-      <span className="p-2">
-        {format(new Date(Number(info.getValue())), "HH:mm")}
-      </span>
-    ),
+    // cell: (info) => (
+    //   <span className="p-2">
+    //     {format(new Date(Number(info.getValue())), "HH:mm")}
+    //   </span>
+    // ),
+    cell: ({ row }) => {
+      const checkInTime = row.getValue("checkInTime");
+      const parsedDate = parseInt(checkInTime as string);
+
+      if (isNaN(parsedDate)) {
+          return <div className="ml-4">--:--</div>;
+      }
+
+      const date = format(new Date(parsedDate), "HH:mm");
+      return <div className="ml-4">{date}</div>;
+  },
     footer: (props) => props.column.id,
   },
   {
@@ -157,11 +168,22 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
         </Button>
       );
     },
-    cell: (info) => (
-      <span className="p-2">
-        {format(new Date(Number(info.getValue())), "HH:mm")}
-      </span>
-    ),
+    // cell: (info) => (
+    //   <span className="p-2">
+    //     {format(new Date(Number(info.getValue())), "HH:mm")}
+    //   </span>
+    // ),
+    cell: ({ row }) => {
+      const checkOutTime = row.getValue("checkOutTime");
+      const parsedDate = parseInt(checkOutTime as string);
+
+      if (isNaN(parsedDate)) {
+          return <div className="ml-4">--:--</div>;
+      }
+
+      const date = format(new Date(parsedDate), "HH:mm");
+      return <div className="ml-4">{date}</div>;
+  },
     footer: (props) => props.column.id,
   },
   {

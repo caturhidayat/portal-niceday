@@ -21,7 +21,7 @@ const initialState = {
   },
 };
 
-// const date = startOfDay(new Date()).getTime().toString();
+const date = startOfDay(new Date()).getTime().toString();
 
 export default function FormCreateShift({ setIsOpen }: { setIsOpen: any }) {
   const [state, action, isPending] = useActionState(createShift, initialState);
@@ -68,13 +68,13 @@ export default function FormCreateShift({ setIsOpen }: { setIsOpen: any }) {
           {state.errors?.name && (
             <p className="text-sm text-red-600">{state.errors.name}</p>
           )}
-          {/* <div>
+          <div>
             <Input
               name="date"
               type="hidden"
               value={date}
             />
-          </div> */}
+          </div>
           <div>
             <Label>Break (Minute)</Label>
             <Input
