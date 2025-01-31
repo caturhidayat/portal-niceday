@@ -42,10 +42,10 @@ const setTimeFromString = (epochTimestamp: string, timeString: string) => {
   const [hours, minutes] = timeString.split(':').map(Number)
   
   // Buat Date object dari epoch timestamp
-  const date = new Date(+epochTimestamp)
+  // const date = new Date(+epochTimestamp)
   
   // Set jam dan menit
-  const withHours = setHours(date, hours)
+  const withHours = setHours(epochTimestamp, hours)
   const withMinutes = setMinutes(withHours, minutes)
   
   return withMinutes.getTime().toString();
@@ -75,7 +75,8 @@ export async function createAttendance(
       isNextDay = true;
     }
 
-    const addOne = addDays(attendanceDate, 1).getTime().toString();
+    const addOne = addDays(+attendanceDate, 1).getTime().toString();
+    console.log("addOne server action : ", addOne);
 
     console.log("diffTime server action : ", diffTime);
 
