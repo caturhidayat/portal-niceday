@@ -7,27 +7,53 @@ import { Label } from "@/components/ui/label";
 import createShift from "./actions";
 import { useActionState } from "react";
 import { Loader, Save } from "lucide-react";
-import { startOfDay } from "date-fns";
+import { startOfDay, setHours, setMinutes } from "date-fns";
 
 const initialState = {
   success: false,
   message: "",
   inputs: {
     name: "",
-    date: "",
+    // date: "",
     startTime: "",
     endTime: "",
     break: "",
   },
 };
 
-const date = startOfDay(new Date()).getTime().toString();
+// const date = startOfDay(new Date()).getTime().toString();
 
 export default function FormCreateShift({ setIsOpen }: { setIsOpen: any }) {
   const [state, action, isPending] = useActionState(createShift, initialState);
 
+  const convertTimeToEpoch = (timeString: string) => {
+    const today = new Date();
+    const [hours, minutes] = timeString.split(':').map(Number);
+    const withHours = setHours(today, hours);
+    const withMinutes = setMinutes(withHours, minutes);
+    return withMinutes.getTime().toString();
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const name = formData.get('name') as string;
+    const startTime = formData.get('startTime') as string;
+    const endTime = formData.get('endTime') as string;
+    const breakTime = formData.get('break') as string;
+    
+    // Convert both times to epoch milliseconds
+    formData.set('name', name);
+    formData.set('startTime', convertTimeToEpoch(startTime));
+    formData.set('endTime', convertTimeToEpoch(endTime));
+    formData.set('break', breakTime);
+    
+    // Submit the form with converted times
+    action(formData);
+  };
+
   return (
-    <form action={action}>
+    <form onSubmit={handleSubmit}>
       <div className="space-y-4">
         <div className="grid gap-4">
           <div>
@@ -42,13 +68,13 @@ export default function FormCreateShift({ setIsOpen }: { setIsOpen: any }) {
           {state.errors?.name && (
             <p className="text-sm text-red-600">{state.errors.name}</p>
           )}
-          <div>
+          {/* <div>
             <Input
               name="date"
               type="hidden"
               value={date}
             />
-          </div>
+          </div> */}
           <div>
             <Label>Break (Minute)</Label>
             <Input
