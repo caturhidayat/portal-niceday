@@ -81,9 +81,16 @@ export default async function createShift(
       };
     }
 
+    // Convert valid data to FormData
+    const submitData = new FormData();
+    submitData.append("name", rawData.name);
+    submitData.append("startTime", rawData.startTime);
+    submitData.append("endTime", rawData.endTime);
+    submitData.append("break", rawData.break);
+
     // Submit data to server if data is valid
     //   const res = await post("users/signup", formData);
-    const res = await post("shifts", formData);
+    const res = await post("shifts", submitData);
 
     revalidateTag("shifts");
 

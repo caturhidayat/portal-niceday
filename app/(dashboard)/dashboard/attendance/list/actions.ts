@@ -82,6 +82,10 @@ export async function createAttendance(
 
     // console.log("isNextDay server action : ", isNextDay);
 
+    const start = setTimeFromString(attendanceDate, startTime);
+    const end = setTimeFromString(attendanceDate, endTime);
+    const nextDay = addDays(end, 1);
+
     const rawData: any = {
       userId: formData.get("userId") as string,
       attendanceDate: attendanceDate,
@@ -102,10 +106,8 @@ export async function createAttendance(
       //   : new Date(setMinutes(setHours(+attendanceDate, endHour), endMinute))
       //       .getTime()
       //       .toString(),
-      startTime: setTimeFromString(attendanceDate, startTime).toString(),
-      endTime: isNextDay
-        ? setTimeFromString(attendanceDate, endTime).toString()
-        : setTimeFromString(addOne, endTime).toString(),
+      startTime: start,
+      endTime: isNextDay ? nextDay.getTime().toString() : end,
     };
 
     // console.log("rawData server action : ", rawData);
