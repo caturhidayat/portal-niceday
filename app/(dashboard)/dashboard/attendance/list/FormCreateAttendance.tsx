@@ -37,23 +37,6 @@ const initialState = {
   },
 };
 
-const epochMillis = new Date().getTime().toString();
-
-// Fungsi untuk mengatur waktu dari string format "HH:mm"
-const setTimeFromString = (epochTimestamp: string, timeString: string) => {
-  // Parse timeString format "HH:mm"
-  const [hours, minutes] = timeString.split(':').map(Number)
-  
-  // Buat Date object dari epoch timestamp
-  const date = new Date(+epochTimestamp)
-  
-  // Set jam dan menit
-  const withHours = setHours(date, hours)
-  const withMinutes = setMinutes(withHours, minutes)
-  
-  return withMinutes.getTime().toString();
-}
-
 export default function FormEntryAttendance({
   setIsOpen,
   employees,
@@ -184,7 +167,7 @@ export default function FormEntryAttendance({
                 type="time"
                 name="startTime"
                 value={startTime}
-                onChange={(e) => setStartTime(setTimeFromString(epochMillis, e.target.value))}
+                onChange={(e) => setStartTime(e.target.value)}
               />
             </div>
             {state.errors?.startTime && (
@@ -198,7 +181,7 @@ export default function FormEntryAttendance({
                 type="time"
                 name="endTime"
                 value={endTime}
-                onChange={(e) => setEndTime(setTimeFromString(epochMillis, e.target.value))}
+                onChange={(e) => setEndTime(e.target.value)}
               />
             </div>
             {state.errors?.endTime && (

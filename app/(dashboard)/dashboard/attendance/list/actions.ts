@@ -8,6 +8,7 @@ import {
   addDays,
   differenceInSeconds,
   format,
+  fromUnixTime,
   getTime,
   setHours,
   setMinutes,
@@ -42,7 +43,8 @@ const setTimeFromString = (epochTimestamp: string, timeString: string) => {
   const [hours, minutes] = timeString.split(':').map(Number)
   
   // Buat Date object dari epoch timestamp
-  const date = new Date(+epochTimestamp)
+  // const date = new Date(+epochTimestamp)
+  const date = fromUnixTime(+epochTimestamp)
   
   // Set jam dan menit
   const withHours = setHours(date, hours)

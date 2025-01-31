@@ -3,8 +3,8 @@
 import { del, get, post } from "@/lib/fetch-wrapper";
 import { revalidateTag } from "next/cache";
 import { Shift } from "./table/columns";
-import { date, z } from "zod";
-import { getTime, parse, setHours, setMinutes } from "date-fns";
+import { z } from "zod";
+import { fromUnixTime, getTime, parse, setHours, setMinutes } from "date-fns";
 
 const ShiftSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -41,7 +41,8 @@ const setTimeFromString = (epochTimestamp: string, timeString: string) => {
   const [hours, minutes] = timeString.split(':').map(Number)
   
   // Buat Date object dari epoch timestamp
-  const date = new Date(+epochTimestamp)
+  // const date = new Date(epochTimestamp)
+  const date = fromUnixTime(+epochTimestamp)
   
   // Set jam dan menit
   const withHours = setHours(date, hours)
@@ -82,11 +83,11 @@ export default async function createShift(
     // Convert valid data to FormData
     const submitData = new FormData();
     submitData.append("name", rawData.name);
-    submitData.append("startTime", rawData.startTime);
-    submitData.append("endTime", rawData.endTime);
+    // submitData.append("startTime", rawData.startTime);
+    // submitData.append("endTime", rawData.endTime);
     //   Convert time to epoch
-    // submitData.set("startTime", setTimeFromString(rawData.date, rawData.startTime).toString());
-    // submitData.set("endTime", setTimeFromString(rawData.date, rawData.endTime).toString());
+    submitData.set("startTime", setTimeFromString(rawData.date, rawData.startTime).toString());
+    submitData.set("endTime", setTimeFromString(rawData.date, rawData.endTime).toString());
     submitData.append("break", rawData.break);
 
     // Submit data to server if data is valid
