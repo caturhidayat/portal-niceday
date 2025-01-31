@@ -45,8 +45,7 @@ export default function FormCreateShift({ setIsOpen }: { setIsOpen: any }) {
           <div>
             <Input
               name="date"
-              type="date"
-              hidden
+              type="hidden"
               value={date}
             />
           </div>
