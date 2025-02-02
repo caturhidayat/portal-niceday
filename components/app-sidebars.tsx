@@ -38,7 +38,7 @@ const data = {
     {
       name: "Portal Niceday",
       logo: GalleryVerticalEnd,
-      plan: "Enterprise",
+      plan: "Attendance",
     },
   ],
   //   navMain: [
