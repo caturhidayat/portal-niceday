@@ -1,6 +1,6 @@
 "use server";
 
-import { get, post } from "@/lib/fetch-wrapper";
+import { get, post, postRaw } from "@/lib/fetch-wrapper";
 import { z } from "zod";
 import { Attendance } from "../../attendance/today/columns";
 import { setHours, setMinutes } from "date-fns";
@@ -39,7 +39,7 @@ const createOvertimeSchema = z.object({
   overtimeDate: z.string().min(1, { message: "Overtime date is required" }),
   startTime: z.string().min(1, { message: "Start time is required" }),
   endTime: z.string().min(1, { message: "End time is required" }),
-  notes: z.string().min(1, { message: "Remarks is required" }),
+  notes: z.string().min(1, { message: "Notes is required" }),
   billedId: z.number(),
   ruleId: z.number(),
 });
@@ -116,6 +116,8 @@ export async function createOvertime(
       };
     }
 
+    console.log("validatedData ==> : ", validatedData);
+
     const submitData = new FormData();
     submitData.append("userId", validatedData.data.userId);
     submitData.append("attendanceId", validatedData.data.attendanceId);
@@ -123,11 +125,11 @@ export async function createOvertime(
     submitData.append("startTime", validatedData.data.startTime);
     submitData.append("endTime", validatedData.data.endTime);
     submitData.append("notes", validatedData.data.notes);
-    submitData.append("billedId", validatedData.data.billedId.toString());
-    submitData.append("ruleId", validatedData.data.ruleId.toString());
+    submitData.append("billedId", validatedData.data.billedId.toFixed());
+    submitData.append("ruleId", validatedData.data.ruleId.toFixed());
 
     console.log("submitData : ", submitData);
-    const res = await post("overtimes", submitData);
+    const res = await postRaw("overtimes", submitData);
 
     console.log("res : ", res);
 
