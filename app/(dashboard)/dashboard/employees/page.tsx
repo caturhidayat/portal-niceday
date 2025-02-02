@@ -24,6 +24,7 @@ async function getVendors(): Promise<Vendor[]> {
   return response as Vendor[];
 }
 
+
 export default async function Page() {
   const employees = await getEmployees();
   const [departments, branches, vendors] = await Promise.all([
@@ -34,11 +35,12 @@ export default async function Page() {
 
   // console.log("branches", branches);
   // console.log("departments", departments);
+  console.log("vendors", vendors);
 
   return (
-    <div className="grid gap-4 space-y-2">
-      <div>
-        <span className="font-bold text-xl">Employee List</span>
+    <div className="grid gap-4">
+      <div className="space-y-2">
+        <span className="font-bold text-xl">Employees</span>
       </div>
       <div className="flex justify-end py-2 gap-2">
         <DialogCreateEmployee departments={departments} branches={branches} vendors={vendors} />

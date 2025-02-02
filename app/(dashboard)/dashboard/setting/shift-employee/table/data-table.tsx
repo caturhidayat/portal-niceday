@@ -72,7 +72,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
-import createShiftEmployee from "../actions";
+import createShiftEmployee, { updateShiftEmployee } from "../actions";
 import DialogAssignShift from "../DialogAssignShift";
 
 interface DataTableProps<TData, TValue> {
@@ -362,7 +362,7 @@ export function DataTableC<TData extends User, TValue>({
                                   //   .getTime()
                                   //   .toString();
 
-                                  await createShiftEmployee({
+                                  await updateShiftEmployee({
                                     userId: row.original.id,
                                     shiftGroupId: selectShiftGroup?.id,
                                     startDate: date?.getTime().toString(),

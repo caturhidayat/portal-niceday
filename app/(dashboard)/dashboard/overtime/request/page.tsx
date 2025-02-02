@@ -1,13 +1,14 @@
 import { Suspense } from "react";
-import { getAttendances, getOvertimeReasons } from "./actions";
+import { getAttendances, getOvertimeBilled, getOvertimeRules } from "./actions";
 import { columns } from "./table/columns";
 import { DataTableOvertime } from "./table/data-table";
 import Loading from "@/app/loading";
 
 export default async function OvertimeRequestPage() {
-const [attendances, overtimeReasons] = await Promise.all([
+const [attendances, overtimeBilled, overtimeRules] = await Promise.all([
     getAttendances(),
-    getOvertimeReasons(),
+    getOvertimeBilled(),
+    getOvertimeRules(),
 ])
 
   return (
@@ -19,7 +20,7 @@ const [attendances, overtimeReasons] = await Promise.all([
         </p>
       </div>
       <Suspense fallback={<Loading />}>
-        <DataTableOvertime columns={columns} data={attendances} overtimeReasons={overtimeReasons} />
+        <DataTableOvertime columns={columns} data={attendances} overtimeBilled={overtimeBilled} overtimeRules={overtimeRules} />
       </Suspense>
     </div>
   );

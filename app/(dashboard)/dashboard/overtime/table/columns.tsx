@@ -148,7 +148,7 @@ export const columns: ColumnDef<Attendance>[] = [
     },
   },
   {
-    accessorKey: "overtimeReason",
+    accessorKey: "overtimeBilled",
     header: ({ column }) => (
       <Button
           variant="ghost"
@@ -159,31 +159,31 @@ export const columns: ColumnDef<Attendance>[] = [
         </Button>
     ),
     cell: ({ row }) => {
-      const reason = row.getValue("overtimeReason") as string;
+      const reason = row.getValue("overtimeBilled") as string;
       return reason? reason : "-";
     },
   },
   {
-    accessorKey: "overtimeReasonAs",
+    accessorKey: "overtimeBilledAs",
     header: ({ column }) => (
       <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
-          Reason As
+          Billed As
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
     ),
     cell: ({ row }) => {
-      const as = row.getValue("overtimeReasonAs") as string;
+      const as = row.getValue("overtimeBilledAs") as string;
       return as? as : "-";
     },
   },
   {
-    accessorKey: "overtimeRemark",
-    header: "Remark",
+    accessorKey: "overtimeNotes",
+    header: "Notes",
     cell: ({ row }) => {
-      const remark = row.getValue("overtimeRemark") as string;
+      const remark = row.getValue("overtimeNotes") as string;
       return remark? remark : "-";
     },
   }

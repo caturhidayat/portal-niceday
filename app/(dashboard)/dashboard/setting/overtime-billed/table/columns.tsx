@@ -11,7 +11,7 @@ import { ChevronsUpDown } from "lucide-react";
 //   name      String
 //   as        String
 // Overtime Reasons Type
-export type OvertimeReasonsType = {
+export type OvertimeBilledType = {
   id: string;
   name: string;
   as: string;
@@ -32,7 +32,7 @@ const dateRangeFilter = (
   return rowDate >= from && rowDate <= to;
 };
 
-export const columns: ColumnDef<OvertimeReasonsType>[] = [
+export const columns: ColumnDef<OvertimeBilledType>[] = [
   // {
   //   accessorKey: "id",
   //   header: "ID",

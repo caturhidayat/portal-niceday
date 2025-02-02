@@ -149,42 +149,66 @@ export const columns: ColumnDef<Attendance>[] = [
     },
   },
   {
-    accessorKey: "overtimeReason",
+    accessorKey: "overtimeActualMinutes",
+    header: "Actual Minutes",
+    cell: ({ row }) => {
+      const minutes = row.getValue("overtimeActualMinutes") as number;
+      return minutes ? `${minutes} Minutes` : "-";
+    },
+  },
+  {
+    accessorKey: "overtimeTotalHours",
+    header: "Total Hours",
+    cell: ({ row }) => {
+      const hours = row.getValue("overtimeTotalHours") as number;
+      return hours ? `${hours} Hours` : "-";
+    },
+  },
+  {
+    accessorKey: "overtimeTotalMinutes",
+    header: "Total Minutes",
+    cell: ({ row }) => {
+      const minutes = row.getValue("overtimeTotalMinutes") as number;
+      return minutes ? `${minutes} Minutes` : "-";
+    },
+  },
+  {
+    accessorKey: "overtimeBilled",
     header: ({ column }) => (
       <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
-          Reason
+          Billed
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
     ),
     cell: ({ row }) => {
-      const reason = row.getValue("overtimeReason") as string;
+      const reason = row.getValue("overtimeBilled") as string;
       return reason? reason : "-";
     },
   },
   {
-    accessorKey: "overtimeReasonAs",
+    accessorKey: "overtimeBilledAs",
     header: ({ column }) => (
       <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
-          Reason As
+          Billed As
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
     ),
     cell: ({ row }) => {
-      const as = row.getValue("overtimeReasonAs") as string;
+      const as = row.getValue("overtimeBilledAs") as string;
       return as? as : "-";
     },
   },
   {
-    accessorKey: "overtimeRemark",
+    accessorKey: "overtimeNotes",
     header: "Remark",
     cell: ({ row }) => {
-      const remark = row.getValue("overtimeRemark") as string;
+      const remark = row.getValue("overtimeNotes") as string;
       return remark? remark : "-";
     },
   }

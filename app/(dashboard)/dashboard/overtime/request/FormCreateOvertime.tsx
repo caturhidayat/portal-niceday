@@ -4,18 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { format, setHours, setMinutes } from "date-fns";
 import React, { useActionState } from "react";
-import { toast } from "sonner";
 import { createOvertime } from "./actions";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { OvertimeReasonsType } from "../../setting/overtime-reason/table/columns";
+import { OvertimeBilledType } from "../../setting/overtime-billed/table/columns";
 import {
   Popover,
   PopoverContent,
@@ -32,11 +23,13 @@ import {
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Attendance } from "../../attendance/today/columns";
+import { OvertimeRulesType } from "../../setting/overtime-rule/table/columns";
 
 interface FormCreateOvertimeProps {
   attendance: Attendance;
   attendanceDate: string;
-  overtimeReasons: OvertimeReasonsType[];
+  overtimeBilled: OvertimeBilledType[];
+  overtimeRules: OvertimeRulesType[];
 }
 
 const initialState = {
@@ -48,18 +41,21 @@ const initialState = {
     overtimeDate: "",
     startTime: "",
     endTime: "",
-    remarks: "",
-    reasonId: "",
+    notes: "",
+    billedId: 0,
+    ruleId: 0,
   },
 };
 
 export default function FormCreateOvertime({
   attendance,
   attendanceDate,
-  overtimeReasons,
+  overtimeBilled,
+  overtimeRules,
 }: FormCreateOvertimeProps) {
   const [open, setOpen] = React.useState(false);
-  const [selectedReason, setSelectedReason] = React.useState("");
+  const [selectedBilled, setSelectedBilled] = React.useState("");
+  const [selectedRule, setSelectedRule] = React.useState("");
 
   const [state, action, isPending] = useActionState(
     createOvertime,
@@ -93,9 +89,9 @@ export default function FormCreateOvertime({
 
       <div>
         <Label>
-          Reason <span className="text-red-500">*</span>
+          Billed <span className="text-red-500">*</span>
         </Label>
-        <Input type="hidden" value={selectedReason} name="reasonId" />
+        <Input type="hidden" value={selectedBilled} name="billedId" />
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
@@ -104,12 +100,75 @@ export default function FormCreateOvertime({
               aria-expanded={open}
               className="w-[460px] justify-between"
             >
-              {selectedReason
+              {selectedBilled
                 ? (() => {
-                    const reason = overtimeReasons.find(
-                      (reason) => reason.id.toString() === selectedReason
+                    const billed = overtimeBilled.find(
+                      (billed) => billed.id.toString() === selectedBilled
                     );
-                    return reason ? `${reason.name} - ${reason.as}` : "";
+                    return billed
+                      ? `${billed.name} - ${billed.as}`
+                      : "";
+                  })()
+                : "Select billed..."}
+              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[400px] p-0">
+            <Command>
+              <CommandInput placeholder="Search billed..." />
+              <CommandList>
+                <CommandEmpty>No billed found</CommandEmpty>
+                <CommandGroup>
+                  {overtimeBilled.map((billed) => (
+                    <CommandItem
+                      key={billed.id}
+                      value={billed.name}
+                      onSelect={() => {
+                        setSelectedBilled(billed.id.toString());
+                        setOpen(false);
+                      }}
+                    >
+                      {billed.name} -{" "}
+                      <span className="text-gray-500">{billed.as}</span>
+                      <Check
+                        className={cn(
+                          "ml-auto h-4 w-4",
+                          selectedBilled === billed.id.toString()
+                            ? "opacity-100"
+                            : "opacity-0"
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+      </div>
+      {state?.inputs?.userId && (
+        <Input type="hidden" name="userId" value={state?.inputs?.userId} />
+      )}
+
+      <div>
+        <Label>
+          Overtime Type <span className="text-red-500">*</span>
+        </Label>
+        <Input type="hidden" value={selectedRule} name="ruleId" />
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={open}
+              className="w-[460px] justify-between"
+            >
+              {selectedRule
+                ? (() => {
+                    const rule = overtimeRules.find(
+                      (reason) => reason.id.toString() === selectedRule
+                    );
+                    return rule ? `${rule.name}` : "";
                   })()
                 : "Select reason..."}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -121,12 +180,12 @@ export default function FormCreateOvertime({
               <CommandList>
                 <CommandEmpty>No reason found</CommandEmpty>
                 <CommandGroup>
-                  {overtimeReasons.map((reason) => (
+                  {overtimeBilled.map((reason) => (
                     <CommandItem
                       key={reason.id}
                       value={reason.name}
                       onSelect={() => {
-                        setSelectedReason(reason.id.toString());
+                        setSelectedRule(reason.id.toString());
                         setOpen(false);
                       }}
                     >
@@ -135,7 +194,7 @@ export default function FormCreateOvertime({
                       <Check
                         className={cn(
                           "ml-auto h-4 w-4",
-                          selectedReason === reason.id.toString()
+                          selectedRule === reason.id.toString()
                             ? "opacity-100"
                             : "opacity-0"
                         )}
@@ -153,16 +212,18 @@ export default function FormCreateOvertime({
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="remarks">Remarks</Label>
+        <Label htmlFor="notes">
+          Notes <span className="text-red-500">*</span>
+        </Label>
         <Textarea
-          id="remarks"
-          name="remarks"
-          placeholder="Enter overtime remarks"
-          defaultValue={state?.inputs?.remarks}
+          id="notes"
+          name="notes"
+          placeholder="Enter overtime notes"
+          defaultValue={state?.inputs?.notes}
         />
-        {state?.errors?.remarks && (
+        {state?.errors?.notes && (
           <p className="text-sm text-red-500">
-            {state?.errors?.remarks.join(", ")}
+            {state?.errors?.notes.join(", ")}
           </p>
         )}
 

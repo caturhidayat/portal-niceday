@@ -39,10 +39,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 
 
 import { format } from "date-fns";
-import { OvertimeReasonsType } from "../../setting/overtime-reason/table/columns";
+import { OvertimeBilledType } from "../../setting/overtime-billed/table/columns";
 import { Attendance } from "../../attendance/today/columns";
 import { BadgeCheck, CalendarCheck, CalendarX } from "lucide-react";
 import { approveOvertime, rejectOvertime } from "../actions";
+import { OvertimeRulesType } from "../../setting/overtime-rule/table/columns";
 
 enum RequestStatus {
   PENDING = "PENDING",
@@ -55,7 +56,8 @@ enum RequestStatus {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  overtimeReasons: OvertimeReasonsType[];
+  overtimeBilled: OvertimeBilledType[];
+  overtimeRules: OvertimeRulesType[];
 }
 
 declare module "@tanstack/react-table" {
@@ -101,7 +103,8 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
 export function DataTableOvertime<TData extends Attendance, TValue>({
   columns,
   data,
-  overtimeReasons
+  overtimeBilled,
+  overtimeRules
 }: DataTableProps<TData, TValue>) {
   // Tanstack table state
   const [rowSelection, setRowSelection] = useState({});

@@ -4,15 +4,16 @@ import { DataTableOvertime } from "./table/data-table";
 import DialogCreateOvertime from "./DialogCreateOvertime";
 import {
     getAttendances,
-    getOvertimeReasons,
-    Overtime,
+    getOvertimeBilled,
+    getOvertimeRules,
 } from "./request/actions";
 import { columns } from "./table/columns";
 
 export default async function Page() {
-    const [attendances, overtimeReasons] = await Promise.all([
+    const [attendances, overtimeBilled, overtimeRules] = await Promise.all([
         getAttendances(),
-        getOvertimeReasons(),
+        getOvertimeBilled(),
+        getOvertimeRules(),
     ]);
     return (
         <div  className="grid gap-4">
@@ -26,7 +27,8 @@ export default async function Page() {
                 <DataTableOvertime
                     columns={columns}
                     data={attendances}
-                    overtimeReasons={overtimeReasons}
+                    overtimeBilled={overtimeBilled}
+                    overtimeRules={overtimeRules}
                 />
             </Suspense>
         </div>

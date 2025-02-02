@@ -54,6 +54,7 @@ import { Label } from "@/components/ui/label";
 import { deleteAttendance } from "../attendance/list/actions";
 import { DataTableToolbar } from "./table/data-table-toolbar";
 import { Vendor } from "../organization/vendor/table/columns";
+import { deleteEmployee } from "./actions/actions";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -220,7 +221,7 @@ export function DataTableC<TData extends User, TValue>({
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={async () => {
-                                  await deleteAttendance(row.original.id);
+                                  await deleteEmployee(row.original.id);
                                   table.resetRowSelection();
                                 }}
                               >

@@ -1,6 +1,6 @@
 'use server';
 
-import { post } from "@/lib/fetch-wrapper";
+import { post, put } from "@/lib/fetch-wrapper";
 import { revalidateTag } from "next/cache";
 import { z } from "zod";
 
@@ -113,6 +113,36 @@ export default async function createShiftEmployee(data: { userId: string, shiftG
     console.log("Form Data server action ==> : ", formData);
 
     const res = await post("users-shift", formData);
+
+    console.log("response from server : ", res);
+
+    if (res.error) {
+        return { error: res.error, success: "" };
+    }
+
+    revalidateTag("shift-group");
+    revalidateTag("employees");
+    return { success: res.data };
+}
+
+export async function updateShiftEmployee(data: { userId: string, shiftGroupId: string | undefined, startDate: string | undefined }) {
+    // Validate data
+
+    // Convert startDate to epoch
+    // data.startDate = convertTimeToEpoch(data.startDate!).toString();
+
+    // transform formData to FormData
+    const formData = new FormData();
+    // Object.entries(data).forEach(([key, value]) => {
+    //     if (value !== undefined) {
+    //         formData.append(key, value);
+    //     }
+    // }); 
+    formData.append("shiftGroupId", data.shiftGroupId!);
+    formData.append("startDate", data.startDate!);
+
+    console.log("Form Data server action ==> : ", formData);
+    const res = await put("users-shift",data.userId, formData);
 
     console.log("response from server : ", res);
 

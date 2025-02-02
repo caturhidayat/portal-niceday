@@ -339,8 +339,8 @@ const data = {
           url: "/dashboard/setting/shift-employee",
         },
         {
-          title: "Overtime Reason",
-          url: "/dashboard/setting/overtime-reason",
+          title: "Overtime Cost Billed",
+          url: "/dashboard/setting/overtime-billed",
         },
       ],
     },

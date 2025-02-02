@@ -34,21 +34,24 @@ import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { DataTablePagination } from "@/components/table/data-table-pagination";
 
-import { Attendance } from "../../../attendance/today/columns";
-import { DataTableToolbar } from "./data-table-toolbar";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import FormCreateOvertime from "../FormCreateOvertime";
-import { OvertimeBilledType } from "../../../setting/overtime-billed/table/columns";
-import { format } from "date-fns";
-import { OvertimeRulesType } from "../../../setting/overtime-rule/table/columns";
-
+import { Trash2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { deleteOvertimeBilled } from "../actions";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  overtimeBilled: OvertimeBilledType[];
-  overtimeRules: OvertimeRulesType[];
 }
 
 declare module "@tanstack/react-table" {
@@ -91,17 +94,17 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
   return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
 };
 
-export function DataTableOvertime<TData extends Attendance, TValue>({
+export function DataTableOvertimeBilled<TData extends { id: string }, TValue>({
   columns,
   data,
-  overtimeBilled,
-  overtimeRules,
 }: DataTableProps<TData, TValue>) {
   // Tanstack table state
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
+
+  const [isOpen, setIsOpen] = useState(false);
 
   // Define table
   const table = useReactTable({
@@ -136,7 +139,7 @@ export function DataTableOvertime<TData extends Attendance, TValue>({
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} />
+      {/* <DataTableToolbar table={table} /> */}
       <div className="rounded-md border">
         <Table>
           <TableHeader className="bg-accent">
@@ -167,7 +170,7 @@ export function DataTableOvertime<TData extends Attendance, TValue>({
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="p-3 px-2">
+                      <TableCell key={cell.id} className="p-0 px-2">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -175,48 +178,41 @@ export function DataTableOvertime<TData extends Attendance, TValue>({
                       </TableCell>
                     ))}
                     <TableCell>
-                      {!row.original.overtimeStatus && (
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              disabled={!row.original.checkOutTime}
-                            >
-                              Request Overtime
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle>Create Overtime Request</DialogTitle>
-                              <DialogDescription>Create new overtime request</DialogDescription>
-                            </DialogHeader>
-                            <div>
-                              <Alert>
-                                <AlertTitle>
-                                  Details Attendance
-                                </AlertTitle>
-                                <AlertDescription>
-                                  <div className="grid">
-                                    <span>
-                                    Shift - {format(new Date(+row.original.shiftStart), 'HH:mm')} - {format(new Date(+row.original.shiftEnd), 'HH:mm')}
-                                    </span>
-                                    <span>
-                                    Actual Attendance - {format(new Date(+row.original.checkInTime), 'HH:mm')} - {format(new Date(+row.original.checkOutTime), 'HH:mm')}
-                                    </span>
-                                  </div>
-                                </AlertDescription>
-                              </Alert>
-                            </div>
-                            <FormCreateOvertime
-                              attendance={row.original}
-                              attendanceDate={row.original.attendanceDate}
-                              overtimeBilled={overtimeBilled}
-                              overtimeRules={overtimeRules}
-                            />
-                          </DialogContent>
-                        </Dialog>
-                      )}
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost">
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you sure you want to delete this?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete your account and remove your
+                              data from our servers.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <div className="flex justify-end space-x-2">
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction asChild>
+                              <Button
+                                onClick={async () => {
+                                  await deleteOvertimeBilled(
+                                    row.original.id
+                                  );
+                                  setIsOpen(false);
+                                }}
+                              >
+                                Delete
+                              </Button>
+                            </AlertDialogAction>
+                          </div>
+                        </AlertDialogContent>
+                        <AlertDialogFooter></AlertDialogFooter>
+                      </AlertDialog>
                     </TableCell>
                   </TableRow>
                 );
