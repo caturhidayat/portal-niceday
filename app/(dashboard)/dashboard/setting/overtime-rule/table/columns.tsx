@@ -15,7 +15,7 @@ import { ChevronsUpDown } from "lucide-react";
 //   // Relationship
 //   multiplicators OvertimeMultiplicator[]
 export type OvertimeRulesType = {
-  id: string;
+  id: number;
   name: string;
   description: string | null;
   isActive: boolean;

@@ -1,6 +1,6 @@
 "use server";
 
-import { get, post, postRaw } from "@/lib/fetch-wrapper";
+import { get, post, postJson, postRaw } from "@/lib/fetch-wrapper";
 import { z } from "zod";
 import { Attendance } from "../../attendance/today/columns";
 import { setHours, setMinutes } from "date-fns";
@@ -26,8 +26,8 @@ export interface Overtime {
   description: string;
   status: string;
   notes: string;
-  billedId: number;
-  ruleId: number;
+  billedId: string;
+  ruleId: string;
   createdAt: string;
   updatedAt: string | null;
   deletedAt: string | null;
@@ -40,8 +40,8 @@ const createOvertimeSchema = z.object({
   startTime: z.string().min(1, { message: "Start time is required" }),
   endTime: z.string().min(1, { message: "End time is required" }),
   notes: z.string().min(1, { message: "Notes is required" }),
-  billedId: z.number(),
-  ruleId: z.number(),
+  billedId: z.coerce.number(),
+  ruleId: z.coerce.number(),
 });
 
 export interface CreateOvertimeFormData {
@@ -51,8 +51,8 @@ export interface CreateOvertimeFormData {
   startTime: string;
   endTime: string;
   notes: string;
-  billedId: number;
-  ruleId: number;
+  billedId: string;
+  ruleId: string;
 }
 
 export interface ActionResponseOvertime {
@@ -99,8 +99,8 @@ export async function createOvertime(
       startTime: checkInTime,
       endTime: checkOutTime,
       notes: formData.get("notes") as string,
-      billedId: formData.get("billedId") as unknown as number,
-      ruleId: formData.get("ruleId") as unknown as number,
+      billedId: Number(formData.get("billedId")),
+      ruleId: Number(formData.get("ruleId")),
     };
 
     console.log("rawData : ", rawData);
@@ -125,11 +125,11 @@ export async function createOvertime(
     submitData.append("startTime", validatedData.data.startTime);
     submitData.append("endTime", validatedData.data.endTime);
     submitData.append("notes", validatedData.data.notes);
-    submitData.append("billedId", validatedData.data.billedId.toFixed());
-    submitData.append("ruleId", validatedData.data.ruleId.toFixed());
+    submitData.append("billedId", rawData.billedId);
+    submitData.append("ruleId", rawData.ruleId);
 
     console.log("submitData : ", submitData);
-    const res = await postRaw("overtimes", submitData);
+    const res = await postJson("overtimes", submitData);
 
     console.log("res : ", res);
 

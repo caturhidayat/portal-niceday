@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronsUpDown, MoreHorizontal } from "lucide-react";
 
-import { format } from "date-fns";
-
 export type Departments = {
   id: number;
   name: string;
@@ -120,32 +118,4 @@ export const columns: ColumnDef<User>[] = [
       return <div className="ml-4">{row.getValue("shiftName")}</div>;
     },
   },
-  
-  // {
-  //   id: "actions",
-  //   header: "Actions",
-  //   cell: ({ row }) => {
-  //     const employee = row.original;
-
-  //     return (
-  //       <DropdownMenu>
-  //         <DropdownMenuTrigger asChild>
-  //           <Button variant="ghost" className="h-8 w-8 p-0">
-  //             <span className="sr-only">Open Menu</span>
-  //             <MoreHorizontal className="h-4 w-4" />
-  //           </Button>
-  //         </DropdownMenuTrigger>
-  //         <DropdownMenuContent align="end">
-  //           <DropdownMenuLabel className="font-bold">Action</DropdownMenuLabel>
-  //           <DropdownMenuSeparator />
-  //           <DropdownMenuItem
-  //             onClick={() => navigator.clipboard.writeText(employee.id)}
-  //           >
-  //             Copy ID
-  //           </DropdownMenuItem>
-  //         </DropdownMenuContent>
-  //       </DropdownMenu>
-  //     );
-  //   },
-  // },
 ];

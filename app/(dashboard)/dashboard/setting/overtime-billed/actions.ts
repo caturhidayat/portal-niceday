@@ -1,41 +1,37 @@
 "use server";
 
-import { del, post, put } from "@/lib/fetch-wrapper";
+import { del, get, post } from "@/lib/fetch-wrapper";
 import { revalidateTag } from "next/cache";
-import { z } from "zod";
+import z from "zod";
+import { OvertimeBilledType } from "./table/columns";
 
-const OvertimeReasonSchema = z.object({
+const BilledSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
-  as: z.string().min(1, { message: "As is required" }),
 });
 
-export interface OvertimeReasonFormData {
+export interface BilledFormData {
   name: string;
-  as: string;
 }
 
-export interface ActionResponseOvertimeReason {
+export interface ActionResponseBilled {
   success: boolean;
   message: string;
   errors?: {
-    [K in keyof OvertimeReasonFormData]?: string[];
+    [K in keyof BilledFormData]?: string[];
   };
-  inputs?: OvertimeReasonFormData;
+  inputs?: BilledFormData;
 }
 
-// Action for create employee
-export default async function createOvertimeBilled(
-  _prevState: ActionResponseOvertimeReason,
+export async function createBilled(
+  _prevState: ActionResponseBilled,
   formData: FormData
-): Promise<ActionResponseOvertimeReason> {
+): Promise<ActionResponseBilled> {
   try {
     const rawData: any = {
       name: formData.get("name") as string,
-      as: formData.get("as") as string,
     };
-
     // Validate data
-    const validatedData = OvertimeReasonSchema.safeParse(rawData);
+    const validatedData = BilledSchema.safeParse(rawData);
     // Return error if data is invalid
     if (!validatedData.success) {
       return {
@@ -46,14 +42,14 @@ export default async function createOvertimeBilled(
       };
     }
 
-    // Parse validated data to FormData
-    const submitData = new FormData();
-    submitData.append("name", rawData.name);
-    submitData.append("as", rawData.as);
+    // Submit data to server if data is valid
+    const res = await post("overtimes-billed", formData);
 
-    const res = await post("overtimes-billed", submitData);
+    revalidateTag("overtimes-billed");
 
-    revalidateTag("overtime-billed");
+    // console.log("res from server action : ", res);
+
+    // console.log("validatedData.data :", validatedData.data);
 
     return {
       success: true,
@@ -67,8 +63,11 @@ export default async function createOvertimeBilled(
   }
 }
 
+export async function getOvertimesBilled(): Promise<OvertimeBilledType[]> {
+  const res = await get("overtimes-billed", ["overtime-billed"]);
+  return res as OvertimeBilledType[];
+}
 
-// Delete Overtime Reason by ID
 export async function deleteOvertimeBilled(id: string) {
   const res = await del(`overtimes-billed`, id);
   revalidateTag("overtime-billed");

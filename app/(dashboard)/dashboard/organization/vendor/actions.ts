@@ -51,9 +51,9 @@ export async function createVendor(
 
     revalidateTag("vendor");
 
-    console.log("res from server action : ", res);
+    // console.log("res from server action : ", res);
 
-    console.log("validatedData.data :", validatedData.data);
+    // console.log("validatedData.data :", validatedData.data);
 
     return {
       success: true,

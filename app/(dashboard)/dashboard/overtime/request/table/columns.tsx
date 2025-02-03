@@ -69,14 +69,22 @@ export const columns: ColumnDef<Attendance>[] = [
     },
     filterFn: dateRangeFilter,
   },
-  // {
-  //   accessorKey: "shiftName",
-  //   header: "Shift",
-  //   cell: ({ row }) => {
-  //     const shiftName = row.getValue("shiftName") as string;
-  //     return shiftName;
-  //   },
-  // },
+  {
+    accessorKey: "department",
+    header: "Department",
+    cell: ({ row }) => {
+      const department = row.getValue("department") as string;
+      return department;
+    },
+  },
+  {
+    accessorKey: "shiftName",
+    header: "Shift",
+    cell: ({ row }) => {
+      const shiftName = row.getValue("shiftName") as string;
+      return shiftName;
+    },
+  },
   {
     accessorKey: "shiftStart",
     header: "Shift Start",
@@ -109,14 +117,14 @@ export const columns: ColumnDef<Attendance>[] = [
       return time ? format(new Date(Number(time)), "HH:mm") : "-";
     },
   },
-  {
-    accessorKey: "workHours",
-    header: "Work Hours",
-    cell: ({ row }) => {
-      const hours = row.getValue("workHours") as number;
-      return hours ? `${hours} Minutes` : "-";
-    },
-  },
+  // {
+  //   accessorKey: "workHours",
+  //   header: "Work Hours",
+  //   cell: ({ row }) => {
+  //     const hours = row.getValue("workHours") as number;
+  //     return hours ? `${hours} Minutes` : "-";
+  //   },
+  // },
   {
     accessorKey: "overtimeStatus",
     header: "status",

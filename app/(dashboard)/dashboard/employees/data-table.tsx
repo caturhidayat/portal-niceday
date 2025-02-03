@@ -129,6 +129,9 @@ export function DataTableC<TData extends User, TValue>({
           desc: true,
         },
       ],
+      pagination: {
+        pageSize: 20
+      }
     },
     state: {
       sorting,

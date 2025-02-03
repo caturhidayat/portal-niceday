@@ -1,41 +1,7 @@
 "use client";
 
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-  getPaginationRowModel,
-  SortingState,
-  getSortedRowModel,
-  getFilteredRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  FilterFn,
-  SortingFn,
-  sortingFns,
-} from "@tanstack/react-table";
-import {
-  rankItem,
-  compareItems,
-  RankingInfo,
-} from "@tanstack/match-sorter-utils";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { useState } from "react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { DataTablePagination } from "@/components/table/data-table-pagination";
-
-import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -47,13 +13,53 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  RankingInfo,
+  rankItem,
+  compareItems,
+} from "@tanstack/match-sorter-utils";
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  FilterFn,
+  flexRender,
+  getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingFn,
+  sortingFns,
+  SortingState,
+  useReactTable,
+  VisibilityState,
+} from "@tanstack/react-table";
+import { SearchX, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { deleteOvertimeBilled } from "../actions";
+import { deleteShift } from "../../shift/actions";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
+interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+}
+
+// Fuzzy search function
 declare module "@tanstack/react-table" {
   //add fuzzy filter to the filterFns
   interface FilterFns {
@@ -94,19 +100,16 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
   return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
 };
 
-export function DataTableOvertimeBilled<TData extends { id: string }, TValue>({
+export function DataTable<TData extends { id: string }, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  // Tanstack table state
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [globalFilter, setGlobalFilter] = useState("");
 
-  const [isOpen, setIsOpen] = useState(false);
-
-  // Define table
   const table = useReactTable({
     data,
     columns,
@@ -115,12 +118,12 @@ export function DataTableOvertimeBilled<TData extends { id: string }, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
+      globalFilter,
     },
-    initialState: {
-      pagination: {
-        pageSize: 20,
-      },
+    filterFns: {
+      fuzzy: fuzzyFilter,
     },
+    globalFilterFn: "fuzzy",
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -132,108 +135,91 @@ export function DataTableOvertimeBilled<TData extends { id: string }, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    filterFns: {
-      fuzzy: fuzzyFilter,
-    },
   });
 
   return (
-    <div className="space-y-4">
-      {/* <DataTableToolbar table={table} /> */}
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader className="bg-accent">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => {
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
                 return (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="p-0 px-2">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
                         )}
-                      </TableCell>
-                    ))}
-                    <TableCell>
-                      <AlertDialog>
+                  </TableHead>
+                );
+              })}
+              <TableHead>Action</TableHead>
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+                <TableCell className="p-0 px-2">
+                    <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button variant="ghost">
-                            <Trash2 className="h-4 w-4 text-destructive" />
+                            <Trash2 className="mr-2 h-4 w-4 text-red-600" />
                           </Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
                             <AlertDialogTitle>
-                              Are you sure you want to delete this?
+                              Are you sure you want to delete this shift?
                             </AlertDialogTitle>
                             <AlertDialogDescription>
                               This action cannot be undone. This will
-                              permanently delete your account and remove your
-                              data from our servers.
+                              permanently delete your shift.
                             </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <div className="flex justify-end space-x-2">
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction asChild>
-                              <Button
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
                                 onClick={async () => {
-                                  await deleteOvertimeBilled(
-                                    row.original.id
-                                  );
-                                  setIsOpen(false);
+                                  await deleteOvertimeBilled(row.original.id);
+                                  table.resetRowSelection();
                                 }}
                               >
                                 Delete
-                              </Button>
-                            </AlertDialogAction>
-                          </div>
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogHeader>
                         </AlertDialogContent>
-                        <AlertDialogFooter></AlertDialogFooter>
                       </AlertDialog>
                     </TableCell>
-                  </TableRow>
-                );
-              })
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length + 1}
-                  className="h-24 text-center "
-                >
-                  <Alert>
-                    <AlertTitle>No results.</AlertTitle>
-                    <AlertDescription>No data to display.</AlertDescription>
-                  </Alert>
-                </TableCell>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
-        <DataTablePagination table={table} />
-      </div>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                <div className="flex justify-center">
+                  <Alert className="w-1/3" variant={"destructive"}>
+                    <SearchX className="h-4 w-4" />
+                    <AlertTitle>No results.</AlertTitle>
+                    <AlertDescription>No vendors found.</AlertDescription>
+                  </Alert>
+                </div>
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <DataTablePagination table={table} />
     </div>
   );
 }

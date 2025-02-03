@@ -24,6 +24,15 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Attendance } from "../../attendance/today/columns";
 import { OvertimeRulesType } from "../../setting/overtime-rule/table/columns";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface FormCreateOvertimeProps {
   attendance: Attendance;
@@ -75,9 +84,7 @@ export default function FormCreateOvertime({
         <Label htmlFor="startTime">Start Time</Label>
         <Input id="startTime" type="time" name="startTime" />
         {state?.errors?.startTime && (
-          <p className="text-sm text-red-500">
-            {state?.errors?.startTime}
-          </p>
+          <p className="text-sm text-red-500">{state?.errors?.startTime}</p>
         )}
       </div>
 
@@ -85,17 +92,15 @@ export default function FormCreateOvertime({
         <Label htmlFor="endTime">End Time</Label>
         <Input id="endTime" type="time" name="endTime" />
         {state?.errors?.endTime && (
-          <p className="text-sm text-red-500">
-            {state?.errors?.endTime}
-          </p>
+          <p className="text-sm text-red-500">{state?.errors?.endTime}</p>
         )}
       </div>
 
       <div>
         <Label>
-          Billed <span className="text-red-500">*</span>
+          Overtime Billed <span className="text-red-500">*</span>
         </Label>
-        <Input type="hidden" value={selectedBilled} name="billedId" />
+        <Input type="hidden" value={Number(selectedBilled)} name="billedId" />
         <Popover open={openBilled} onOpenChange={setOpenBilled}>
           <PopoverTrigger asChild>
             <Button
@@ -109,19 +114,17 @@ export default function FormCreateOvertime({
                     const billed = overtimeBilled.find(
                       (billed) => billed.id.toString() === selectedBilled
                     );
-                    return billed
-                      ? `${billed.name} - ${billed.as}`
-                      : "";
+                    return billed ? `${billed.name}` : "";
                   })()
-                : "Select billed..."}
+                : "Select Overtime billed..."}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[400px] p-0">
             <Command>
-              <CommandInput placeholder="Search billed..." />
+              <CommandInput placeholder="Search overtime billed..." />
               <CommandList>
-                <CommandEmpty>No billed found</CommandEmpty>
+                <CommandEmpty>No overtime billed found</CommandEmpty>
                 <CommandGroup>
                   {overtimeBilled.map((billed) => (
                     <CommandItem
@@ -132,8 +135,7 @@ export default function FormCreateOvertime({
                         setOpenBilled(false);
                       }}
                     >
-                      {billed.name} -{" "}
-                      <span className="text-gray-500">{billed.as}</span>
+                      {billed.name}
                       <Check
                         className={cn(
                           "ml-auto h-4 w-4",
@@ -161,7 +163,7 @@ export default function FormCreateOvertime({
         <Label>
           Overtime Type <span className="text-red-500">*</span>
         </Label>
-        <Input type="hidden" value={selectedRule} name="ruleId" />
+        <Input type="hidden" value={Number(selectedRule)} name="ruleId" />
         <Popover open={openRule} onOpenChange={setOpenRule}>
           <PopoverTrigger asChild>
             <Button
@@ -177,15 +179,15 @@ export default function FormCreateOvertime({
                     );
                     return rule ? `${rule.name}` : "";
                   })()
-                : "Select reason..."}
+                : "Select overtime type..."}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[400px] p-0">
             <Command>
-              <CommandInput placeholder="Search reason..." />
+              <CommandInput placeholder="Search overtime type..." />
               <CommandList>
-                <CommandEmpty>No reason found</CommandEmpty>
+                <CommandEmpty>No overtime type found</CommandEmpty>
                 <CommandGroup>
                   {overtimeRules.map((reason) => (
                     <CommandItem
