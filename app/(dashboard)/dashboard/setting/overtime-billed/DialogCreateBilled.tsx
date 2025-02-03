@@ -15,21 +15,12 @@ import { Label } from "@/components/ui/label";
 
 import { Input } from "@/components/ui/input";
 import { createBilled } from "./actions";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 const initialState = {
   success: false,
   message: "",
   inputs: {
     name: "",
-    as: "",
   },
 };
 

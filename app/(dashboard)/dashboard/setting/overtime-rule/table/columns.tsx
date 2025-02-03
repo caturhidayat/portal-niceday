@@ -78,20 +78,20 @@ export const columns: ColumnDef<OvertimeRulesType>[] = [
     },
   },
   {
-    accessorKey: "as",
+    accessorKey: "description",
     header: ({ column }) => (
       <Button
         variant="ghost"
         className="pl-2"
         onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
       >
-        As
+        Description
         <ChevronsUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ row }) => {
-      const as = row.getValue("as") as string;
-      return <span> {as}</span>;
+      const description = row.getValue("description") as string;
+      return <span> {description}</span>;
     },
   },
 ];
