@@ -1,12 +1,22 @@
 "use server";
 
-import { get, post } from "@/lib/fetch-wrapper";
+import { get, post, postJson, postRaw } from "@/lib/fetch-wrapper";
 import { z } from "zod";
 import { Attendance } from "../../attendance/today/columns";
-import { OvertimeReasonsType } from "../../setting/overtime-reason/table/columns";
 import { setHours, setMinutes } from "date-fns";
 import { revalidateTag } from "next/cache";
+import { OvertimeBilledType } from "../../setting/overtime-billed/table/columns";
+import { OvertimeRulesType } from "../../setting/overtime-rule/table/columns";
 
+// userId: "",
+// attendanceId: "",
+// overtimeDate: "",
+// startTime: "",
+// endTime: "",
+// notes: "",
+// billedId: "",
+// ruleId: "",
+// },
 export interface Overtime {
   id: string;
   userId: string;
@@ -15,6 +25,9 @@ export interface Overtime {
   endTime: string;
   description: string;
   status: string;
+  notes: string;
+  billedId: string;
+  ruleId: string;
   createdAt: string;
   updatedAt: string | null;
   deletedAt: string | null;
@@ -26,8 +39,9 @@ const createOvertimeSchema = z.object({
   overtimeDate: z.string().min(1, { message: "Overtime date is required" }),
   startTime: z.string().min(1, { message: "Start time is required" }),
   endTime: z.string().min(1, { message: "End time is required" }),
-  remarks: z.string().min(1, { message: "Remarks is required" }),
-  reasonId: z.string().min(1, { message: "Reason is required" }),
+  notes: z.string().min(1, { message: "Notes is required" }),
+  billedId: z.coerce.number(),
+  ruleId: z.coerce.number(),
 });
 
 export interface CreateOvertimeFormData {
@@ -36,8 +50,9 @@ export interface CreateOvertimeFormData {
   overtimeDate: string;
   startTime: string;
   endTime: string;
-  remarks: string;
-  reasonId: string;
+  notes: string;
+  billedId: string;
+  ruleId: string;
 }
 
 export interface ActionResponseOvertime {
@@ -83,8 +98,9 @@ export async function createOvertime(
       overtimeDate: attendanceDate,
       startTime: checkInTime,
       endTime: checkOutTime,
-      remarks: formData.get("remarks") as string,
-      reasonId: formData.get("reasonId") as string,
+      notes: formData.get("notes") as string,
+      billedId: Number(formData.get("billedId")),
+      ruleId: Number(formData.get("ruleId")),
     };
 
     console.log("rawData : ", rawData);
@@ -100,17 +116,20 @@ export async function createOvertime(
       };
     }
 
-    const submitData = new FormData();
-    submitData.append("userId", validatedData.data.userId);
-    submitData.append("attendanceId", validatedData.data.attendanceId);
-    submitData.append("overtimeDate", validatedData.data.overtimeDate);
-    submitData.append("startTime", validatedData.data.startTime);
-    submitData.append("endTime", validatedData.data.endTime);
-    submitData.append("remarks", validatedData.data.remarks);
-    submitData.append("reasonId", validatedData.data.reasonId);
+    console.log("validatedData ==> : ", validatedData);
 
-    console.log("submitData : ", submitData);
-    const res = await post("overtimes", submitData);
+    // const submitData = new FormData();
+    // submitData.append("userId", validatedData.data.userId);
+    // submitData.append("attendanceId", validatedData.data.attendanceId);
+    // submitData.append("overtimeDate", validatedData.data.overtimeDate);
+    // submitData.append("startTime", validatedData.data.startTime);
+    // submitData.append("endTime", validatedData.data.endTime);
+    // submitData.append("notes", validatedData.data.notes);
+    // submitData.append("billedId", rawData.billedId);
+    // submitData.append("ruleId", rawData.ruleId);
+
+    // console.log("submitData : ", submitData);
+    const res = await postJson("overtimes", rawData);
 
     console.log("res : ", res);
 
@@ -145,7 +164,12 @@ export async function getOvertimes(): Promise<Overtime[]> {
 }
 
 // Overtime reason
-export async function getOvertimeReasons(): Promise<OvertimeReasonsType[]> {
-  const overtimeReasons = await get("overtimes/reason", ["overtime-reasons"]);
-  return overtimeReasons as OvertimeReasonsType[];
+export async function getOvertimeBilled(): Promise<OvertimeBilledType[]> {
+  const overtimeBilled = await get("overtimes-billed", ["overtime-billed"]);
+  return overtimeBilled as OvertimeBilledType[];
+}
+// Overtime Rule
+export async function getOvertimeRules(): Promise<OvertimeRulesType[]> {
+  const overtimeRules = await get("overtimes-rule", ["overtime-rule"]);
+  return overtimeRules as OvertimeRulesType[];
 }

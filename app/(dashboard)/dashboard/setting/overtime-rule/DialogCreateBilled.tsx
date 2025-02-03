@@ -22,7 +22,8 @@ import {
 } from "@/components/ui/select";
 import { AlertDialog } from "@radix-ui/react-alert-dialog";
 import { useActionState, useState } from "react";
-import createOvertimeReason from "./actions";
+import createOvertimeBilled from "./actions";
+import { OvertimeBilledType } from "./table/columns";
 
 const initialState = {
   success: false,
@@ -33,10 +34,12 @@ const initialState = {
   },
 };
 
-export default function DialogCreateReason() {
+export default function DialogCreateBilled(
+  { overtimeBilled }: { overtimeBilled: OvertimeBilledType[] }
+) {
   const [isOpen, setIsOpen] = useState(false);
   const [state, action, isPending] = useActionState(
-    createOvertimeReason,
+    createOvertimeBilled,
     initialState
   );
   return (
@@ -82,6 +85,9 @@ export default function DialogCreateReason() {
                 <p className="text-sm text-red-600">{state?.errors?.as}</p>
               )}
             </div>
+            {state?.success && (
+              <p className="text-sm text-green-600">{state?.message}</p>
+            )}
 
             <div className="flex justify-end gap-2">
               <Button

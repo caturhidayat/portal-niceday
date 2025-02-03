@@ -24,7 +24,7 @@ export interface ActionResponseOvertimeReason {
 }
 
 // Action for create employee
-export default async function createOvertimeReason(
+export default async function createOvertimeBilled(
   _prevState: ActionResponseOvertimeReason,
   formData: FormData
 ): Promise<ActionResponseOvertimeReason> {
@@ -51,26 +51,26 @@ export default async function createOvertimeReason(
     submitData.append("name", rawData.name);
     submitData.append("as", rawData.as);
 
-    const res = await post("overtimes/reason", submitData);
+    const res = await post("overtimes-billed", submitData);
 
-    revalidateTag("overtime-reasons");
+    revalidateTag("overtime-billed");
 
     return {
       success: true,
-      message: "Overtime reason has been created successfully",
+      message: "Overtime billed has been created successfully",
     };
   } catch (error) {
     return {
       success: false,
-      message: "Failed to create shift",
+      message: "Failed to create overtime billed",
     };
   }
 }
 
 
 // Delete Overtime Reason by ID
-export async function deleteOvertimeReason(id: string) {
-  const res = await del(`overtimes/reason`, id);
-  revalidateTag("overtime-reasons");
+export async function deleteOvertimeBilled(id: string) {
+  const res = await del(`overtimes-billed`, id);
+  revalidateTag("overtime-billed");
   return res.data;
 }

@@ -12,6 +12,7 @@ import { Edit } from "lucide-react";
 import FormEditEmployee from "./FormEditEmployee";
 import { Branches, Departments, User } from "./table/columns";
 import { Vendor } from "../organization/vendor/table/columns";
+import { useState } from "react";
 
 export default function DialogEditEmployee({
   employee,
@@ -24,8 +25,10 @@ export default function DialogEditEmployee({
   branches: Branches[];
   vendors: Vendor[];
 }) {
+
+  const [open, setOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant={"ghost"}>
           <Edit className="mr-2 h-4 w-4" />
@@ -42,6 +45,7 @@ export default function DialogEditEmployee({
           departments={departments}
           branches={branches}
           vendors={vendors}
+          setIsOpen={setOpen}
         />
       </DialogContent>
     </Dialog>

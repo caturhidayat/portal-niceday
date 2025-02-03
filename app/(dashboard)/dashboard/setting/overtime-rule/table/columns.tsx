@@ -8,14 +8,33 @@ import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
 import { ChevronsUpDown } from "lucide-react";
 
-//   name      String
-//   as        String
-// Overtime Reasons Type
-export type OvertimeReasonsType = {
-  id: string;
+// name        String
+//   description String?
+//   isActive    Boolean @default(true)
+
+//   // Relationship
+//   multiplicators OvertimeMultiplicator[]
+export type OvertimeRulesType = {
+  id: number;
   name: string;
-  as: string;
+  description: string | null;
+  isActive: boolean;
+  multiplicators: OvertimeMultiplicatorType[];
 };
+
+
+// id         Int   @id @default(autoincrement())
+//   ruleId     Int // Foreign key to OvertimeRule
+//   hoursStart Float
+//   hoursEnd   Float?
+//   multiplier Float
+export type OvertimeMultiplicatorType = {
+  id: number;
+  ruleId: number;
+  hoursStart: number;
+  hoursEnd: number
+  multiplier: number
+}
 
 // Custom filter function for date range
 const dateRangeFilter = (
@@ -32,7 +51,7 @@ const dateRangeFilter = (
   return rowDate >= from && rowDate <= to;
 };
 
-export const columns: ColumnDef<OvertimeReasonsType>[] = [
+export const columns: ColumnDef<OvertimeRulesType>[] = [
   // {
   //   accessorKey: "id",
   //   header: "ID",

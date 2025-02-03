@@ -47,7 +47,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { deleteOvertimeReason } from "../actions";
+import { deleteOvertimeBilled } from "../actions";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -94,7 +94,7 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
   return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
 };
 
-export function DataTableOvertimeReasons<TData extends { id: string }, TValue>({
+export function DataTableOvertimeBilled<TData extends { id: string }, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -200,7 +200,7 @@ export function DataTableOvertimeReasons<TData extends { id: string }, TValue>({
                             <AlertDialogAction asChild>
                               <Button
                                 onClick={async () => {
-                                  await deleteOvertimeReason(
+                                  await deleteOvertimeBilled(
                                     row.original.id
                                   );
                                   setIsOpen(false);
