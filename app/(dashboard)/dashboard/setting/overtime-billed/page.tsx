@@ -1,6 +1,6 @@
 import { DataTable } from "./table/data-table";
 import { columns } from "./table/columns";
-import DialogCreateOvertimeBilled from "./DialogCreateVendor";
+import DialogCreateOvertimeBilled from "./DialogCreateBilled";
 import { getOvertimesBilled } from "./actions";
 
 export default async function Page() {
