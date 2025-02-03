@@ -201,7 +201,7 @@ const data = {
       iconColor: "text-sky-500",
       items: [
         {
-          title: "Add Employee",
+          title: "Employees List",
           url: "/dashboard/employees",
         },
         // {
@@ -209,7 +209,7 @@ const data = {
         //   url: "/dashboard/employees/information",
         // },
         {
-          title: "Employee List",
+          title: "Employee Management",
           url: "/dashboard/employees/list",
         },
         // {

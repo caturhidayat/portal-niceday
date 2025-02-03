@@ -118,18 +118,18 @@ export async function createOvertime(
 
     console.log("validatedData ==> : ", validatedData);
 
-    const submitData = new FormData();
-    submitData.append("userId", validatedData.data.userId);
-    submitData.append("attendanceId", validatedData.data.attendanceId);
-    submitData.append("overtimeDate", validatedData.data.overtimeDate);
-    submitData.append("startTime", validatedData.data.startTime);
-    submitData.append("endTime", validatedData.data.endTime);
-    submitData.append("notes", validatedData.data.notes);
-    submitData.append("billedId", rawData.billedId);
-    submitData.append("ruleId", rawData.ruleId);
+    // const submitData = new FormData();
+    // submitData.append("userId", validatedData.data.userId);
+    // submitData.append("attendanceId", validatedData.data.attendanceId);
+    // submitData.append("overtimeDate", validatedData.data.overtimeDate);
+    // submitData.append("startTime", validatedData.data.startTime);
+    // submitData.append("endTime", validatedData.data.endTime);
+    // submitData.append("notes", validatedData.data.notes);
+    // submitData.append("billedId", rawData.billedId);
+    // submitData.append("ruleId", rawData.ruleId);
 
-    console.log("submitData : ", submitData);
-    const res = await postJson("overtimes", submitData);
+    // console.log("submitData : ", submitData);
+    const res = await postJson("overtimes", rawData);
 
     console.log("res : ", res);
 

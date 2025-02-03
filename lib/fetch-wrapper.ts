@@ -60,7 +60,7 @@ export const postJson = async (path: string, data: FormData) => {
   const res = await fetch(`${API_URL}/${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json", ...token },
-    body: data,
+    body: JSON.stringify(data),
   });
 
   const parsedRes = await res.json();

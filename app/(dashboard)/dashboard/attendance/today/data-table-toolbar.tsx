@@ -20,10 +20,26 @@ export function DataTableToolbar<TData>({
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Find by name ..."
+          placeholder="Find by Name ..."
           value={(table.getColumn("fullName")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("fullName")?.setFilterValue(event.target.value)
+          }
+          className="h-8 w-[150px] lg:w-[250px]"
+        />
+        <Input
+          placeholder="Find by Department ..."
+          value={(table.getColumn("department")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("department")?.setFilterValue(event.target.value)
+          }
+          className="h-8 w-[150px] lg:w-[250px]"
+        />
+        <Input
+          placeholder="Find by Branch ..."
+          value={(table.getColumn("branch")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("branch")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />

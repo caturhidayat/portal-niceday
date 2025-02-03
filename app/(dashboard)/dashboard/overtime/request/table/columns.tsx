@@ -2,13 +2,6 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { Attendance } from "../../../attendance/today/columns";
@@ -77,14 +70,14 @@ export const columns: ColumnDef<Attendance>[] = [
       return department;
     },
   },
-  {
-    accessorKey: "shiftName",
-    header: "Shift",
-    cell: ({ row }) => {
-      const shiftName = row.getValue("shiftName") as string;
-      return shiftName;
-    },
-  },
+  // {
+  //   accessorKey: "shiftName",
+  //   header: "Shift",
+  //   cell: ({ row }) => {
+  //     const shiftName = row.getValue("shiftName") as string;
+  //     return shiftName;
+  //   },
+  // },
   {
     accessorKey: "shiftStart",
     header: "Shift Start",
@@ -218,6 +211,13 @@ export const columns: ColumnDef<Attendance>[] = [
     cell: ({ row }) => {
       const remark = row.getValue("overtimeNotes") as string;
       return remark? remark : "-";
+    },
+  },
+  {
+    accessorKey: "overtimeRejectedReason",
+    header: "Rejected Reason",
+    cell: ({ row }) => {
+      return <div className="ml-4">{row.getValue("overtimeRejectedReason")}</div>;
     },
   }
 ];

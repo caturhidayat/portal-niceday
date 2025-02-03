@@ -108,6 +108,7 @@ export type Attendance = {
   overtimeBilledAs: string;
   overtimeNotes: string;
   overtimeStatus: string;
+  overtimeRejectedReason: string;
   overtimeCreatedAt: string;
   overtimeUpdatedAt: string;
   overtimeDeletedAt: string;

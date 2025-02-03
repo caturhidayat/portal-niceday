@@ -44,6 +44,9 @@ import { Attendance } from "../../attendance/today/columns";
 import { BadgeCheck, CalendarCheck, CalendarX } from "lucide-react";
 import { approveOvertime, rejectOvertime } from "../actions";
 import { OvertimeRulesType } from "../../setting/overtime-rule/table/columns";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 enum RequestStatus {
   PENDING = "PENDING",
@@ -157,9 +160,9 @@ export function DataTableOvertime<TData extends Attendance, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -191,7 +194,7 @@ export function DataTableOvertime<TData extends Attendance, TValue>({
                             <Button
                               variant={"ghost"}
                               size="sm"
-                              // disabled={!row.original.checkOutTime}
+                            // disabled={!row.original.checkOutTime}
                             >
                               <CalendarCheck className="h-4 w-4 text-green-500" />
                             </Button>
@@ -210,13 +213,13 @@ export function DataTableOvertime<TData extends Attendance, TValue>({
                                 <AlertDescription>
                                   <div className="grid gap-2 pt-2">
                                     <span>
-                                    Shift - {format(new Date(+row.original.shiftStart), 'HH:mm')} - {format(new Date(+row.original.shiftEnd), 'HH:mm')}
+                                      Shift - {format(new Date(+row.original.shiftStart), 'HH:mm')} - {format(new Date(+row.original.shiftEnd), 'HH:mm')}
                                     </span>
                                     <span>
-                                    Actual Attendance - {format(new Date(+row.original.checkInTime), 'HH:mm')} - {format(new Date(+row.original.checkOutTime), 'HH:mm')}
+                                      Actual Attendance - {format(new Date(+row.original.checkInTime), 'HH:mm')} - {format(new Date(+row.original.checkOutTime), 'HH:mm')}
                                     </span>
                                     <span className="text-green-500">
-                                    Overtime - {format(new Date(+row.original.overtimeStart), 'HH:mm')} - {format(new Date(+row.original.overtimeEnd), 'HH:mm')}
+                                      Overtime - {format(new Date(+row.original.overtimeStart), 'HH:mm')} - {format(new Date(+row.original.overtimeEnd), 'HH:mm')}
                                     </span>
                                   </div>
                                 </AlertDescription>
@@ -232,13 +235,13 @@ export function DataTableOvertime<TData extends Attendance, TValue>({
                       )}
                     </TableCell>
                     <TableCell>
-                    {row.original.overtimeStatus === "PENDING" && (
+                      {row.original.overtimeStatus === "PENDING" && (
                         <Dialog>
                           <DialogTrigger asChild>
                             <Button
                               variant="ghost"
                               size="sm"
-                              // disabled={!row.original.checkOutTime}
+                            // disabled={!row.original.checkOutTime}
                             >
                               <CalendarX className="h-4 w-4 text-destructive" />
                             </Button>
@@ -246,7 +249,7 @@ export function DataTableOvertime<TData extends Attendance, TValue>({
                           <DialogContent>
                             <DialogHeader>
                               <DialogTitle>
-                                Approve this Overtime?
+                                Reject this Overtime?
                               </DialogTitle>
                             </DialogHeader>
                             <div>
@@ -257,17 +260,25 @@ export function DataTableOvertime<TData extends Attendance, TValue>({
                                 <AlertDescription>
                                   <div className="grid gap-2 pt-2">
                                     <span>
-                                    Shift - {format(new Date(+row.original.shiftStart), 'HH:mm')} - {format(new Date(+row.original.shiftEnd), 'HH:mm')}
+                                      Shift - {format(new Date(+row.original.shiftStart), 'HH:mm')} - {format(new Date(+row.original.shiftEnd), 'HH:mm')}
                                     </span>
                                     <span>
-                                    Actual Attendance - {format(new Date(+row.original.checkInTime), 'HH:mm')} - {format(new Date(+row.original.checkOutTime), 'HH:mm')}
+                                      Actual Attendance - {format(new Date(+row.original.checkInTime), 'HH:mm')} - {format(new Date(+row.original.checkOutTime), 'HH:mm')}
                                     </span>
                                     <span className="text-destructive">
-                                    Overtime - {format(new Date(+row.original.overtimeStart), 'HH:mm')} - {format(new Date(+row.original.overtimeEnd), 'HH:mm')}
+                                      Overtime - {format(new Date(+row.original.overtimeStart), 'HH:mm')} - {format(new Date(+row.original.overtimeEnd), 'HH:mm')}
                                     </span>
                                   </div>
                                 </AlertDescription>
                               </Alert>
+                            </div>
+                            <div className="pt-2">
+                              <form>
+                                <Label>
+                                  Rejection Reason
+                                </Label>
+                                <Textarea name="rejectionReason" placeholder="Please enter a reason of rejection" required/>
+                              </form>
                             </div>
                             <Button className="bg-destructive text-muted hover:bg-red-600 hover:text-destructive-foreground" onClick={async () => {
                               await rejectOvertime(row.original.overtimeId)
