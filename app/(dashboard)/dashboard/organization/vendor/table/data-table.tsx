@@ -34,6 +34,9 @@ import {
 } from "@tanstack/react-table";
 import { SearchX } from "lucide-react";
 import { useState } from "react";
+import { Vendor } from "./columns";
+import { Button } from "@/components/ui/button";
+import DialogEditVendor from "../DialogEditVendor";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -86,7 +89,7 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
   return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
 };
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends Vendor, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -141,6 +144,9 @@ export function DataTable<TData, TValue>({
                   </TableHead>
                 );
               })}
+              <TableHead>
+                <Button variant={"ghost"}>Action</Button>
+              </TableHead>
             </TableRow>
           ))}
         </TableHeader>
@@ -156,6 +162,9 @@ export function DataTable<TData, TValue>({
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
+                <TableCell className="p-0 px-2">
+                  <DialogEditVendor vendor={row.original} />
+                </TableCell>
               </TableRow>
             ))
           ) : (
