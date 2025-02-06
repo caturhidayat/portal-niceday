@@ -81,6 +81,7 @@ export type Attendance = {
   outLatitude: number;
   outLongitude: number;
   isLate: boolean;
+  lateMinutes: number;
   workHours: number;
   shiftName: string;
   shiftStart: string;

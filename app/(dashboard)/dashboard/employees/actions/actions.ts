@@ -72,7 +72,15 @@ export default async function createEmployee(
     }
 
     // Submit data to server if data is valid
-    const res = await post("users", formData);
+    const res = await post("users/signup", formData);
+
+    if (res.error) {
+      return {
+        success: false,
+        message: res.error,
+        inputs: rawData,
+      };
+    }
 
     revalidateTag("employees");
 
@@ -178,6 +186,24 @@ export async function updateEmployee(
     return {
       success: false,
       message: "Failed to update employee",
+    };
+  }
+}
+
+// ACtion for soft delete employee
+export async function softDeleteEmployee(id: string) {
+  try {
+    const res = await del("users/soft", id);
+    console.log("res from server action : ", res);
+    revalidateTag("employees");
+    return {
+      success: true,
+      message: "Employee has been deleted successfully",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to delete employee",
     };
   }
 }
