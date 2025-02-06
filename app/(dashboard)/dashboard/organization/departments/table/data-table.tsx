@@ -33,6 +33,9 @@ import {
 } from "@tanstack/react-table";
 import { SearchX } from "lucide-react";
 import { useState } from "react";
+import DialogEditDepartment from "../DialogEditDeptartment";
+import { Departments } from "../page";
+import { Button } from "@/components/ui/button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -80,7 +83,7 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
   return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
 };
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends Departments, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -135,6 +138,9 @@ export function DataTable<TData, TValue>({
                   </TableHead>
                 );
               })}
+              <TableHead>
+                <Button variant={"ghost"}>Action</Button>
+              </TableHead>
             </TableRow>
           ))}
         </TableHeader>
@@ -150,6 +156,9 @@ export function DataTable<TData, TValue>({
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
+                <TableCell className="p-0 px-2">
+                  <DialogEditDepartment department={row.original} />
+                </TableCell>
               </TableRow>
             ))
           ) : (

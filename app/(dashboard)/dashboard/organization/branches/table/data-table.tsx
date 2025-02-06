@@ -2,6 +2,8 @@
 
 import { DataTablePagination } from "@/components/table/data-table-pagination";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -32,8 +34,11 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { SearchX } from "lucide-react";
+import { Edit, SearchX } from "lucide-react";
 import { useState } from "react";
+import EditBranchModal from "../edit-branch-modal";
+import { Branch } from "../page";
+import DialogEditBranch from "../DialogEditBranch";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -86,7 +91,7 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
   return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
 };
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends Branch, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -135,12 +140,15 @@ export function DataTable<TData, TValue>({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                   </TableHead>
                 );
               })}
+              <TableHead>
+                <Button variant={"ghost"}>Actions</Button>
+              </TableHead>
             </TableRow>
           ))}
         </TableHeader>
@@ -156,6 +164,9 @@ export function DataTable<TData, TValue>({
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
+                <TableCell className="p-0 px-2">
+                  <DialogEditBranch branch={row.original} />
+                </TableCell>
               </TableRow>
             ))
           ) : (
