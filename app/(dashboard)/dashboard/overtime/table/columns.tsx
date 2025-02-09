@@ -164,19 +164,19 @@ export const columns: ColumnDef<Attendance>[] = [
     },
   },
   {
-    accessorKey: "overtimeTotalHours",
-    header: "Total Hours",
+    accessorKey: "overtimeActualHours",
+    header: "Actual Hours",
     cell: ({ row }) => {
-      const hours = row.getValue("overtimeTotalHours") as number;
+      const hours = row.getValue("overtimeActualHours") as number;
       return hours ? `${hours} Hours` : "-";
     },
   },
   {
-    accessorKey: "overtimeTotalMinutes",
-    header: "Total Minutes",
+    accessorKey: "overtimeMultiplicationHours",
+    header: "Multiplication",
     cell: ({ row }) => {
-      const minutes = row.getValue("overtimeTotalMinutes") as number;
-      return minutes ? `${minutes} Minutes` : "-";
+      const hours = row.getValue("overtimeMultiplicationHours") as number;
+      return hours ? `${hours}` : "-";
     },
   },
   {

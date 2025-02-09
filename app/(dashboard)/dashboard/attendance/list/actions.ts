@@ -13,6 +13,7 @@ import {
   setHours,
   setMinutes,
 } from "date-fns";
+import { fromZonedTime } from "date-fns-tz";
 
 const AttendanceSchema = z.object({
   userId: z.string().min(1, { message: "User is required" }),
@@ -41,15 +42,15 @@ export interface ActionResponseAttendance {
 const setTimeFromString = (epochTimestamp: string, timeString: string) => {
   // Parse timeString format "HH:mm"
   const [hours, minutes] = timeString.split(':').map(Number)
-  
+
   // Buat Date object dari epoch timestamp
   // const date = new Date(+epochTimestamp)
   const date = fromUnixTime(+epochTimestamp)
-  
+
   // Set jam dan menit
   const withHours = setHours(date, hours)
   const withMinutes = setMinutes(withHours, minutes)
-  
+
   return withMinutes.getTime().toString();
 }
 
@@ -84,9 +85,21 @@ export async function createAttendance(
 
     // console.log("isNextDay server action : ", isNextDay);
 
-    const start = setTimeFromString(attendanceDate, startTime);
-    const end = setTimeFromString(attendanceDate, endTime);
-    const nextDay = addDays(end, 1);
+    // const start = setTimeFromString(attendanceDate, startTime);
+    // const end = setTimeFromString(attendanceDate, endTime);
+
+
+    // Buat date dengan timezone Asia/Jakarta
+    const checkInDate = setMinutes(setHours(new Date(+attendanceDate), startHour), startMinute);
+    const checkOutDate = setMinutes(setHours(new Date(+attendanceDate), endHour), endMinute);
+
+    // Konversi ke UTC dengan mempertahankan waktu lokal
+    const checkInTime = fromZonedTime(checkInDate, 'Asia/Jakarta').getTime().toString();
+    const checkOutTime = fromZonedTime(checkOutDate, 'Asia/Jakarta').getTime().toString();
+
+
+
+    const nextDay = addDays(checkOutTime, 1);
 
     const rawData: any = {
       userId: formData.get("userId") as string,
@@ -108,8 +121,8 @@ export async function createAttendance(
       //   : new Date(setMinutes(setHours(+attendanceDate, endHour), endMinute))
       //       .getTime()
       //       .toString(),
-      startTime: start,
-      endTime: isNextDay ? nextDay.getTime().toString() : end,
+      startTime: checkInTime,
+      endTime: isNextDay ? nextDay.getTime().toString() : checkOutTime,
     };
 
     // console.log("rawData server action : ", rawData);

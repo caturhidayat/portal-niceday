@@ -24,15 +24,6 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Attendance } from "../../attendance/today/columns";
 import { OvertimeRulesType } from "../../setting/overtime-rule/table/columns";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 interface FormCreateOvertimeProps {
   attendance: Attendance;

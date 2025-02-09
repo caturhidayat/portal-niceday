@@ -4,6 +4,7 @@ import { get, post, postJson, postRaw } from "@/lib/fetch-wrapper";
 import { z } from "zod";
 import { Attendance } from "../../attendance/today/columns";
 import { setHours, setMinutes } from "date-fns";
+import { fromZonedTime } from 'date-fns-tz';
 import { revalidateTag } from "next/cache";
 import { OvertimeBilledType } from "../../setting/overtime-billed/table/columns";
 import { OvertimeRulesType } from "../../setting/overtime-rule/table/columns";
@@ -79,17 +80,26 @@ export async function createOvertime(
     const [endHour, endMinute] = end.split(":").map(Number);
 
     // Create new Date objects from the parsed times
-    const checkInTime = new Date(
-      setMinutes(setHours(+attendanceDate, startHour), startMinute)
-    )
-      .getTime()
-      .toString();
+    // const checkInTime = new Date(
+    //   setMinutes(setHours(+attendanceDate, startHour), startMinute)
+    // )
+    //   .getTime()
+    //   .toString();
 
-    const checkOutTime = new Date(
-      setMinutes(setHours(+attendanceDate, endHour), endMinute)
-    )
-      .getTime()
-      .toString();
+    // const checkOutTime = new Date(
+    //   setMinutes(setHours(+attendanceDate, endHour), endMinute)
+    // )
+    //   .getTime()
+    //   .toString();
+
+    // Buat date dengan timezone Asia/Jakarta
+    const checkInDate = setMinutes(setHours(new Date(+attendanceDate), startHour), startMinute);
+    const checkOutDate = setMinutes(setHours(new Date(+attendanceDate), endHour), endMinute);
+
+    // Konversi ke UTC dengan mempertahankan waktu lokal
+    const checkInTime = fromZonedTime(checkInDate, 'Asia/Jakarta').getTime().toString();
+    const checkOutTime = fromZonedTime(checkOutDate, 'Asia/Jakarta').getTime().toString();
+
 
     // raw data
     const rawData: any = {

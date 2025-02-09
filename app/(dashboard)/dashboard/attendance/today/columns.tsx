@@ -53,21 +53,28 @@ export type Shift = {
 //     isLate: boolean;
 //     workHours: number;
 // overtimeId: item.overtimeRecord?.id ?? null,
-//       overtimeStart: item.overtimeRecord?.startTime ?? null,
-//       overtimeEnd: item.overtimeRecord?.endTime ?? null,
-//       overtimeActualMinutes: item.overtimeRecord?.actualMinutes ?? null,
-//       overtimeMultipliedMinutes: item.overtimeRecord?.multipliedMinutes ?? null,
-//       overtimeTotalHours: item.overtimeRecord?.totalHours ?? null,
-//       overtimeTotalMinutes: item.overtimeRecord?.totalMinutes ?? null,
-//       overtimeBilled: item.overtimeRecord?.billed?.name ?? null,
-//       overtimeBilledAs: item.overtimeRecord?.billed?.as ?? null,
-//       overtimeNotes: item.overtimeRecord?.notes ?? null,
-//       overtimeStatus: item.overtimeRecord?.status ?? null,
-//     officeLocationId: string;
-//     shiftId: string;
-//     shift: Shift;
-//     createdAt: string;
-//     updatedAt: string;
+// shiftName: item.shift?.name ?? null,
+      // shiftStart: item.shift?.startTime ?? null,
+      // shiftEnd: item.shift?.endTime ?? null,
+      // fullName: item.user?.name ?? null,
+      // username: item.user?.username ?? null,
+      // officeLocationName: item.OfficeLocation?.name ?? null,
+      // branch: item.user?.Branch?.name ?? null,
+      // department: item.user?.Department?.name ?? null,
+      // overtimeId: item.overtimeRecord?.id ?? null,
+      // overtimeStart: item.overtimeRecord?.startTime ?? null,
+      // overtimeEnd: item.overtimeRecord?.endTime ?? null,
+      // overtimeActualMinutes: item.overtimeRecord?.actualMinutes ?? null,
+      // overtimeActualHours: item.overtimeRecord?.actualHours ?? null,
+      // overtimeMultiplicationHours:
+      //   item.overtimeRecord?.multiplicationHours ?? null,
+      // overtimeBilled: item.overtimeRecord?.billed?.name ?? null,
+      // overtimeNotes: item.overtimeRecord?.notes ?? null,
+      // overtimeStatus: item.overtimeRecord?.status ?? null,
+      // overtimeRejectedReason: item.overtimeRecord?.rejectedReason ?? null,
+      // overtimeCreatedAt: item.overtimeRecord?.createdAt ?? null,
+      // overtimeUpdatedAt: item.overtimeRecord?.updatedAt ?? null,
+      // overtimeDeletedAt: item.overtimeRecord?.deletedAt ?? null,
 // };
 export type Attendance = {
   id: string;
@@ -102,9 +109,8 @@ export type Attendance = {
   overtimeStart: string;
   overtimeEnd: string;
   overtimeActualMinutes: number;
-  overtimeMultipliedMinutes: number;
-  overtimeTotalHours: number;
-  overtimeTotalMinutes: number;
+  overtimeActualHours: number;
+  overtimeMultiplicationHours: number;
   overtimeBilled: string;
   overtimeBilledAs: string;
   overtimeNotes: string;
