@@ -44,6 +44,14 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
+        <Input
+          placeholder="Find by Department..."
+          value={(table.getColumn("department")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("department")?.setFilterValue(event.target.value)
+          }
+          className="h-8 w-[150px] lg:w-[250px]"
+        />
         <Popover>
           <PopoverTrigger asChild>
             <Button

@@ -4,18 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { format, setHours, setMinutes } from "date-fns";
 import React, { useActionState } from "react";
-import { toast } from "sonner";
 import { createOvertime } from "./actions";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { OvertimeReasonsType } from "../../setting/overtime-reason/table/columns";
+import { OvertimeBilledType } from "../../setting/overtime-billed/table/columns";
 import {
   Popover,
   PopoverContent,
@@ -32,11 +23,13 @@ import {
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Attendance } from "../../attendance/today/columns";
+import { OvertimeRulesType } from "../../setting/overtime-rule/table/columns";
 
 interface FormCreateOvertimeProps {
   attendance: Attendance;
   attendanceDate: string;
-  overtimeReasons: OvertimeReasonsType[];
+  overtimeBilled: OvertimeBilledType[];
+  overtimeRules: OvertimeRulesType[];
 }
 
 const initialState = {
@@ -48,18 +41,25 @@ const initialState = {
     overtimeDate: "",
     startTime: "",
     endTime: "",
-    remarks: "",
-    reasonId: "",
+    notes: "",
+    billedId: "",
+    ruleId: "",
   },
 };
 
 export default function FormCreateOvertime({
   attendance,
   attendanceDate,
-  overtimeReasons,
+  overtimeBilled,
+  overtimeRules,
 }: FormCreateOvertimeProps) {
-  const [open, setOpen] = React.useState(false);
-  const [selectedReason, setSelectedReason] = React.useState("");
+  const [openBilled, setOpenBilled] = React.useState(false);
+  const [openRule, setOpenRule] = React.useState(false);
+  const [selectedBilled, setSelectedBilled] = React.useState("");
+  const [selectedRule, setSelectedRule] = React.useState("");
+
+  console.log("billed", overtimeBilled);
+  console.log("rules", overtimeRules);
 
   const [state, action, isPending] = useActionState(
     createOvertime,
@@ -75,9 +75,7 @@ export default function FormCreateOvertime({
         <Label htmlFor="startTime">Start Time</Label>
         <Input id="startTime" type="time" name="startTime" />
         {state?.errors?.startTime && (
-          <p className="text-sm text-red-500">
-            {state?.errors?.startTime.join(", ")}
-          </p>
+          <p className="text-sm text-red-500">{state?.errors?.startTime}</p>
         )}
       </div>
 
@@ -85,57 +83,54 @@ export default function FormCreateOvertime({
         <Label htmlFor="endTime">End Time</Label>
         <Input id="endTime" type="time" name="endTime" />
         {state?.errors?.endTime && (
-          <p className="text-sm text-red-500">
-            {state?.errors?.endTime.join(", ")}
-          </p>
+          <p className="text-sm text-red-500">{state?.errors?.endTime}</p>
         )}
       </div>
 
       <div>
         <Label>
-          Reason <span className="text-red-500">*</span>
+          Overtime Billed <span className="text-red-500">*</span>
         </Label>
-        <Input type="hidden" value={selectedReason} name="reasonId" />
-        <Popover open={open} onOpenChange={setOpen}>
+        <Input type="hidden" value={Number(selectedBilled)} name="billedId" />
+        <Popover open={openBilled} onOpenChange={setOpenBilled}>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
               role="combobox"
-              aria-expanded={open}
+              aria-expanded={openBilled}
               className="w-[460px] justify-between"
             >
-              {selectedReason
+              {selectedBilled
                 ? (() => {
-                    const reason = overtimeReasons.find(
-                      (reason) => reason.id.toString() === selectedReason
+                    const billed = overtimeBilled.find(
+                      (billed) => billed.id.toString() === selectedBilled
                     );
-                    return reason ? `${reason.name} - ${reason.as}` : "";
+                    return billed ? `${billed.name}` : "";
                   })()
-                : "Select reason..."}
+                : "Select Overtime billed..."}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[400px] p-0">
             <Command>
-              <CommandInput placeholder="Search reason..." />
+              <CommandInput placeholder="Search overtime billed..." />
               <CommandList>
-                <CommandEmpty>No reason found</CommandEmpty>
+                <CommandEmpty>No overtime billed found</CommandEmpty>
                 <CommandGroup>
-                  {overtimeReasons.map((reason) => (
+                  {overtimeBilled.map((billed) => (
                     <CommandItem
-                      key={reason.id}
-                      value={reason.name}
+                      key={billed.id}
+                      value={billed.name}
                       onSelect={() => {
-                        setSelectedReason(reason.id.toString());
-                        setOpen(false);
+                        setSelectedBilled(billed.id.toString());
+                        setOpenBilled(false);
                       }}
                     >
-                      {reason.name} -{" "}
-                      <span className="text-gray-500">{reason.as}</span>
+                      {billed.name}
                       <Check
                         className={cn(
                           "ml-auto h-4 w-4",
-                          selectedReason === reason.id.toString()
+                          selectedBilled === billed.id.toString()
                             ? "opacity-100"
                             : "opacity-0"
                         )}
@@ -148,26 +143,94 @@ export default function FormCreateOvertime({
           </PopoverContent>
         </Popover>
       </div>
-      {state?.inputs?.userId && (
-        <Input type="hidden" name="userId" value={state?.inputs?.userId} />
+      {state?.inputs?.billedId && (
+        <Input type="hidden" name="billedId" value={state?.inputs?.billedId} />
+      )}
+      {state?.errors?.billedId && (
+        <p className="text-red-500">{state?.errors?.billedId}</p>
+      )}
+
+      <div>
+        <Label>
+          Overtime Type <span className="text-red-500">*</span>
+        </Label>
+        <Input type="hidden" value={Number(selectedRule)} name="ruleId" />
+        <Popover open={openRule} onOpenChange={setOpenRule}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={openRule}
+              className="w-[460px] justify-between"
+            >
+              {selectedRule
+                ? (() => {
+                    const rule = overtimeRules.find(
+                      (reason) => reason.id.toString() === selectedRule
+                    );
+                    return rule ? `${rule.name}` : "";
+                  })()
+                : "Select overtime type..."}
+              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[400px] p-0">
+            <Command>
+              <CommandInput placeholder="Search overtime type..." />
+              <CommandList>
+                <CommandEmpty>No overtime type found</CommandEmpty>
+                <CommandGroup>
+                  {overtimeRules.map((reason) => (
+                    <CommandItem
+                      key={reason.id}
+                      value={reason.name}
+                      onSelect={() => {
+                        setSelectedRule(reason.id.toString());
+                        setOpenRule(false);
+                      }}
+                    >
+                      {reason.name}
+                      <Check
+                        className={cn(
+                          "ml-auto h-4 w-4",
+                          selectedRule === reason.id.toString()
+                            ? "opacity-100"
+                            : "opacity-0"
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+      </div>
+      {state?.inputs?.ruleId && (
+        <Input type="hidden" name="ruleId" value={state?.inputs?.ruleId} />
+      )}
+      {state?.errors?.ruleId && (
+        <p className="text-sm text-red-500">{state?.errors?.ruleId}</p>
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="remarks">Remarks</Label>
+        <Label htmlFor="notes">
+          Notes <span className="text-red-500">*</span>
+        </Label>
         <Textarea
-          id="remarks"
-          name="remarks"
-          placeholder="Enter overtime remarks"
-          defaultValue={state?.inputs?.remarks}
+          id="notes"
+          name="notes"
+          placeholder="Enter overtime notes"
+          defaultValue={state?.inputs?.notes}
         />
-        {state?.errors?.remarks && (
+        {state?.errors?.notes && (
           <p className="text-sm text-red-500">
-            {state?.errors?.remarks.join(", ")}
+            {state?.errors?.notes.join(", ")}
           </p>
         )}
 
-        {state?.message && (
-          <p className="text-sm text-green-500">{state?.message}</p>
+        {state?.errors && (
+          <p className="text-sm text-red-500">{state?.message}</p>
         )}
       </div>
       <Button type="submit" disabled={isPending}>

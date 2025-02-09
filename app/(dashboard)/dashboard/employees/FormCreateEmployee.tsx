@@ -166,6 +166,12 @@ export default function FormCreateEmployee({
                 {state?.errors?.vendorId}
               </span>
             )}
+
+            {!state?.success && (
+              <span className="text-red-500 text-xs">
+                {state?.message}
+              </span>
+            )}
           </div>
           <Button type="submit" disabled={isPending}>
             {isPending ? "Submitting..." : "Submit"}

@@ -1,6 +1,7 @@
 import { DataTableAttendanceReports } from "../table/data-table";
-import { columns } from "../table/columns";
+
 import { getAttendancesReports } from "../actions";
+import { columns } from "@/app/(dashboard)/dashboard/overtime/request/table/columns";
 
 // interface Attendance {
 //   id: string;

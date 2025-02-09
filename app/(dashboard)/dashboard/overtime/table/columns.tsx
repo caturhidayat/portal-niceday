@@ -68,6 +68,14 @@ export const columns: ColumnDef<Attendance>[] = [
     },
     filterFn: dateRangeFilter,
   },
+  {
+    accessorKey: "department",
+    header: "Department",
+    cell: ({ row }) => {
+      const department = row.getValue("department") as string;
+      return department;
+    },
+  },
   // {
   //   accessorKey: "shiftName",
   //   header: "Shift",
@@ -76,22 +84,22 @@ export const columns: ColumnDef<Attendance>[] = [
   //     return shiftName;
   //   },
   // },
-  {
-    accessorKey: "shiftStart",
-    header: "Shift Start",
-    cell: ({ row }) => {
-      const time = row.getValue("shiftStart") as string;
-      return time ? <span style={{ color: "red" }}>{format(new Date(Number(time)), "HH:mm")}</span> : "-";
-    },
-  },
-  {
-    accessorKey: "shiftEnd",
-    header: "Shift End",
-    cell: ({ row }) => {
-      const time = row.getValue("shiftEnd") as string;
-      return time ? <span style={{ color: "red" }}>{format(new Date(Number(time)), "HH:mm")}</span> : "-";
-    },
-  },
+  // {
+  //   accessorKey: "shiftStart",
+  //   header: "Shift Start",
+  //   cell: ({ row }) => {
+  //     const time = row.getValue("shiftStart") as string;
+  //     return time ? <span style={{ color: "red" }}>{format(new Date(Number(time)), "HH:mm")}</span> : "-";
+  //   },
+  // },
+  // {
+  //   accessorKey: "shiftEnd",
+  //   header: "Shift End",
+  //   cell: ({ row }) => {
+  //     const time = row.getValue("shiftEnd") as string;
+  //     return time ? <span style={{ color: "red" }}>{format(new Date(Number(time)), "HH:mm")}</span> : "-";
+  //   },
+  // },
   {
     accessorKey: "checkInTime",
     header: "Check In",
@@ -108,14 +116,14 @@ export const columns: ColumnDef<Attendance>[] = [
       return time ? format(new Date(Number(time)), "HH:mm") : "-";
     },
   },
-  {
-    accessorKey: "workHours",
-    header: "Work Hours",
-    cell: ({ row }) => {
-      const hours = row.getValue("workHours") as number;
-      return hours ? `${hours} Minutes` : "-";
-    },
-  },
+  // {
+  //   accessorKey: "workHours",
+  //   header: "Work Hours",
+  //   cell: ({ row }) => {
+  //     const hours = row.getValue("workHours") as number;
+  //     return hours ? `${hours} Minutes` : "-";
+  //   },
+  // },
   {
     accessorKey: "overtimeStatus",
     header: "status",
@@ -148,43 +156,74 @@ export const columns: ColumnDef<Attendance>[] = [
     },
   },
   {
-    accessorKey: "overtimeReason",
+    accessorKey: "overtimeActualMinutes",
+    header: "Actual Minutes",
+    cell: ({ row }) => {
+      const minutes = row.getValue("overtimeActualMinutes") as number;
+      return minutes ? `${minutes} Minutes` : "-";
+    },
+  },
+  {
+    accessorKey: "overtimeActualHours",
+    header: "Actual Hours",
+    cell: ({ row }) => {
+      const hours = row.getValue("overtimeActualHours") as number;
+      return hours ? `${hours} Hours` : "-";
+    },
+  },
+  {
+    accessorKey: "overtimeMultiplicationHours",
+    header: "Multiplication",
+    cell: ({ row }) => {
+      const hours = row.getValue("overtimeMultiplicationHours") as number;
+      return hours ? `${hours}` : "-";
+    },
+  },
+  {
+    accessorKey: "overtimeBilled",
     header: ({ column }) => (
       <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
-          Reason
+          Billed
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
     ),
     cell: ({ row }) => {
-      const reason = row.getValue("overtimeReason") as string;
+      const reason = row.getValue("overtimeBilled") as string;
       return reason? reason : "-";
     },
   },
   {
-    accessorKey: "overtimeReasonAs",
+    accessorKey: "overtimeBilledAs",
     header: ({ column }) => (
       <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
-          Reason As
+          Billed As
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
     ),
     cell: ({ row }) => {
-      const as = row.getValue("overtimeReasonAs") as string;
+      const as = row.getValue("overtimeBilledAs") as string;
       return as? as : "-";
     },
   },
   {
-    accessorKey: "overtimeRemark",
+    accessorKey: "overtimeNotes",
     header: "Remark",
     cell: ({ row }) => {
-      const remark = row.getValue("overtimeRemark") as string;
+      const remark = row.getValue("overtimeNotes") as string;
       return remark? remark : "-";
+    },
+  },
+  {
+    accessorKey: "overtimeRejectedReason",
+    header: "Rejected Reason",
+    cell: ({ row }) => {
+      return <div className="ml-4">{row.getValue("overtimeRejectedReason")}</div>;
     },
   }
 ];

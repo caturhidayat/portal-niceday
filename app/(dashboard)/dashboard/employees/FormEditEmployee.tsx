@@ -13,11 +13,12 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Branches, Departments, User } from "./table/columns";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 
 import { updateEmployee } from "./actions/actions";
 import SelectInput from "./SelectInput";
 import { Vendor } from "../organization/vendor/table/columns";
+import { toast } from "sonner";
 
 const initialState = {
   success: false,
@@ -36,11 +37,13 @@ export default function FormEditEmployee({
   departments,
   branches,
   vendors,
+  setIsOpen,
 }: {
   employee: User;
   departments: Departments[];
   branches: Branches[];
   vendors: Vendor[];
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   // const router = useRouter();
   // const [loading, setLoading] = useState(false);
@@ -167,28 +170,32 @@ export default function FormEditEmployee({
           {/* {state.errors && <p>{state.errors?.branchId}</p>} */}
           <div>
             <Label>Vendor</Label>
-            <Select name="vendorId">
+            <Select name="vendorId" defaultValue={employee.vendorId?.toString()}>
               <SelectTrigger>
                 <SelectValue placeholder="Select a vendor" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Vendor</SelectLabel>
-                  {vendors.map((vendor) => (
-                    <SelectItem key={vendor.id} value={vendor.id.toString()}>
-                      {vendor.name}
-                    </SelectItem>
-                  ))}
+                  {vendors ? (
+                    vendors.map((vendor) => (
+                      <SelectItem key={vendor.id} value={vendor.id.toString()}>
+                        {vendor.name}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="">No vendors available</SelectItem>
+                  )}
                 </SelectGroup>
               </SelectContent>
             </Select>
-            {/* {state?.errors?.vendorId && (
-              <span className="text-red-500 text-xs">
-                {state?.errors?.vendorId}
-              </span>
-            )} */}
+            {state?.success ? (
+              <p className="text-green-500 text-xs">{state?.message}</p>
+            ) : (
+              <p className="text-red-500 text-xs">{state?.message}</p>
+            )}
           </div>
-          <Button type="submit" disabled={isPending}>
+          <Button type="submit" disabled={isPending} onClick={() => setIsOpen(false)}>
             {isPending ? "Updating..." : "Update Employee"}
           </Button>
         </form>

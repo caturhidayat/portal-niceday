@@ -123,6 +123,9 @@ export function DataTableC<TData extends User, TValue>({
           desc: true,
         },
       ],
+      pagination: {
+        pageSize: 20
+      }
     },
     state: {
       sorting,
@@ -168,9 +171,6 @@ export function DataTableC<TData extends User, TValue>({
                     </TableHead>
                   );
                 })}
-                <TableHead className="bg-accent">
-                  <Button variant={"ghost"}>Action</Button>
-                </TableHead>
               </TableRow>
             ))}
           </TableHeader>
@@ -190,43 +190,6 @@ export function DataTableC<TData extends User, TValue>({
                         )}
                       </TableCell>
                     ))}
-
-                    <TableCell className="p-0 px-2">
-                      {/* <DialogEditEmployee
-                        employee={row.original}
-                        departments={departments}
-                        branches={branches}
-                      />
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="ghost">
-                            <Trash2 className="mr-2 h-4 w-4 text-red-600" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>
-                              Are you sure you want to delete this employee?
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This action cannot be undone. This will
-                              permanently delete your employee.
-                            </AlertDialogDescription>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                onClick={async () => {
-                                  await deleteAttendance(row.original.id);
-                                  table.resetRowSelection();
-                                }}
-                              >
-                                Delete
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogHeader>
-                        </AlertDialogContent>
-                      </AlertDialog> */}
-                    </TableCell>
                   </TableRow>
                 );
               })

@@ -1,6 +1,6 @@
 "use server";
 
-import { get, post } from "@/lib/fetch-wrapper";
+import { get, post, put } from "@/lib/fetch-wrapper";
 import { revalidateTag } from "next/cache";
 import z from "zod";
 
@@ -51,9 +51,9 @@ export async function createVendor(
 
     revalidateTag("vendor");
 
-    console.log("res from server action : ", res);
+    // console.log("res from server action : ", res);
 
-    console.log("validatedData.data :", validatedData.data);
+    // console.log("validatedData.data :", validatedData.data);
 
     return {
       success: true,
@@ -70,4 +70,42 @@ export async function createVendor(
 export async function getVendors() {
   const res = get("vendor", ["vendor"]);
   return res;
+}
+
+export async function updateVendor(_prevState: ActionResponseVendor, formData: FormData): Promise<ActionResponseVendor> {
+  try {
+    const id = formData.get("id") as string;
+    const rawData: any = {
+      name: formData.get("name") as string,
+      description: (formData.get("description") as string) || undefined,
+    };
+
+    // Validate data
+    const validatedData = VendorSchema.safeParse(rawData);
+    if (!validatedData.success) {
+      return {
+        success: false,
+        message: "Please fix the following errors",
+        errors: validatedData.error.flatten().fieldErrors,
+        inputs: rawData,
+      };
+    }
+
+    // Convert valid data to FormData
+    const submitData = new FormData();
+    submitData.append("name", rawData.name);
+    submitData.append("description", rawData.description || "");
+
+    const res = await put("vendor", id, submitData);
+    revalidateTag("vendor");
+    return {
+      success: true,
+      message: "Vendor has been updated successfully",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to update vendor",
+    };
+  }
 }

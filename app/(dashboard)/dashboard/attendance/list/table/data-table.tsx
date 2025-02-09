@@ -123,6 +123,9 @@ export function DataTableAttendance<TData extends Attendance, TValue>({
           desc: true,
         },
       ],
+      pagination: {
+        pageSize: 20
+      }
     },
     state: {
       sorting,

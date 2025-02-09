@@ -38,7 +38,7 @@ const data = {
     {
       name: "Portal Niceday",
       logo: GalleryVerticalEnd,
-      plan: "Enterprise",
+      plan: "Attendance",
     },
   ],
   //   navMain: [
@@ -201,7 +201,7 @@ const data = {
       iconColor: "text-sky-500",
       items: [
         {
-          title: "Add Employee",
+          title: "Employees List",
           url: "/dashboard/employees",
         },
         // {
@@ -209,7 +209,7 @@ const data = {
         //   url: "/dashboard/employees/information",
         // },
         {
-          title: "Employee List",
+          title: "Employee Management",
           url: "/dashboard/employees/list",
         },
         // {
@@ -339,8 +339,8 @@ const data = {
           url: "/dashboard/setting/shift-employee",
         },
         {
-          title: "Overtime Reason",
-          url: "/dashboard/setting/overtime-reason",
+          title: "Overtime Cost Billed",
+          url: "/dashboard/setting/overtime-billed",
         },
       ],
     },
