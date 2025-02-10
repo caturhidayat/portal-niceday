@@ -29,7 +29,7 @@ const dateRangeFilter = (row: any, columnId: string, filterValue: DateRange | un
 export const columns: ColumnDef<Attendance>[] = [
   {
     accessorKey: "username",
-    header: "NIK",
+    header: "Username",
     cell: ({ row }) => {
       const username = row.getValue("username") as string;
       return username;

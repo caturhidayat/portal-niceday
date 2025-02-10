@@ -151,7 +151,7 @@ export const columns: ColumnDef<Attendance>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
-          NIK
+          Username
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
