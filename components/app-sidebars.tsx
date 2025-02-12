@@ -318,6 +318,10 @@ const data = {
           title: "Office Location",
           url: "/dashboard/organization/office-location",
         },
+        {
+          title: "Admin",
+          url: "/dashboard/organization/admin",
+        }
       ],
     },
     {
@@ -341,7 +345,7 @@ const data = {
         {
           title: "Overtime Cost Billed",
           url: "/dashboard/setting/overtime-billed",
-        },
+        }
       ],
     },
   ],
