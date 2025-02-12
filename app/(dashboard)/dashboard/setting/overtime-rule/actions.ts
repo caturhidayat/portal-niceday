@@ -6,12 +6,14 @@ import { z } from "zod";
 
 const OvertimeReasonSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
-  as: z.string().min(1, { message: "As is required" }),
+  description: z.string().min(1, { message: "Description is required" }),
+  isActive: z.boolean(),
 });
 
 export interface OvertimeReasonFormData {
   name: string;
-  as: string;
+  description: string;
+  isActive: boolean;
 }
 
 export interface ActionResponseOvertimeReason {
@@ -24,14 +26,14 @@ export interface ActionResponseOvertimeReason {
 }
 
 // Action for create employee
-export default async function createOvertimeReason(
+export default async function createOvertimeRule(
   _prevState: ActionResponseOvertimeReason,
   formData: FormData
 ): Promise<ActionResponseOvertimeReason> {
   try {
     const rawData: any = {
       name: formData.get("name") as string,
-      as: formData.get("as") as string,
+      description: formData.get("description") as string,
     };
 
     // Validate data
@@ -49,28 +51,29 @@ export default async function createOvertimeReason(
     // Parse validated data to FormData
     const submitData = new FormData();
     submitData.append("name", rawData.name);
-    submitData.append("as", rawData.as);
+    submitData.append("description", rawData.description);
+    submitData.append("isActive", rawData.isActive.toString());
 
-    const res = await post("overtimes/reason", submitData);
+    const res = await post("overtime-rule", submitData);
 
-    revalidateTag("overtime-reasons");
+    revalidateTag("overtime-rule");
 
     return {
       success: true,
-      message: "Overtime reason has been created successfully",
+      message: "Overtime rule has been created successfully",
     };
   } catch (error) {
     return {
       success: false,
-      message: "Failed to create shift",
+      message: "Failed to create overtime rule",
     };
   }
 }
 
 
 // Delete Overtime Reason by ID
-export async function deleteOvertimeReason(id: string) {
-  const res = await del(`overtimes/reason`, id);
-  revalidateTag("overtime-reasons");
+export async function deleteOvertimeBilled(id: string) {
+  const res = await del(`overtimes-billed`, id);
+  revalidateTag("overtime-billed");
   return res.data;
 }

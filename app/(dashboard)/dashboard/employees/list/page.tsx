@@ -16,15 +16,22 @@ async function getBranches(): Promise<Branches[]> {
   return response as Branches[];
 }
 async function getVendors(): Promise<Vendor[]> {
-  const response = await get("vendors");
+  const response = await get("vendor", ["vendor"]);
   return response as Vendor[];
 }
 
 export default async function Page() {
   const employees = await getEmployees();
-  const departments = await getDepartments();
-  const branches = await getBranches();
-  const vendors = await getVendors();
+  const [departments, branches, vendors] = await Promise.all([
+    getDepartments(),
+    getBranches(),
+    getVendors(),
+  ]);
+
+  // console.log("branches", branches);
+  // console.log("departments", departments);
+  console.log("vendors", vendors);
+
   return (
     <div className="grid gap-4 space-y-2">
       <div>

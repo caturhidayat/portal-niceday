@@ -51,6 +51,27 @@ export const postRaw = async (path: string, formData: FormData) => {
   }
 };
 
+export const postJson = async (path: string, data: FormData) => {
+  console.log("formData : ", data);
+  // const body = data instanceof FormData ? Object.fromEntries(data) : data;
+
+  const token = await getHeaders();
+  console.log("request body wrapper : ", data);
+  const res = await fetch(`${API_URL}/${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...token },
+    body: JSON.stringify(data),
+  });
+
+  const parsedRes = await res.json();
+  console.log("parsedRes", parsedRes);
+  if (!res.ok) {
+    return { error: getErrorMessage(parsedRes) };
+  } else {
+    return { data: parsedRes };
+  }
+};
+
 export const get = async <T>(path: string, tags?: string[]) => {
   const token = await getHeaders();
   const res = await fetch(`${API_URL}/${path}`, {

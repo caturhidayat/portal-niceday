@@ -123,6 +123,9 @@ export function DataTableAttendance<TData extends Attendance, TValue>({
           desc: true,
         },
       ],
+      pagination: {
+        pageSize: 20
+      }
     },
     state: {
       sorting,
@@ -169,8 +172,9 @@ export function DataTableAttendance<TData extends Attendance, TValue>({
                   );
                 })}
                 <TableHead className="bg-accent">
-                  <Button variant={"ghost"}>Action</Button>
+                  <Button variant={"ghost"}>Acton</Button>
                 </TableHead>
+                
               </TableRow>
             ))}
           </TableHeader>

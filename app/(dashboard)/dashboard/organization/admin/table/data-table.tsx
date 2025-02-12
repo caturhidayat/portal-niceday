@@ -2,7 +2,6 @@
 
 import { DataTablePagination } from "@/components/table/data-table-pagination";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -34,11 +33,10 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { Edit, SearchX } from "lucide-react";
+import { SearchX } from "lucide-react";
 import { useState } from "react";
-import EditBranchModal from "../edit-branch-modal";
-import { Branch } from "../page";
-import DialogEditBranch from "../DialogEditBranch";
+import { User } from "./columns";
+
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -91,7 +89,7 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
   return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
 };
 
-export function DataTable<TData extends Branch, TValue>({
+export function DataTable<TData extends User, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -165,7 +163,7 @@ export function DataTable<TData extends Branch, TValue>({
                   </TableCell>
                 ))}
                 <TableCell className="p-0 px-2">
-                  <DialogEditBranch branch={row.original} />
+                  {/* <DialogEditBranch branch={row.original} /> */}
                 </TableCell>
               </TableRow>
             ))

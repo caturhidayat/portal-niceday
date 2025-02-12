@@ -2,7 +2,17 @@
 
 import { DataTablePagination } from "@/components/table/data-table-pagination";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -34,11 +44,10 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { Edit, SearchX } from "lucide-react";
+import { SearchX, Trash2 } from "lucide-react";
 import { useState } from "react";
-import EditBranchModal from "../edit-branch-modal";
-import { Branch } from "../page";
-import DialogEditBranch from "../DialogEditBranch";
+import { deleteOvertimeBilled } from "../actions";
+import { deleteShift } from "../../shift/actions";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -91,7 +100,7 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
   return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
 };
 
-export function DataTable<TData extends Branch, TValue>({
+export function DataTable<TData extends { id: string }, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -140,15 +149,13 @@ export function DataTable<TData extends Branch, TValue>({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                   </TableHead>
                 );
               })}
-              <TableHead>
-                <Button variant={"ghost"}>Actions</Button>
-              </TableHead>
+              <TableHead>Action</TableHead>
             </TableRow>
           ))}
         </TableHeader>
@@ -165,8 +172,36 @@ export function DataTable<TData extends Branch, TValue>({
                   </TableCell>
                 ))}
                 <TableCell className="p-0 px-2">
-                  <DialogEditBranch branch={row.original} />
-                </TableCell>
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost">
+                            <Trash2 className="mr-2 h-4 w-4 text-red-600" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you sure you want to delete this shift?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete your shift.
+                            </AlertDialogDescription>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={async () => {
+                                  await deleteOvertimeBilled(row.original.id);
+                                  table.resetRowSelection();
+                                }}
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogHeader>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </TableCell>
               </TableRow>
             ))
           ) : (
@@ -176,7 +211,7 @@ export function DataTable<TData extends Branch, TValue>({
                   <Alert className="w-1/3" variant={"destructive"}>
                     <SearchX className="h-4 w-4" />
                     <AlertTitle>No results.</AlertTitle>
-                    <AlertDescription>No branches found.</AlertDescription>
+                    <AlertDescription>No vendors found.</AlertDescription>
                   </Alert>
                 </div>
               </TableCell>

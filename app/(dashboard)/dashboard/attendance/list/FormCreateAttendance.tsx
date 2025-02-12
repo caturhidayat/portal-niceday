@@ -10,7 +10,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { format } from "date-fns";
+import { format, setHours, setMinutes } from "date-fns";
 import { useActionState, useState } from "react";
 import { Shift, User } from "../today/columns";
 import {

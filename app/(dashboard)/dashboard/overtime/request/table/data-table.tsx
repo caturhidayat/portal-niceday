@@ -37,16 +37,18 @@ import { DataTablePagination } from "@/components/table/data-table-pagination";
 import { Attendance } from "../../../attendance/today/columns";
 import { DataTableToolbar } from "./data-table-toolbar";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import FormCreateOvertime from "../FormCreateOvertime";
-import { OvertimeReasonsType } from "../../../setting/overtime-reason/table/columns";
+import { OvertimeBilledType } from "../../../setting/overtime-billed/table/columns";
 import { format } from "date-fns";
+import { OvertimeRulesType } from "../../../setting/overtime-rule/table/columns";
 
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  overtimeReasons: OvertimeReasonsType[];
+  overtimeBilled: OvertimeBilledType[];
+  overtimeRules: OvertimeRulesType[];
 }
 
 declare module "@tanstack/react-table" {
@@ -92,7 +94,8 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
 export function DataTableOvertime<TData extends Attendance, TValue>({
   columns,
   data,
-  overtimeReasons
+  overtimeBilled,
+  overtimeRules,
 }: DataTableProps<TData, TValue>) {
   // Tanstack table state
   const [rowSelection, setRowSelection] = useState({});
@@ -186,6 +189,7 @@ export function DataTableOvertime<TData extends Attendance, TValue>({
                           <DialogContent>
                             <DialogHeader>
                               <DialogTitle>Create Overtime Request</DialogTitle>
+                              <DialogDescription>Create new overtime request</DialogDescription>
                             </DialogHeader>
                             <div>
                               <Alert>
@@ -207,7 +211,8 @@ export function DataTableOvertime<TData extends Attendance, TValue>({
                             <FormCreateOvertime
                               attendance={row.original}
                               attendanceDate={row.original.attendanceDate}
-                              overtimeReasons={overtimeReasons}
+                              overtimeBilled={overtimeBilled}
+                              overtimeRules={overtimeRules}
                             />
                           </DialogContent>
                         </Dialog>

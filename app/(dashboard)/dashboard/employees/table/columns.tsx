@@ -56,7 +56,7 @@ export const columns: ColumnDef<User>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
-          NIK
+          Username
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -161,7 +161,7 @@ export const columns: ColumnDef<User>[] = [
         return <div>Invalid date</div>;
       }
 
-      const date = format(new Date(parsedDate), "dd/MM/yy - HH:mm");
+      const date = format(new Date(parsedDate), "dd/MM/yy");
       return <div className="ml-4">{date}</div>;
     },
   },

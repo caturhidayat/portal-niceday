@@ -25,7 +25,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
-          NIK
+          Username
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -137,11 +137,22 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
         </Button>
       );
     },
-    cell: (info) => (
-      <span className="p-2">
-        {format(new Date(Number(info.getValue())), "HH:mm")}
-      </span>
-    ),
+    // cell: (info) => (
+    //   <span className="p-2">
+    //     {format(new Date(Number(info.getValue())), "HH:mm")}
+    //   </span>
+    // ),
+    cell: ({ row }) => {
+      const checkInTime = row.getValue("checkInTime");
+      const parsedDate = parseInt(checkInTime as string);
+
+      if (isNaN(parsedDate)) {
+          return <div className="ml-4">--:--</div>;
+      }
+
+      const date = format(new Date(parsedDate), "HH:mm");
+      return <div className="ml-4">{date}</div>;
+  },
     footer: (props) => props.column.id,
   },
   {
@@ -157,54 +168,65 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
         </Button>
       );
     },
-    cell: (info) => (
-      <span className="p-2">
-        {format(new Date(Number(info.getValue())), "HH:mm")}
-      </span>
-    ),
+    // cell: (info) => (
+    //   <span className="p-2">
+    //     {format(new Date(Number(info.getValue())), "HH:mm")}
+    //   </span>
+    // ),
+    cell: ({ row }) => {
+      const checkOutTime = row.getValue("checkOutTime");
+      const parsedDate = parseInt(checkOutTime as string);
+
+      if (isNaN(parsedDate)) {
+          return <div className="ml-4">--:--</div>;
+      }
+
+      const date = format(new Date(parsedDate), "HH:mm");
+      return <div className="ml-4">{date}</div>;
+  },
     footer: (props) => props.column.id,
   },
+  // {
+  //   accessorKey: "isLate",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+  //       >
+  //         Is Late
+  //         <ChevronsUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  //   cell: ({ row }) => {
+  //     const isLate = row.getValue("isLate");
+  //     return (
+  //       <div className="">
+  //         {isLate ? <Badge variant={"destructive"}>Late</Badge> : null}
+  //       </div>
+  //     );
+  //   },
+  // },
   {
-    accessorKey: "isLate",
+    accessorKey: "lateMinutes",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
-          Is Late
+          Late
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
-      const isLate = row.getValue("isLate");
-      return (
-        <div className="">
-          {isLate ? <Badge variant={"destructive"}>Late</Badge> : null}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "workHours",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
-        >
-          Work Hours
-          <ChevronsUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const workHours = row.getValue("workHours") as number;
-      if (isNaN(workHours)) {
+      const lateMinutes = row.getValue("lateMinutes") as number;
+      if (isNaN(lateMinutes)) {
         return null;
       }
-      return <div className="ml-4">{workHours}</div>;
+      return <div className="ml-4">{lateMinutes}</div>;
     },
   },
   {
