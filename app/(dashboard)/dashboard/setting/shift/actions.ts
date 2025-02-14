@@ -1,6 +1,6 @@
 "use server";
 
-import { del, get, post } from "@/lib/fetch-wrapper";
+import { del, get, post, put } from "@/lib/fetch-wrapper";
 import { revalidateTag } from "next/cache";
 import { Shift } from "./table/columns";
 import { z } from "zod";
@@ -118,6 +118,24 @@ export default async function createShift(
       message: "Failed to create shift",
     };
   }
+}
+
+// Update Shift by ID
+export async function updateShift(shiftId: string, formData: FormData) {
+
+  const rawData: any = {
+    name: formData.get("name") as string,
+    startTime: formData.get("startTime") as string,
+    endTime: formData.get("endTime") as string,
+    break: formData.get("break") as string,
+  };
+
+  console.log("rawData : ", rawData);
+  console.log("shiftId : ", shiftId);
+
+  const res = await put(`shifts`, shiftId, formData);
+  revalidateTag("shifts");
+  return res.data;
 }
 
 // Get All Shift

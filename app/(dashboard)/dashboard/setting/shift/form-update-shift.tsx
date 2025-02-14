@@ -3,16 +3,18 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { parse, getTime } from "date-fns";
-
-import createShift from "./actions";
+import { parse, getTime, format } from "date-fns";
 import { Shift } from "./table/columns";
+import { updateShift } from "./actions";
 
 export default function FormEditShift({ setIsOpen, data }: { setIsOpen: any, data: Shift }) {
     const convertTimeToEpoch = (time: string) => {
         const parsedTime = parse(time, "HH:mm", new Date());
         return getTime(parsedTime);
     };
+
+    const startTime = format(new Date(Number(data.startTime)), "HH:mm");
+    const endTime = format(new Date(Number(data.endTime)), "HH:mm");
 
     return (
         <form
@@ -28,8 +30,10 @@ export default function FormEditShift({ setIsOpen, data }: { setIsOpen: any, dat
                 );
                 formData.set("endTime", convertTimeToEpoch(endTime).toString());
 
-                console.log("formData", formData);
-                // const res = await createShift(formData);
+                console.log("startTime", formData.get("startTime"));
+                console.log("endTime", formData.get("endTime"));
+                // console.log("formData edit : ", formData);
+                const res = await updateShift(data.id, formData);
                 // console.log("response", res);
 
                 setIsOpen(false);
@@ -42,9 +46,8 @@ export default function FormEditShift({ setIsOpen, data }: { setIsOpen: any, dat
                         <Input
                             name="name"
                             type="text"
-                            value={data.name}
                             placeholder="Shift Name"
-                            required
+                            defaultValue={data.name}
                         />
                     </div>
                     <div>
@@ -52,20 +55,19 @@ export default function FormEditShift({ setIsOpen, data }: { setIsOpen: any, dat
                         <Input
                             name="break"
                             type="number"
-                            value={data.break}
                             placeholder="Long Break in Minute"
-                            required
+                            defaultValue={data.break}
                         />
                     </div>
 
                     <div>
                         <Label>Start Time</Label>
-                        <Input name="startTime" type="time" value={data.startTime} required />
+                        <Input name="startTime" type="time" defaultValue={startTime} />
                     </div>
 
                     <div>
                         <Label>End Time</Label>
-                        <Input name="endTime" type="time" value={data.endTime} required />
+                        <Input name="endTime" type="time" defaultValue={endTime} />
                     </div>
                 </div>
 
