@@ -345,6 +345,10 @@ const data = {
         {
           title: "Overtime Cost Billed",
           url: "/dashboard/setting/overtime-billed",
+        },
+        {
+          title: "Reset Password",
+          url: "/dashboard/setting/employees/reset-password",
         }
       ],
     },
