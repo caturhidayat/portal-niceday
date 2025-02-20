@@ -195,30 +195,30 @@ export const columns: ColumnDef<Attendance>[] = [
       return reason? reason : "-";
     },
   },
-  {
-    accessorKey: "overtimeBilledAs",
-    header: ({ column }) => (
-      <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
-        >
-          Billed As
-          <ChevronsUpDown className="ml-2 h-4 w-4" />
-        </Button>
-    ),
-    cell: ({ row }) => {
-      const as = row.getValue("overtimeBilledAs") as string;
-      return as? as : "-";
-    },
-  },
-  {
-    accessorKey: "overtimeNotes",
-    header: "Remark",
-    cell: ({ row }) => {
-      const remark = row.getValue("overtimeNotes") as string;
-      return remark? remark : "-";
-    },
-  },
+  // {
+  //   accessorKey: "overtimeBilledAs",
+  //   header: ({ column }) => (
+  //     <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+  //       >
+  //         Billed As
+  //         <ChevronsUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //   ),
+  //   cell: ({ row }) => {
+  //     const as = row.getValue("overtimeBilledAs") as string;
+  //     return as? as : "-";
+  //   },
+  // },
+  // {
+  //   accessorKey: "overtimeNotes",
+  //   header: "Remark",
+  //   cell: ({ row }) => {
+  //     const remark = row.getValue("overtimeNotes") as string;
+  //     return remark? remark : "-";
+  //   },
+  // },
   {
     accessorKey: "overtimeRejectedReason",
     header: "Rejected Reason",

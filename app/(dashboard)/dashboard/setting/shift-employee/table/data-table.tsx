@@ -220,7 +220,7 @@ export function DataTableC<TData extends User, TValue>({
                     ))}
 
                     <TableCell className="p-0 px-2">
-                      <AlertDialog>
+                      {/* <AlertDialog>
                         <AlertDialogTrigger asChild>
                           {row.original.shiftName ? (
                             <Button variant="link">
@@ -375,7 +375,7 @@ export function DataTableC<TData extends User, TValue>({
                             </AlertDialogFooter>
                           </AlertDialogHeader>
                         </AlertDialogContent>
-                      </AlertDialog>
+                      </AlertDialog> */}
 
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
