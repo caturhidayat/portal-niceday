@@ -126,6 +126,24 @@ export type Attendance = {
 
 export const columns: ColumnDef<Attendance>[] = [
   {
+    accessorKey: "username",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+        >
+          Username
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return <div className="ml-2">{row.getValue("username")}</div>;
+    },
+  },
+
+  {
     accessorKey: "fullName",
     header: ({ column }) => {
       return (
@@ -139,25 +157,7 @@ export const columns: ColumnDef<Attendance>[] = [
       );
     },
     cell: ({ row }) => {
-      return <div className="ml-2">{row.getValue("fullName")}</div>;
-    },
-  },
-
-  {
-    accessorKey: "username",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
-        >
-          NIK
-          <ChevronsUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      return <div className="ml-2">{row.getValue("username")}</div>;
+      return <div className="">{row.getValue("fullName")}</div>;
     },
   },
   {
@@ -318,11 +318,11 @@ export const columns: ColumnDef<Attendance>[] = [
       return <div className="ml-4">{row.getValue("department")}</div>;
     },
   },
-  {
-    accessorKey: "shiftName",
-    header: "Shift Name",
-    cell: ({ row }) => {
-      return <div className="ml-4">{row.getValue("shiftName")}</div>;
-    },
-  },
+  // {
+  //   accessorKey: "shiftName",
+  //   header: "Shift Name",
+  //   cell: ({ row }) => {
+  //     return <div className="ml-4">{row.getValue("shiftName")}</div>;
+  //   },
+  // },
 ];

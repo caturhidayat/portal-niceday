@@ -91,6 +91,16 @@ export const put = async (path: string, id: string, data: FormData) => {
   return res.json();
 };
 
+export async function putNoParams(path: string, data: FormData) {
+  const token = await getHeaders();
+  const res = await fetch(`${API_URL}/${path}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...token },
+    body: JSON.stringify(Object.fromEntries(data)),
+  });
+  return res.json();
+}
+
 export const del = async (path: string, id: string) => {
   const token = await getHeaders();
   const res = await fetch(`${API_URL}/${path}/${id}`, {

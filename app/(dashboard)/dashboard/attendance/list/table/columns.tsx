@@ -25,7 +25,7 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
         >
-          NIK
+          Username
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -243,17 +243,17 @@ export const columnsAttendance: ColumnDef<Attendance>[] = [
       return <div className="ml-4">{row.getValue("department")}</div>;
     },
   },
-  {
-    accessorKey: "shiftName",
-    header: "Shift",
-    cell: ({ row }) => {
-      const shiftName = row.getValue("shiftName") as string;
-      if (!shiftName) {
-        return null;
-      }
-      return <div className="ml-4">{String(shiftName)}</div>;
-    },
-  },
+  // {
+  //   accessorKey: "shiftName",
+  //   header: "Shift",
+  //   cell: ({ row }) => {
+  //     const shiftName = row.getValue("shiftName") as string;
+  //     if (!shiftName) {
+  //       return null;
+  //     }
+  //     return <div className="ml-4">{String(shiftName)}</div>;
+  //   },
+  // },
 
   // {
   //   id: "actions",

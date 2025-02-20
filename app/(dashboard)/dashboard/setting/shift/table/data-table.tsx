@@ -72,6 +72,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import createShiftEmployee, { deleteShift } from "../actions";
+import EditShiftModal from "../edit-shift-modal";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -208,9 +209,9 @@ export function DataTable<TData extends { id: string }, TValue>({
                         )}
                       </TableCell>
                     ))}
-
                     <TableCell className="p-0 px-2">
-                    <AlertDialog>
+                      <EditShiftModal data={row.original} />
+                      {/* <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button variant="ghost">
                             <Trash2 className="mr-2 h-4 w-4 text-red-600" />
@@ -238,7 +239,7 @@ export function DataTable<TData extends { id: string }, TValue>({
                             </AlertDialogFooter>
                           </AlertDialogHeader>
                         </AlertDialogContent>
-                      </AlertDialog>
+                      </AlertDialog> */}
                     </TableCell>
                   </TableRow>
                 );

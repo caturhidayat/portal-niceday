@@ -2,17 +2,6 @@
 
 import { DataTablePagination } from "@/components/table/data-table-pagination";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -44,10 +33,10 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { SearchX, Trash2 } from "lucide-react";
+import { SearchX } from "lucide-react";
 import { useState } from "react";
-import { deleteOvertimeBilled } from "../actions";
-import { deleteShift } from "../../shift/actions";
+import { User } from "./columns";
+
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -100,7 +89,7 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
   return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
 };
 
-export function DataTable<TData extends { id: string }, TValue>({
+export function DataTable<TData extends User, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -149,13 +138,15 @@ export function DataTable<TData extends { id: string }, TValue>({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                   </TableHead>
                 );
               })}
-              <TableHead>Action</TableHead>
+              <TableHead>
+                <Button variant={"ghost"}>Actions</Button>
+              </TableHead>
             </TableRow>
           ))}
         </TableHeader>
@@ -172,36 +163,8 @@ export function DataTable<TData extends { id: string }, TValue>({
                   </TableCell>
                 ))}
                 <TableCell className="p-0 px-2">
-                    {/* <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="ghost">
-                            <Trash2 className="mr-2 h-4 w-4 text-red-600" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>
-                              Are you sure you want to delete this shift?
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This action cannot be undone. This will
-                              permanently delete your shift.
-                            </AlertDialogDescription>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                onClick={async () => {
-                                  await deleteOvertimeBilled(row.original.id);
-                                  table.resetRowSelection();
-                                }}
-                              >
-                                Delete
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogHeader>
-                        </AlertDialogContent>
-                      </AlertDialog> */}
-                    </TableCell>
+                  {/* <DialogEditBranch branch={row.original} /> */}
+                </TableCell>
               </TableRow>
             ))
           ) : (
@@ -211,7 +174,7 @@ export function DataTable<TData extends { id: string }, TValue>({
                   <Alert className="w-1/3" variant={"destructive"}>
                     <SearchX className="h-4 w-4" />
                     <AlertTitle>No results.</AlertTitle>
-                    <AlertDescription>No vendors found.</AlertDescription>
+                    <AlertDescription>No branches found.</AlertDescription>
                   </Alert>
                 </div>
               </TableCell>

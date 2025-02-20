@@ -8,7 +8,7 @@ const EmployeeSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   username: z
     .string()
-    .min(8, { message: "Username must be at least 8 characters" }),
+    .min(4, { message: "Username must be at least 4 characters" }),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),

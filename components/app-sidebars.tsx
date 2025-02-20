@@ -254,14 +254,14 @@ const data = {
         //   url: "/dashboard/overtime/cancellation",
         // },
 
-        {
-          title: "Employee Shifts",
-          url: "/dashboard/attendance/shifts",
-        },
-        {
-          title: "Employee Group Shifts",
-          url: "/dashboard/attendance/group-shifts",
-        },
+        // {
+        //   title: "Employee Shifts",
+        //   url: "/dashboard/attendance/shifts",
+        // },
+        // {
+        //   title: "Employee Group Shifts",
+        //   url: "/dashboard/attendance/group-shifts",
+        // },
       ],
     },
     // {
@@ -318,6 +318,10 @@ const data = {
           title: "Office Location",
           url: "/dashboard/organization/office-location",
         },
+        {
+          title: "Admin",
+          url: "/dashboard/organization/admin",
+        }
       ],
     },
     {
@@ -342,6 +346,10 @@ const data = {
           title: "Overtime Cost Billed",
           url: "/dashboard/setting/overtime-billed",
         },
+        {
+          title: "Reset Password",
+          url: "/dashboard/setting/employees/reset-password",
+        }
       ],
     },
   ],

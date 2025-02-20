@@ -13,10 +13,10 @@ export default async function DataTab() {
   const attendance = await getAttendance();
 
   return (
-    <div className="container mx-auto">
+    // <div className="container mx-auto">
       <Suspense fallback={<Loading />}>
         <DataTableC columns={columns} data={attendance} />
       </Suspense>
-    </div>
+    // </div>
   );
 }
