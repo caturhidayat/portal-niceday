@@ -78,22 +78,22 @@ export const columns: ColumnDef<Attendance>[] = [
   //     return shiftName;
   //   },
   // },
-  {
-    accessorKey: "shiftStart",
-    header: "Shift Start",
-    cell: ({ row }) => {
-      const time = row.getValue("shiftStart") as string;
-      return time ? <span style={{ color: "red" }}>{format(new Date(Number(time)), "HH:mm")}</span> : "-";
-    },
-  },
-  {
-    accessorKey: "shiftEnd",
-    header: "Shift End",
-    cell: ({ row }) => {
-      const time = row.getValue("shiftEnd") as string;
-      return time ? <span style={{ color: "red" }}>{format(new Date(Number(time)), "HH:mm")}</span> : "-";
-    },
-  },
+  // {
+  //   accessorKey: "shiftStart",
+  //   header: "Shift Start",
+  //   cell: ({ row }) => {
+  //     const time = row.getValue("shiftStart") as string;
+  //     return time ? <span style={{ color: "red" }}>{format(new Date(Number(time)), "HH:mm")}</span> : "-";
+  //   },
+  // },
+  // {
+  //   accessorKey: "shiftEnd",
+  //   header: "Shift End",
+  //   cell: ({ row }) => {
+  //     const time = row.getValue("shiftEnd") as string;
+  //     return time ? <span style={{ color: "red" }}>{format(new Date(Number(time)), "HH:mm")}</span> : "-";
+  //   },
+  // },
   {
     accessorKey: "checkInTime",
     header: "Check In",
@@ -149,14 +149,14 @@ export const columns: ColumnDef<Attendance>[] = [
       return time ? <span style={{ color: "red" }}>{format(new Date(Number(time)), "HH:mm")}</span> : "-";
     },
   },
-  {
-    accessorKey: "overtimeActualMinutes",
-    header: "Actual Minutes",
-    cell: ({ row }) => {
-      const minutes = row.getValue("overtimeActualMinutes") as number;
-      return minutes ? `${minutes} Minutes` : "-";
-    },
-  },
+  // {
+  //   accessorKey: "overtimeActualMinutes",
+  //   header: "Actual Minutes",
+  //   cell: ({ row }) => {
+  //     const minutes = row.getValue("overtimeActualMinutes") as number;
+  //     return minutes ? `${minutes} Minutes` : "-";
+  //   },
+  // },
   {
     accessorKey: "overtimeActualHours",
     header: "Actual Hours",
@@ -189,22 +189,22 @@ export const columns: ColumnDef<Attendance>[] = [
       return reason? reason : "-";
     },
   },
-  {
-    accessorKey: "overtimeBilledAs",
-    header: ({ column }) => (
-      <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
-        >
-          Billed As
-          <ChevronsUpDown className="ml-2 h-4 w-4" />
-        </Button>
-    ),
-    cell: ({ row }) => {
-      const as = row.getValue("overtimeBilledAs") as string;
-      return as? as : "-";
-    },
-  },
+  // {
+  //   accessorKey: "overtimeBilledAs",
+  //   header: ({ column }) => (
+  //     <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() == "asc")}
+  //       >
+  //         Billed As
+  //         <ChevronsUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //   ),
+  //   cell: ({ row }) => {
+  //     const as = row.getValue("overtimeBilledAs") as string;
+  //     return as? as : "-";
+  //   },
+  // },
   {
     accessorKey: "overtimeNotes",
     header: "Remark",

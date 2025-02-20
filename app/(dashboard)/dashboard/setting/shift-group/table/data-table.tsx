@@ -185,9 +185,9 @@ export function DataTableC<TData extends { id: string }, TValue>({
                         departments={departments}
                         branches={branches}
                       /> */}
-                      <Button variant="ghost">
+                      {/* <Button variant="ghost">
                         <Edit className="mr-2 h-4 w-4" />
-                      </Button>
+                      </Button> */}
                       {/* <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button variant="ghost">
