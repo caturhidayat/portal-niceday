@@ -254,14 +254,14 @@ const data = {
         //   url: "/dashboard/overtime/cancellation",
         // },
 
-        {
-          title: "Employee Shifts",
-          url: "/dashboard/attendance/shifts",
-        },
-        {
-          title: "Employee Group Shifts",
-          url: "/dashboard/attendance/group-shifts",
-        },
+        // {
+        //   title: "Employee Shifts",
+        //   url: "/dashboard/attendance/shifts",
+        // },
+        // {
+        //   title: "Employee Group Shifts",
+        //   url: "/dashboard/attendance/group-shifts",
+        // },
       ],
     },
     // {
