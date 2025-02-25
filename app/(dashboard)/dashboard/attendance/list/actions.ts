@@ -78,8 +78,8 @@ export async function createAttendance(
       isNextDay = true;
     }
 
-    const addOne = addDays(+attendanceDate, 1).getTime().toString();
-    console.log("addOne server action : ", addOne);
+    // const addOne = addDays(+attendanceDate, 1).getTime().toString();
+    
 
     console.log("diffTime server action : ", diffTime);
 
@@ -92,14 +92,23 @@ export async function createAttendance(
     // Buat date dengan timezone Asia/Jakarta
     const checkInDate = setMinutes(setHours(new Date(+attendanceDate), startHour), startMinute);
     const checkOutDate = setMinutes(setHours(new Date(+attendanceDate), endHour), endMinute);
+    const checkOutAddOne = addDays(checkOutDate, 1);
 
     // Konversi ke UTC dengan mempertahankan waktu lokal
     const checkInTime = fromZonedTime(checkInDate, 'Asia/Jakarta').getTime().toString();
     const checkOutTime = fromZonedTime(checkOutDate, 'Asia/Jakarta').getTime().toString();
+    const checkOutAddOneTime = fromZonedTime(checkOutAddOne, 'Asia/Jakarta').getTime().toString();
 
+    // const checkOut = fromUnixTime(+checkOutTime)
+    // console.log("checkOut server action : ", checkOut);
 
+    // const checOutTimeAddOne = addDays(new Date(checkOut), 1);
+    // const addOne = checOutTimeAddOne.getTime().toString();
+    console.log("checkOutAddOneTime server action : ", checkOutAddOneTime);
 
-    const nextDay = addDays(checkOutTime, 1);
+    console.log("checkOutTime server action : ", checkOutTime);
+
+    // console.log("addOne server action : ", addOne);
 
     const rawData: any = {
       userId: formData.get("userId") as string,
@@ -122,7 +131,7 @@ export async function createAttendance(
       //       .getTime()
       //       .toString(),
       startTime: checkInTime,
-      endTime: isNextDay ? nextDay.getTime().toString() : checkOutTime,
+      endTime: isNextDay ? checkOutAddOneTime : checkOutTime,
     };
 
     // console.log("rawData server action : ", rawData);
