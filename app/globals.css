@@ -13,29 +13,29 @@ body {
 }
 
 /* Zinc */
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
+/* @layer base {
+  :root { */
+    /* --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%; */
+    /* --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
     --primary: 240 5.9% 10%;
     --primary-foreground: 0 0% 98%;
     --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%; */
+    /* --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%; */
+    /* --accent: 240 4.8% 95.9%;
     --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
-    --radius: 0.3rem;
-    --chart-1: 12 76% 61%;
+    --radius: 0.3rem; */
+    /* --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
@@ -47,10 +47,42 @@ body {
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
+    --sidebar-ring: 217.2 91.2% 59.8%; */
 
-  .dark {
+   /* CSS: .bg-gradient { background: var(--gradient) } */
+   /* --gradient: #ffe259;
+
+   --background: 53 65% 5.36%;
+   --foreground: 53 10% 98.35%;
+
+   --muted: 53 50% 20.1%;
+   --muted-foreground: 53 10% 56.7%;
+
+   --popover: 53 45% 8.71%;
+   --popover-foreground: 53 10% 98.35%;
+
+   --card: 53 45% 8.71%;
+   --card-foreground: 53 10% 98.35%;
+
+   --border: 53 50% 20.1%;
+   --input: 53 50% 20.1%;
+
+   --primary: 53 100% 67%;
+   --primary-foreground: 53 10% 6.7%;
+
+   --secondary: 53 50% 20.1%;
+   --secondary-foreground: 53 10% 98.35%;
+
+   --accent: 53 50% 20.1%;
+   --accent-foreground: 53 10% 98.35%;
+
+   --destructive: 0 62.8% 30.6%;
+   --destructive-foreground: 53 10% 98.35%;
+
+   --ring: 53 100% 67%;
+  } */
+
+  /* .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
@@ -84,7 +116,7 @@ body {
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-}
+} */
 
 @layer base {
   * {
@@ -100,3 +132,78 @@ body {
   height: 200px;
   width: 100%;
 }
+
+@layer base {
+  :root {
+    --background: 0 0% 97%;
+    --foreground: 0 0% 5%;
+    --card: 0 0% 91%;
+    --card-foreground: 0 0% 5%;
+    --popover: 0 0% 91%;
+    --popover-foreground: 0 0% 5%;
+    --primary: 231 44% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 261 44% 54%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 74%;
+    --muted-foreground: 0 0% 30%;
+    --accent: 201 44% 53%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 1 100% 56%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 80%;
+    --input: 0 0% 80%;
+    --ring: 245 44% 31%;
+    --chart-1: 231 44% 48%;
+    --chart-2: 21 44% 48%;
+    --chart-3: 81 44% 48%;
+    --chart-4: 201 44% 48%;
+    --chart-5: 261 44% 48%;
+    --sidebar-background: 0 0% 25%;
+    --sidebar-foreground: 0 0% 75%;
+    --sidebar-primary: 231 44% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 201 44% 53%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    --radius: 0.25rem;
+  }
+
+  .dark {
+    --background: 0 0% 2%;
+    --foreground: 0 0% 95%;
+    --card: 0 0% 11%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 11%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 231 44% 43%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 261 44% 42%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 0 0% 27%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 201 44% 42%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 1 100% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 30%;
+    --input: 0 0% 20%;
+    --ring: 245 44% 31%;
+    --chart-1: 231 44% 48%;
+    --chart-2: 21 44% 48%;
+    --chart-3: 81 44% 48%;
+    --chart-4: 201 44% 48%;
+    --chart-5: 261 44% 48%;
+    --sidebar-background: 0 0% 11%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 231 44% 43%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 201 44% 42%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+

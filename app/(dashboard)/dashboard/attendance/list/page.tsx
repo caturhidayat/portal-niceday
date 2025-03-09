@@ -3,6 +3,13 @@ import { Attendance, Shift, User } from "../today/columns";
 import DialogCreate from "./DialogCreate";
 import { DataTableAttendance } from "./table/data-table";
 import { get } from "@/lib/fetch-wrapper";
+import { Metadata } from "next";
+
+
+export const metadata: Metadata = {
+  title: "Attendance List",
+  description: "Attendance List",
+};
 
 async function getAttendance(): Promise<Attendance[]> {
   const response = await get("attendances", ["attendances"]);
