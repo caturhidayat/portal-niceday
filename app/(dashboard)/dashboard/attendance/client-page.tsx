@@ -1,12 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import Toolbar from "./toolbar/Toolbar";
 import TableView from "./toolbar/TableView";
 import { Toaster } from "sonner";
 import { AttendanceData, ShiftGroup } from "./actions";
 import { Departments, User } from "../employees/table/columns";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import HorizontalToolbar from "./toolbar/HorizontalToolbar";
+import UserList from "./toolbar/UserList";
 
 // Definisikan tipe untuk fungsi filterAttendance
 type FilterAttendanceFunction = (
@@ -30,6 +35,11 @@ export default function ClientPage({
   filterAttendance: FilterAttendanceFunction;
 }) {
   const [attendanceData, setAttendanceData] = useState<AttendanceData[]>([]);
+  const [startDate, setStartDate] = useState<number>();
+  const [endDate, setEndDate] = useState<number>();
+  const [shiftGroupId, setShiftGroupId] = useState<string>("");
+  const [departmentId, setDepartmentId] = useState<string>("");
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
 
   // Handler untuk memfilter data attendance
   const handleFilterAttendance = async (
@@ -55,38 +65,60 @@ export default function ClientPage({
     }
   };
 
+  // Reset state
+  const handleReset = () => {
+    setStartDate(undefined);
+    setEndDate(undefined);
+    setShiftGroupId("");
+    setDepartmentId("");
+    setSelectedUsers([]);
+  };
+
   return (
-    <div className="grid gap-4">
+    <div className="grid">
       <Toaster position="top-right" richColors />
-      {/* <Toolbar
-        shiftGroups={shiftGroups}
-        departments={departments}
-        users={users}
-        onFilterAttendance={handleFilterAttendance}
-      />
-      <TableView data={attendanceData} /> */}
-      <div>
-        <h2 className="text-xl font-bold">Attendance</h2>
-      </div>
       <ResizablePanelGroup
         direction="horizontal"
-        className="min-h-[calc(100dvh-98px)] rounded-lg border w-full"
+        className="min-h-[calc(100dvh-100px)] rounded-lg border w-full"
       >
         <ResizablePanel defaultSize={20} minSize={20} maxSize={35}>
           <div className="p-4">
-            <Toolbar
-              shiftGroups={shiftGroups}
-              departments={departments}
+            <UserList
               users={users}
-              onFilterAttendance={handleFilterAttendance}
+              selectedUsers={selectedUsers}
+              setSelectedUsers={setSelectedUsers}
             />
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={80}>
-          <div className="p-4 h-full overflow-auto">
-            <TableView data={attendanceData} />
-          </div>
+          <ResizablePanelGroup direction="vertical">
+            <ResizablePanel defaultSize={12} minSize={12} maxSize={15}>
+              <div className="p-4 h-full overflow-auto">
+                <HorizontalToolbar
+                  shiftGroups={shiftGroups}
+                  departments={departments}
+                  onFilterAttendance={handleFilterAttendance}
+                  startDate={startDate}
+                  endDate={endDate}
+                  shiftGroupId={shiftGroupId}
+                  departmentId={departmentId}
+                  selectedUsers={selectedUsers}
+                  setStartDate={setStartDate}
+                  setEndDate={setEndDate}
+                  setShiftGroupId={setShiftGroupId}
+                  setDepartmentId={setDepartmentId}
+                  handleReset={handleReset}
+                />
+              </div>
+            </ResizablePanel>
+            {/* <ResizableHandle withHandle /> */}
+            <ResizablePanel defaultSize={78} minSize={78} maxSize={90}>
+              <div className="p-4 h-full overflow-auto">
+                <TableView data={attendanceData} />
+              </div>
+            </ResizablePanel>
+          </ResizablePanelGroup>
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>
