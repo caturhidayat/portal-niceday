@@ -1,5 +1,12 @@
 import ClientPage from "./client-page";
-import { filterAttendance, getDepartments, getShiftGroups, getUsers } from "./actions";
+import {
+  filterAttendance,
+  getDepartments,
+  getShiftGroups,
+  getUsers,
+} from "./actions";
+import { Suspense } from "react";
+import Loading from "../loading";
 
 // Komponen utama halaman (server component)
 export default async function Page() {
@@ -10,11 +17,13 @@ export default async function Page() {
   ]);
 
   return (
-    <ClientPage
-      shiftGroups={shiftGroups}
-      departments={departments}
-      users={users}
-      filterAttendance={filterAttendance}
-    />
+    <Suspense fallback={<Loading />}>
+      <ClientPage
+        shiftGroups={shiftGroups}
+        departments={departments}
+        users={users}
+        filterAttendance={filterAttendance}
+      />
+    </Suspense>
   );
 }

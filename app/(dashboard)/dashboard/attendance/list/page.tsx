@@ -4,7 +4,8 @@ import DialogCreate from "./DialogCreate";
 import { DataTableAttendance } from "./table/data-table";
 import { get } from "@/lib/fetch-wrapper";
 import { Metadata } from "next";
-
+import { Suspense } from "react";
+import Loading from "@/app/loading";
 
 export const metadata: Metadata = {
   title: "Attendance List",
@@ -36,7 +37,9 @@ export default async function Page() {
       <div className="flex justify-end py-2">
         <DialogCreate employees={employees} shifts={shifts} />
       </div>
-      <DataTableAttendance columns={columnsAttendance} data={data} />
+      <Suspense fallback={<Loading />}>
+        <DataTableAttendance columns={columnsAttendance} data={data} />
+      </Suspense>
     </div>
   );
 }

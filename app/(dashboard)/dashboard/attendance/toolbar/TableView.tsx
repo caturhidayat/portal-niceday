@@ -15,28 +15,123 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "sonner";
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  FilterFn,
+  flexRender,
+  getCoreRowModel,
+  getExpandedRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getGroupedRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  GroupingState,
+  RowSelectionState,
+  SortingState,
+  useReactTable,
+} from "@tanstack/react-table";
+import { Attendance, columnsToolbar } from "./columns";
+import { useState } from "react";
+import { rankItem } from "@tanstack/match-sorter-utils";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { columns } from "../today/columns";
 
 // Definisikan tipe data untuk hasil filter attendance
-export type AttendanceData = {
-  id: string;
-  userId: string;
-  attendanceDate: string;
-  checkInTime: string | null;
-  checkOutTime: string | null;
-  isLate: boolean;
-  lateMinutes: number | null;
-  workHours: number | null;
-  fullName: string | null;
-  username: string | null;
-  department: string | null;
-  shiftName: string | null;
-  shiftGroup: string | null;
-  branch: string | null;
-  officeLocationName: string | null;
+// export type AttendanceData = {
+//   id: string;
+//   userId: string;
+//   attendanceDate: string;
+//   checkInTime: string | null;
+//   checkOutTime: string | null;
+//   isLate: boolean;
+//   lateMinutes: number | null;
+//   workHours: number | null;
+//   fullName: string | null;
+//   username: string | null;
+//   department: string | null;
+//   shiftName: string | null;
+//   shiftGroup: string | null;
+//   branch: string | null;
+//   officeLocationName: string | null;
+// };
+
+interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+}
+
+// Define a custom fuzzy filter function that will apply ranking info to rows (using match-sorter utils)
+const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+  // Rank the item
+  const itemRank = rankItem(row.getValue(columnId), value);
+
+  // Store the itemRank info
+  addMeta({
+    itemRank,
+  });
+
+  // Return if the item should be filtered in/out
+  return itemRank.passed;
 };
 
 // Komponen untuk menampilkan tabel hasil filter
-export default function TableView({ data }: { data: AttendanceData[] }) {
+export default function TableView<TData extends Attendance, TValue>({
+  columns,
+  data,
+}: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [grouping, setGrouping] = useState<GroupingState>([]);
+
+  const table = useReactTable({
+    data,
+    columns: columnsToolbar,
+    initialState: {
+      sorting: [
+        {
+          id: "fullName",
+          desc: true,
+        },
+        {
+          id: "attendanceDate",
+          desc: true,
+        },
+      ],
+      pagination: {
+        pageSize: 20,
+      },
+    },
+    state: {
+      sorting,
+      grouping,
+      rowSelection,
+      columnFilters,
+    },
+    filterFns: {
+      fuzzy: fuzzyFilter,
+    },
+    globalFilterFn: "fuzzy",
+    enableRowSelection: true,
+    onGroupingChange: setGrouping,
+    getExpandedRowModel: getExpandedRowModel(),
+    getGroupedRowModel: getGroupedRowModel(),
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    debugTable: true,
+    onRowSelectionChange: setRowSelection,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    // onColumnVisibilityChange: setColumnVisibility,
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+  });
+
   // Fungsi untuk memformat tanggal dan waktu
   const formatDate = (timestamp: string | null) => {
     if (!timestamp) return "-";
@@ -73,21 +168,21 @@ export default function TableView({ data }: { data: AttendanceData[] }) {
     const csvRows = [];
     csvRows.push(headers.join(","));
 
-    for (const item of data) {
-      const row = [
-        `"${item.fullName || item.username || "-"}"`,
-        `"${item.department || "-"}"`,
-        `"${item.shiftName || "-"}"`,
-        `"${item.shiftGroup || "-"}"`,
-        `"${formatDate(item.attendanceDate)}"`,
-        `"${formatTime(item.checkInTime)}"`,
-        `"${formatTime(item.checkOutTime)}"`,
-        `"${item.lateMinutes || 0}"`,
-        `"${item.workHours || 0}"`,
-        `"${item.officeLocationName || "-"}"`,
-      ];
-      csvRows.push(row.join(","));
-    }
+    // for (const item of data) {
+    //   const row = [
+    //     `"${item.fullName || item.username || "-"}"`,
+    //     `"${item.department || "-"}"`,
+    //     `"${item.shiftName || "-"}"`,
+    //     `"${item.shiftGroup || "-"}"`,
+    //     `"${formatDate(item.attendanceDate)}"`,
+    //     `"${formatTime(item.checkInTime)}"`,
+    //     `"${formatTime(item.checkOutTime)}"`,
+    //     `"${item.lateMinutes || 0}"`,
+    //     `"${item.workHours || 0}"`,
+    //     `"${item.officeLocationName || "-"}"`,
+    //   ];
+    //   csvRows.push(row.join(","));
+    // }
 
     // Membuat blob dan download link
     const csvContent = csvRows.join("\n");
@@ -109,50 +204,124 @@ export default function TableView({ data }: { data: AttendanceData[] }) {
     <>
       <Toaster position="top-right" richColors />
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        {/* <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Attendance Data</CardTitle>
           <Button variant="outline" onClick={exportToCSV}>
             <Download className="mr-2 h-4 w-4" />
             Export CSV
           </Button>
-        </CardHeader>
+        </CardHeader> */}
         <CardContent>
           <Table>
-            <TableCaption>Attendance data</TableCaption>
             <TableHeader>
-              <TableRow>
-                <TableHead>NIK</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Department</TableHead>
-                <TableHead>Shift</TableHead>
-                <TableHead>Check In</TableHead>
-                <TableHead>Check Out</TableHead>
-                <TableHead>Work Hours</TableHead>
-                <TableHead>Location</TableHead>
-              </TableRow>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id} colSpan={header.colSpan}>
+                        {/* {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )} */}
+                        {header.isPlaceholder ? null : (
+                          <div>
+                            {header.column.getCanGroup() ? (
+                              // If the header can be grouped, let's add a toggle
+                              <button
+                                {...{
+                                  onClick:
+                                    header.column.getToggleGroupingHandler(),
+                                  style: {
+                                    cursor: "pointer",
+                                  },
+                                }}
+                              >
+                                {header.column.getIsGrouped()
+                                  ? `(${header.column.getGroupedIndex()}) `
+                                  : ``}
+                              </button>
+                            ) : null}{" "}
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                          </div>
+                        )}
+                      </TableHead>
+                    );
+                  })}
+                  <TableHead>
+                    <Button variant={"ghost"}>Acton</Button>
+                  </TableHead>
+                </TableRow>
+              ))}
             </TableHeader>
             <TableBody>
-              {data.length === 0 ? (
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => {
+                  return (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id} className="p-0 px-2">
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+
+                      <TableCell className="p-0 px-2 flex">
+                        {/* <DialogEditAttendance attendance={row.original} />
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost">
+                            <Trash2 className="mr-2 h-4 w-4 text-red-600" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you sure you want to delete this attendance?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete your attendance.
+                            </AlertDialogDescription>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={async () => {
+                                  await deleteAttendance(row.original.id);
+                                  table.resetRowSelection();
+                                }}
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogHeader>
+                        </AlertDialogContent>
+                      </AlertDialog> */}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : (
                 <TableRow>
-                  <TableCell colSpan={10} className="text-center">
-                    No data found
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    <Alert>
+                      <AlertTitle>No results.</AlertTitle>
+                      <AlertDescription>No data to display.</AlertDescription>
+                    </Alert>
                   </TableCell>
                 </TableRow>
-              ) : (
-                data.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>{item.username}</TableCell>
-                    <TableCell>{item.fullName || item.username || "-"}</TableCell>
-                    <TableCell>{formatDate(item.attendanceDate)}</TableCell>
-                    <TableCell>{item.department || "-"}</TableCell>
-                    <TableCell>{item.shiftName || "-"}</TableCell>
-                    <TableCell>{formatTime(item.checkInTime)}</TableCell>
-                    <TableCell>{formatTime(item.checkOutTime)}</TableCell>
-                    <TableCell>{item.workHours ? `${item.workHours} jam` : "-"}</TableCell>
-                    <TableCell>{item.officeLocationName || "-"}</TableCell>
-                  </TableRow>
-                ))
               )}
             </TableBody>
           </Table>

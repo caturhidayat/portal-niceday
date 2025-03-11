@@ -21,9 +21,10 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon, RotateCcw, Table2 } from "lucide-react";
 import { useState } from "react";
-import { AttendanceData, ShiftGroup } from "../actions";
+import { ShiftGroup } from "../actions";
 import { Departments } from "../../employees/table/columns";
 import { toast } from "sonner";
+import { Attendance } from "./columns";
 
 export default function HorizontalToolbar({
   shiftGroups,
@@ -48,7 +49,7 @@ export default function HorizontalToolbar({
     departmentId?: string,
     shiftGroupId?: string,
     userIds?: string[]
-  ) => Promise<AttendanceData[]>;
+  ) => Promise<Attendance[]>;
   startDate?: number;
   endDate?: number;
   shiftGroupId: string;

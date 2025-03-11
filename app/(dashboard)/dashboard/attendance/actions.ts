@@ -2,6 +2,7 @@
 
 import { get } from "@/lib/fetch-wrapper";
 import { Departments, User } from "../employees/table/columns";
+import { Attendance } from "./toolbar/columns";
 
 // Definisikan tipe data untuk hasil filter attendance
 export type AttendanceData = {
@@ -51,7 +52,7 @@ export async function filterAttendance(
 
   // Memanggil API untuk mendapatkan data attendance berdasarkan filter
   const response = await get(`attendances/filter?${queryParams}`);
-  return response as AttendanceData[];
+  return response as Attendance[];
 }
 
 type Shift = {
