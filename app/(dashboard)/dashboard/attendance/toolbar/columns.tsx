@@ -104,7 +104,7 @@ export const columnsToolbar: ColumnDef<Attendance, any>[] = [
   columnHelper.group({
     id: "actualTime",
     header: () => (
-      <div className="text-center">
+      <div className="flex items-center justify-center">
         <Label className="text-green-600">Actual Time</Label>
       </div>
     ),
@@ -112,9 +112,9 @@ export const columnsToolbar: ColumnDef<Attendance, any>[] = [
       // Check In Column
       columnHelper.accessor("checkInTime", {
         id: "checkInTime",
-        header: () => <Label className="text-green-600">Check In</Label>,
+        header: () => <Label className="text-green-600 text-center">Check In</Label>,
         cell: (info) => (
-          <div className="text-center p-2">
+          <div className="p-2">
             {info.getValue()
               ? format(new Date(Number(info.getValue())), "HH:mm")
               : "-"}
@@ -124,9 +124,9 @@ export const columnsToolbar: ColumnDef<Attendance, any>[] = [
       // Check Out Column
       columnHelper.accessor("checkOutTime", {
         id: "checkOutTime",
-        header: () => <Label className="text-green-600">Check Out</Label>,
+        header: () => <Label className="text-green-600 text-center">Check Out</Label>,
         cell: (info) => (
-          <div className="text-center p-2">
+          <div className="p-2">
             {info.getValue()
               ? format(new Date(Number(info.getValue())), "HH:mm")
               : "-"}
@@ -173,11 +173,11 @@ export const columnsToolbar: ColumnDef<Attendance, any>[] = [
         className="font-semibold"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Departemen
+        Dept
         <ChevronsUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: (info) => <div className="pl-2">{info.getValue() || "-"}</div>,
+    cell: (info) => <div className="pl-4">{info.getValue() || "-"}</div>,
   }),
 
   // Shift Group Column

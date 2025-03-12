@@ -201,82 +201,199 @@ export default function TableView<TData extends Attendance, TValue>({
   };
 
   return (
-    <>
-      <Toaster position="top-right" richColors />
-      <Card>
-        {/* <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Attendance Data</CardTitle>
-          <Button variant="outline" onClick={exportToCSV}>
-            <Download className="mr-2 h-4 w-4" />
-            Export CSV
-          </Button>
-        </CardHeader> */}
-        <CardContent>
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id} colSpan={header.colSpan}>
-                        {/* {header.isPlaceholder
+    // <>
+    //   <Toaster position="top-right" richColors />
+    //   <Card>
+    //     {/* <CardHeader className="flex flex-row items-center justify-between">
+    //       <CardTitle>Attendance Data</CardTitle>
+    //       <Button variant="outline" onClick={exportToCSV}>
+    //         <Download className="mr-2 h-4 w-4" />
+    //         Export CSV
+    //       </Button>
+    //     </CardHeader> */}
+    //     <CardContent>
+    //       <Table>
+    //         <TableHeader>
+    //           {table.getHeaderGroups().map((headerGroup) => (
+    //             <TableRow key={headerGroup.id}>
+    //               {headerGroup.headers.map((header) => {
+    //                 return (
+    //                   <TableHead key={header.id} colSpan={header.colSpan}>
+    //                     {/* {header.isPlaceholder
+    //                       ? null
+    //                       : flexRender(
+    //                           header.column.columnDef.header,
+    //                           header.getContext()
+    //                         )} */}
+    //                     {header.isPlaceholder ? null : (
+    //                       <div>
+    //                         {header.column.getCanGroup() ? (
+    //                           // If the header can be grouped, let's add a toggle
+    //                           <button
+    //                             {...{
+    //                               onClick:
+    //                                 header.column.getToggleGroupingHandler(),
+    //                               style: {
+    //                                 cursor: "pointer",
+    //                               },
+    //                             }}
+    //                           >
+    //                             {header.column.getIsGrouped()
+    //                               ? `(${header.column.getGroupedIndex()}) `
+    //                               : ``}
+    //                           </button>
+    //                         ) : null}{" "}
+    //                         {flexRender(
+    //                           header.column.columnDef.header,
+    //                           header.getContext()
+    //                         )}
+    //                       </div>
+    //                     )}
+    //                   </TableHead>
+    //                 );
+    //               })}
+    //               <TableHead>
+    //                 <Button variant={"ghost"}>Acton</Button>
+    //               </TableHead>
+    //             </TableRow>
+    //           ))}
+    //         </TableHeader>
+    //         <TableBody>
+    //           {table.getRowModel().rows?.length ? (
+    //             table.getRowModel().rows.map((row) => {
+    //               return (
+    //                 <TableRow
+    //                   key={row.id}
+    //                   data-state={row.getIsSelected() && "selected"}
+    //                 >
+    //                   {row.getVisibleCells().map((cell) => (
+    //                     <TableCell key={cell.id} className="p-0 px-2">
+    //                       {flexRender(
+    //                         cell.column.columnDef.cell,
+    //                         cell.getContext()
+    //                       )}
+    //                     </TableCell>
+    //                   ))}
+
+    //                   <TableCell className="p-0 px-2 flex">
+    //                     {/* <DialogEditAttendance attendance={row.original} />
+    //                   <AlertDialog>
+    //                     <AlertDialogTrigger asChild>
+    //                       <Button variant="ghost">
+    //                         <Trash2 className="mr-2 h-4 w-4 text-red-600" />
+    //                       </Button>
+    //                     </AlertDialogTrigger>
+    //                     <AlertDialogContent>
+    //                       <AlertDialogHeader>
+    //                         <AlertDialogTitle>
+    //                           Are you sure you want to delete this attendance?
+    //                         </AlertDialogTitle>
+    //                         <AlertDialogDescription>
+    //                           This action cannot be undone. This will
+    //                           permanently delete your attendance.
+    //                         </AlertDialogDescription>
+    //                         <AlertDialogFooter>
+    //                           <AlertDialogCancel>Cancel</AlertDialogCancel>
+    //                           <AlertDialogAction
+    //                             onClick={async () => {
+    //                               await deleteAttendance(row.original.id);
+    //                               table.resetRowSelection();
+    //                             }}
+    //                           >
+    //                             Delete
+    //                           </AlertDialogAction>
+    //                         </AlertDialogFooter>
+    //                       </AlertDialogHeader>
+    //                     </AlertDialogContent>
+    //                   </AlertDialog> */}
+    //                   </TableCell>
+    //                 </TableRow>
+    //               );
+    //             })
+    //           ) : (
+    //             <TableRow>
+    //               <TableCell
+    //                 colSpan={columns.length}
+    //                 className="h-24 text-center"
+    //               >
+    //                 <Alert>
+    //                   <AlertTitle>No results.</AlertTitle>
+    //                   <AlertDescription>No data to display.</AlertDescription>
+    //                 </Alert>
+    //               </TableCell>
+    //             </TableRow>
+    //           )}
+    //         </TableBody>
+    //       </Table>
+    //     </CardContent>
+    //   </Card>
+    // </>
+
+    <div>
+      <Table>
+        <TableHeader className="bg-slate-100">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead key={header.id} colSpan={header.colSpan}>
+                    {/* {header.isPlaceholder
                           ? null
                           : flexRender(
                               header.column.columnDef.header,
                               header.getContext()
                             )} */}
-                        {header.isPlaceholder ? null : (
-                          <div>
-                            {header.column.getCanGroup() ? (
-                              // If the header can be grouped, let's add a toggle
-                              <button
-                                {...{
-                                  onClick:
-                                    header.column.getToggleGroupingHandler(),
-                                  style: {
-                                    cursor: "pointer",
-                                  },
-                                }}
-                              >
-                                {header.column.getIsGrouped()
-                                  ? `(${header.column.getGroupedIndex()}) `
-                                  : ``}
-                              </button>
-                            ) : null}{" "}
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                          </div>
+                    {header.isPlaceholder ? null : (
+                      <div>
+                        {header.column.getCanGroup() ? (
+                          // If the header can be grouped, let's add a toggle
+                          <button
+                            {...{
+                              onClick: header.column.getToggleGroupingHandler(),
+                              style: {
+                                cursor: "pointer",
+                              },
+                            }}
+                          >
+                            {header.column.getIsGrouped()
+                              ? `(${header.column.getGroupedIndex()}) `
+                              : ``}
+                          </button>
+                        ) : null}{" "}
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
                         )}
-                      </TableHead>
-                    );
-                  })}
-                  <TableHead>
-                    <Button variant={"ghost"}>Acton</Button>
+                      </div>
+                    )}
                   </TableHead>
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => {
-                  return (
-                    <TableRow
-                      key={row.id}
-                      data-state={row.getIsSelected() && "selected"}
-                    >
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id} className="p-0 px-2">
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </TableCell>
-                      ))}
+                );
+              })}
+              {/* <TableHead>
+                <Button variant={"ghost"}>Acton</Button>
+              </TableHead> */}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => {
+              return (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id} className="p-0 px-2">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
 
-                      <TableCell className="p-0 px-2 flex">
-                        {/* <DialogEditAttendance attendance={row.original} />
+                  <TableCell className="p-0 px-2 flex">
+                    {/* <DialogEditAttendance attendance={row.original} />
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button variant="ghost">
@@ -306,27 +423,22 @@ export default function TableView<TData extends Attendance, TValue>({
                           </AlertDialogHeader>
                         </AlertDialogContent>
                       </AlertDialog> */}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    <Alert>
-                      <AlertTitle>No results.</AlertTitle>
-                      <AlertDescription>No data to display.</AlertDescription>
-                    </Alert>
                   </TableCell>
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-    </>
+              );
+            })
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                <Alert>
+                  <AlertTitle>No results.</AlertTitle>
+                  <AlertDescription>No data to display.</AlertDescription>
+                </Alert>
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
   );
 }

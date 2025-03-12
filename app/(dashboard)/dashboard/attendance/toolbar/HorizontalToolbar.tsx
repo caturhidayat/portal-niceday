@@ -25,6 +25,7 @@ import { ShiftGroup } from "../actions";
 import { Departments } from "../../employees/table/columns";
 import { toast } from "sonner";
 import { Attendance } from "./columns";
+import { Separator } from "@/components/ui/separator";
 
 export default function HorizontalToolbar({
   shiftGroups,
@@ -90,155 +91,289 @@ export default function HorizontalToolbar({
   }
 
   return (
-    <Card className="w-full">
-      <CardContent className="p-4">
-        <div className="flex flex-wrap items-center gap-4">
-          {/* Date Selection */}
-          <div className="flex items-center gap-2">
-            <div>
-              <Label className="mr-2">From</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      "w-[140px] justify-start text-left font-normal",
-                      !startDate && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {startDate ? (
-                      format(new Date(startDate), "dd/MM/yyyy")
-                    ) : (
-                      <span>Start date</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={startDate ? new Date(startDate) : undefined}
-                    onSelect={(val) => val && setStartDate(val.getTime())}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
+    // <Card className="w-full">
+    //   <CardContent className="p-4">
+    //     <div className="flex flex-wrap items-center gap-4">
+    //       {/* Date Selection */}
+    //       <div className="flex items-center gap-2">
+    //         <div>
+    //           <Label className="mr-2">From</Label>
+    //           <Popover>
+    //             <PopoverTrigger asChild>
+    //               <Button
+    //                 variant={"outline"}
+    //                 className={cn(
+    //                   "w-[140px] justify-start text-left font-normal",
+    //                   !startDate && "text-muted-foreground"
+    //                 )}
+    //               >
+    //                 <CalendarIcon className="mr-2 h-4 w-4" />
+    //                 {startDate ? (
+    //                   format(new Date(startDate), "dd/MM/yyyy")
+    //                 ) : (
+    //                   <span>Start date</span>
+    //                 )}
+    //               </Button>
+    //             </PopoverTrigger>
+    //             <PopoverContent className="w-auto p-0" align="start">
+    //               <Calendar
+    //                 mode="single"
+    //                 selected={startDate ? new Date(startDate) : undefined}
+    //                 onSelect={(val) => val && setStartDate(val.getTime())}
+    //                 initialFocus
+    //               />
+    //             </PopoverContent>
+    //           </Popover>
+    //         </div>
 
-            <div>
-              <Label className="mr-2">To</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      "w-[140px] justify-start text-left font-normal",
-                      !endDate && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {endDate ? (
-                      format(new Date(endDate), "dd/MM/yyyy")
-                    ) : (
-                      <span>End date</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={endDate ? new Date(endDate) : undefined}
-                    onSelect={(val) => val && setEndDate(val.getTime())}
-                    initialFocus
-                    disabled={(date) => {
-                      return (
-                        date < new Date(Number(startDate)) ||
-                        startDate === undefined
-                      );
-                    }}
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-          </div>
+    //         <div>
+    //           <Label className="mr-2">To</Label>
+    //           <Popover>
+    //             <PopoverTrigger asChild>
+    //               <Button
+    //                 variant={"outline"}
+    //                 className={cn(
+    //                   "w-[140px] justify-start text-left font-normal",
+    //                   !endDate && "text-muted-foreground"
+    //                 )}
+    //               >
+    //                 <CalendarIcon className="mr-2 h-4 w-4" />
+    //                 {endDate ? (
+    //                   format(new Date(endDate), "dd/MM/yyyy")
+    //                 ) : (
+    //                   <span>End date</span>
+    //                 )}
+    //               </Button>
+    //             </PopoverTrigger>
+    //             <PopoverContent className="w-auto p-0" align="start">
+    //               <Calendar
+    //                 mode="single"
+    //                 selected={endDate ? new Date(endDate) : undefined}
+    //                 onSelect={(val) => val && setEndDate(val.getTime())}
+    //                 initialFocus
+    //                 disabled={(date) => {
+    //                   return (
+    //                     date < new Date(Number(startDate)) ||
+    //                     startDate === undefined
+    //                   );
+    //                 }}
+    //               />
+    //             </PopoverContent>
+    //           </Popover>
+    //         </div>
+    //       </div>
 
-          {/* Department */}
+    //       {/* Department */}
+    //       <div>
+    //         <Label className="mr-2">Department</Label>
+    //         <Select
+    //           value={departmentId}
+    //           onValueChange={setDepartmentId}
+    //         >
+    //           <SelectTrigger className="w-[180px]">
+    //             <SelectValue placeholder="Select department" />
+    //           </SelectTrigger>
+    //           <SelectContent>
+    //             <SelectGroup>
+    //               {departments.map((item) => (
+    //                 <SelectItem
+    //                   key={item.id}
+    //                   value={item.id.toString()}
+    //                 >
+    //                   {item.name}
+    //                 </SelectItem>
+    //               ))}
+    //             </SelectGroup>
+    //           </SelectContent>
+    //         </Select>
+    //       </div>
+
+    //       {/* Shift Group */}
+    //       <div>
+    //         <Label className="mr-2">Shift Group</Label>
+    //         <Select
+    //           value={shiftGroupId}
+    //           onValueChange={setShiftGroupId}
+    //         >
+    //           <SelectTrigger className="w-[180px]">
+    //             <SelectValue placeholder="Select shift group" />
+    //           </SelectTrigger>
+    //           <SelectContent>
+    //             <SelectGroup>
+    //               {shiftGroups.map((item) => (
+    //                 <SelectItem
+    //                   key={item.id}
+    //                   value={item.id.toString()}
+    //                 >
+    //                   {item.name}
+    //                 </SelectItem>
+    //               ))}
+    //             </SelectGroup>
+    //           </SelectContent>
+    //         </Select>
+    //       </div>
+
+    //       {/* Action Buttons */}
+    //       <div className="flex items-center gap-2 ml-auto">
+    //         <Button
+    //           onClick={handleViewData}
+    //           disabled={loading}
+    //         >
+    //           {loading ? (
+    //             "Loading..."
+    //           ) : (
+    //             <>
+    //               <Table2 className="h-4 w-4 mr-2" />
+    //               View Data
+    //             </>
+    //           )}
+    //         </Button>
+    //         <Button
+    //           variant={"outline"}
+    //           onClick={handleReset}
+    //         >
+    //           <>
+    //             <RotateCcw className="h-4 w-4 mr-2" />
+    //             Reset
+    //           </>
+    //         </Button>
+    //       </div>
+    //     </div>
+    //   </CardContent>
+    // </Card>
+    <div className="bg-slate-300 p-2">
+      <div className="flex flex-wrap items-center gap-4">
+        {/* Date Selection */}
+        <div className="flex items-center gap-2">
           <div>
-            <Label className="mr-2">Department</Label>
-            <Select
-              value={departmentId}
-              onValueChange={setDepartmentId}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select department" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {departments.map((item) => (
-                    <SelectItem
-                      key={item.id}
-                      value={item.id.toString()}
-                    >
-                      {item.name}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <Label className="mr-2">From</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-[140px] justify-start text-left font-normal",
+                    !startDate && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {startDate ? (
+                    format(new Date(startDate), "dd/MM/yyyy")
+                  ) : (
+                    <span>Start date</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={startDate ? new Date(startDate) : undefined}
+                  onSelect={(val) => val && setStartDate(val.getTime())}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
           </div>
 
-          {/* Shift Group */}
           <div>
-            <Label className="mr-2">Shift Group</Label>
-            <Select
-              value={shiftGroupId}
-              onValueChange={setShiftGroupId}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select shift group" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {shiftGroups.map((item) => (
-                    <SelectItem
-                      key={item.id}
-                      value={item.id.toString()}
-                    >
-                      {item.name}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2 ml-auto">
-            <Button
-              onClick={handleViewData}
-              disabled={loading}
-            >
-              {loading ? (
-                "Loading..."
-              ) : (
-                <>
-                  <Table2 className="h-4 w-4 mr-2" />
-                  View Data
-                </>
-              )}
-            </Button>
-            <Button
-              variant={"outline"}
-              onClick={handleReset}
-            >
-              <>
-                <RotateCcw className="h-4 w-4 mr-2" />
-                Reset
-              </>
-            </Button>
+            <Label className="mr-2">To</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-[140px] justify-start text-left font-normal",
+                    !endDate && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {endDate ? (
+                    format(new Date(endDate), "dd/MM/yyyy")
+                  ) : (
+                    <span>End date</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={endDate ? new Date(endDate) : undefined}
+                  onSelect={(val) => val && setEndDate(val.getTime())}
+                  initialFocus
+                  disabled={(date) => {
+                    return (
+                      date < new Date(Number(startDate)) ||
+                      startDate === undefined
+                    );
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
           </div>
         </div>
-      </CardContent>
-    </Card>
+
+        {/* Department */}
+        <div>
+          <Label className="mr-2">Department</Label>
+          <Select value={departmentId} onValueChange={setDepartmentId}>
+            <SelectTrigger className="w-[180px] bg-background">
+              <SelectValue placeholder="Select department" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {departments.map((item) => (
+                  <SelectItem key={item.id} value={item.id.toString()}>
+                    {item.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Shift Group */}
+        <div>
+          <Label className="mr-2">Shift Group</Label>
+          <Select value={shiftGroupId} onValueChange={setShiftGroupId}>
+            <SelectTrigger className="w-[180px] bg-background">
+              <SelectValue placeholder="Select shift group" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {shiftGroups.map((item) => (
+                  <SelectItem key={item.id} value={item.id.toString()}>
+                    {item.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex items-center gap-2 ml-auto">
+          <Button
+            onClick={handleViewData}
+            disabled={loading}
+            className="bg-teal-600 hover:bg-teal-700"
+          >
+            {loading ? (
+              "Loading..."
+            ) : (
+              <>
+                <Table2 className="h-4 w-4 mr-2" />
+                View Data
+              </>
+            )}
+          </Button>
+          <Button variant={"outline"} onClick={handleReset} className="bg-orange-400 hover:bg-orange-600">
+            <>
+              <RotateCcw className="h-4 w-4 mr-2" />
+              Reset
+            </>
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }

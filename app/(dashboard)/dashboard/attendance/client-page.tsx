@@ -83,7 +83,7 @@ export default function ClientPage({
         className="min-h-[calc(100dvh-100px)] rounded-lg border w-full"
       >
         <ResizablePanel defaultSize={20} minSize={20} maxSize={35}>
-          <div className="p-4">
+          <div className="">
             <UserList
               users={users}
               selectedUsers={selectedUsers}
@@ -94,8 +94,8 @@ export default function ClientPage({
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={80}>
           <ResizablePanelGroup direction="vertical">
-            <ResizablePanel defaultSize={12} minSize={12} maxSize={15}>
-              <div className="p-4 h-full overflow-auto">
+            <ResizablePanel defaultSize={8} minSize={8} maxSize={10}>
+              <div className="h-full overflow-auto">
                 <HorizontalToolbar
                   shiftGroups={shiftGroups}
                   departments={departments}
@@ -115,7 +115,7 @@ export default function ClientPage({
             </ResizablePanel>
             {/* <ResizableHandle withHandle /> */}
             <ResizablePanel defaultSize={78} minSize={78} maxSize={90}>
-              <div className="p-4 h-full overflow-auto">
+              <div className="h-full overflow-auto">
                 <TableView data={attendanceData} columns={columnsToolbar} />
               </div>
             </ResizablePanel>

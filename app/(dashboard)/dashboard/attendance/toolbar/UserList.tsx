@@ -60,68 +60,133 @@ export default function UserList({
   };
 
   return (
-    <Card className="h-full w-full">
-      <CardHeader>
-        <CardTitle>Employee List</CardTitle>
-      </CardHeader>
-      <CardContent className="p-4 flex flex-col h-full">
-        <div className="flex flex-col space-y-4 h-full overflow-y-auto pr-2" style={{ maxHeight: 'calc(100vh - 180px)' }}>
-          {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search employee..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8"
-            />
-          </div>
+    // <Card className="h-full w-full">
+    //   <CardHeader>
+    //     <CardTitle>Employee List</CardTitle>
+    //   </CardHeader>
+    //   <CardContent className="p-4 flex flex-col h-full">
+    //     <div className="flex flex-col space-y-4 h-full overflow-y-auto pr-2" style={{ maxHeight: 'calc(100vh - 180px)' }}>
+    //       {/* Search */}
+    //       <div className="relative">
+    //         <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+    //         <Input
+    //           placeholder="Search employee..."
+    //           value={searchQuery}
+    //           onChange={(e) => setSearchQuery(e.target.value)}
+    //           className="pl-8"
+    //         />
+    //       </div>
 
-          <Separator />
+    //       <Separator />
 
-          {/* Employee Table */}
-          <div className="overflow-y-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[50px]">
-                    <Checkbox
-                      checked={filteredUsers.length > 0 && selectedUsers.length === filteredUsers.length}
-                      onCheckedChange={toggleSelectAll}
-                      aria-label="Select all"
-                    />
-                  </TableHead>
-                  <TableHead>Username</TableHead>
-                  <TableHead>Name</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredUsers.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={3} className="text-center py-4">
-                      No employee found
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  filteredUsers.map((user) => (
-                    <TableRow key={user.id}>
-                      <TableCell>
-                        <Checkbox
-                          checked={selectedUsers.includes(user.id)}
-                          onCheckedChange={() => toggleUserSelection(user.id)}
-                          aria-label={`Select ${user.name}`}
-                        />
-                      </TableCell>
-                      <TableCell>{user.username}</TableCell>
-                      <TableCell>{user.name || "-"}</TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </div>
+    //       {/* Employee Table */}
+    //       <div className="overflow-y-auto">
+    //         <Table>
+    //           <TableHeader>
+    //             <TableRow>
+    //               <TableHead className="w-[50px]">
+    //                 <Checkbox
+    //                   checked={filteredUsers.length > 0 && selectedUsers.length === filteredUsers.length}
+    //                   onCheckedChange={toggleSelectAll}
+    //                   aria-label="Select all"
+    //                 />
+    //               </TableHead>
+    //               <TableHead>Username</TableHead>
+    //               <TableHead>Name</TableHead>
+    //             </TableRow>
+    //           </TableHeader>
+    //           <TableBody>
+    //             {filteredUsers.length === 0 ? (
+    //               <TableRow>
+    //                 <TableCell colSpan={3} className="text-center py-4">
+    //                   No employee found
+    //                 </TableCell>
+    //               </TableRow>
+    //             ) : (
+    //               filteredUsers.map((user) => (
+    //                 <TableRow key={user.id}>
+    //                   <TableCell>
+    //                     <Checkbox
+    //                       checked={selectedUsers.includes(user.id)}
+    //                       onCheckedChange={() => toggleUserSelection(user.id)}
+    //                       aria-label={`Select ${user.name}`}
+    //                     />
+    //                   </TableCell>
+    //                   <TableCell>{user.username}</TableCell>
+    //                   <TableCell>{user.name || "-"}</TableCell>
+    //                 </TableRow>
+    //               ))
+    //             )}
+    //           </TableBody>
+    //         </Table>
+    //       </div>
+    //     </div>
+    //   </CardContent>
+    // </Card>
+
+    <div className="p-4">
+      <div
+        className="flex flex-col space-y-4 h-full overflow-y-auto pr-2"
+        style={{ maxHeight: "calc(100vh - 180px)" }}
+      >
+        {/* Search */}
+        <div className="relative">
+          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search employee..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-8"
+          />
         </div>
-      </CardContent>
-    </Card>
+
+        <Separator />
+
+        {/* Employee Table */}
+        <div className="overflow-y-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[50px]">
+                  <Checkbox
+                    checked={
+                      filteredUsers.length > 0 &&
+                      selectedUsers.length === filteredUsers.length
+                    }
+                    onCheckedChange={toggleSelectAll}
+                    aria-label="Select all"
+                  />
+                </TableHead>
+                <TableHead>NIK</TableHead>
+                <TableHead>Name</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredUsers.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={3} className="text-center py-4">
+                    No employee found
+                  </TableCell>
+                </TableRow>
+              ) : (
+                filteredUsers.map((user) => (
+                  <TableRow key={user.id}>
+                    <TableCell>
+                      <Checkbox
+                        checked={selectedUsers.includes(user.id)}
+                        onCheckedChange={() => toggleUserSelection(user.id)}
+                        aria-label={`Select ${user.name}`}
+                      />
+                    </TableCell>
+                    <TableCell>{user.username}</TableCell>
+                    <TableCell>{user.name || "-"}</TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+    </div>
   );
 }
