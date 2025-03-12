@@ -4,6 +4,12 @@ import { DataTable } from "./table/data-table";
 import { columns } from "./table/columns";
 import { Suspense } from "react";
 import Loading from "@/app/loading";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Branches",
+  description: "Branches page",
+};
 
 export type Branch = {
   id: number;

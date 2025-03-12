@@ -4,6 +4,12 @@ import { columns } from "./table/columns";
 import CreateDeptModal from "./create-dept-modal";
 import { Suspense } from "react";
 import Loading from "@/app/loading";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Department",
+  description: "Departmen page",
+};
 
 export type Departments = {
   id: number;

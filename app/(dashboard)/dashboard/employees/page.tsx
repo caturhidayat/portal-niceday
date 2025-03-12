@@ -5,6 +5,12 @@ import { Branches, columns, Departments, User } from "./table/columns";
 import { get } from "@/lib/fetch-wrapper";
 import DialogCreateEmployee from "./DialogCreateEmployee";
 import { Vendor } from "../organization/vendor/table/columns";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Employees",
+  description: "Employees page",
+};
 
 async function getEmployees(): Promise<User[]> {
   const response = await get("users/employees", ["employees"]);
@@ -24,7 +30,6 @@ async function getVendors(): Promise<Vendor[]> {
   return response as Vendor[];
 }
 
-
 export default async function Page() {
   const employees = await getEmployees();
   const [departments, branches, vendors] = await Promise.all([
@@ -43,7 +48,11 @@ export default async function Page() {
         <span className="font-bold text-xl">Employees</span>
       </div>
       <div className="flex justify-end py-2 gap-2">
-        <DialogCreateEmployee departments={departments} branches={branches} vendors={vendors} />
+        <DialogCreateEmployee
+          departments={departments}
+          branches={branches}
+          vendors={vendors}
+        />
       </div>
       <Suspense fallback={<Loading />}>
         <DataTableC

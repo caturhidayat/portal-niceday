@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { ChevronsUpDown } from "lucide-react";
@@ -15,7 +16,7 @@ export type Attendance = {
   lateMinutes: number | null;
   workHours: number | null;
   departmentId: string | null;
-  department: string | null
+  department: string | null;
   shiftId: string | null;
   shiftName: string | null;
   startShift: string | null;
@@ -103,21 +104,19 @@ export const columnsToolbar: ColumnDef<Attendance, any>[] = [
   columnHelper.group({
     id: "actualTime",
     header: () => (
-      <div className="text-center font-semibold">
-        Actual Time
+      <div className="text-center">
+        <Label className="text-green-600">Actual Time</Label>
       </div>
     ),
     columns: [
       // Check In Column
       columnHelper.accessor("checkInTime", {
         id: "checkInTime",
-        header: () => (
-          <div className="text-center font-semibold">Check In</div>
-        ),
+        header: () => <Label className="text-green-600">Check In</Label>,
         cell: (info) => (
           <div className="text-center p-2">
-            {info.getValue() 
-              ? format(new Date(Number(info.getValue())), "HH:mm") 
+            {info.getValue()
+              ? format(new Date(Number(info.getValue())), "HH:mm")
               : "-"}
           </div>
         ),
@@ -125,13 +124,11 @@ export const columnsToolbar: ColumnDef<Attendance, any>[] = [
       // Check Out Column
       columnHelper.accessor("checkOutTime", {
         id: "checkOutTime",
-        header: () => (
-          <div className="text-center font-semibold">Check Out</div>
-        ),
+        header: () => <Label className="text-green-600">Check Out</Label>,
         cell: (info) => (
           <div className="text-center p-2">
-            {info.getValue() 
-              ? format(new Date(Number(info.getValue())), "HH:mm") 
+            {info.getValue()
+              ? format(new Date(Number(info.getValue())), "HH:mm")
               : "-"}
           </div>
         ),
@@ -143,38 +140,30 @@ export const columnsToolbar: ColumnDef<Attendance, any>[] = [
   columnHelper.group({
     id: "shiftSchedule",
     header: () => (
-      <div className="text-center font-semibold">
-        Shift
+      <div className="text-center">
+        <Label className="text-blue-600">Shift Schedule</Label>
       </div>
     ),
     columns: [
       // Start Shift Column
       columnHelper.accessor("startShift", {
         id: "startShift",
-        header: () => (
-          <div className="text-center font-semibold">Start</div>
-        ),
+        header: () => <Label className="text-blue-600">Start</Label>,
         cell: (info) => (
-          <div className="text-center p-2">
-            {info.getValue() || "-"}
-          </div>
+          <div className="text-center p-2">{info.getValue() || "-"}</div>
         ),
       }),
       // End Shift Column
       columnHelper.accessor("endShift", {
         id: "endShift",
-        header: () => (
-          <div className="text-center font-semibold">End</div>
-        ),
+        header: () => <Label className="text-blue-600">End</Label>,
         cell: (info) => (
-          <div className="text-center p-2">
-            {info.getValue() || "-"}
-          </div>
+          <div className="text-center p-2">{info.getValue() || "-"}</div>
         ),
       }),
     ],
   }),
-  
+
   // Department Column
   columnHelper.accessor("department", {
     id: "department",
@@ -190,20 +179,20 @@ export const columnsToolbar: ColumnDef<Attendance, any>[] = [
     ),
     cell: (info) => <div className="pl-2">{info.getValue() || "-"}</div>,
   }),
-  
+
   // Shift Group Column
-  columnHelper.accessor("shiftGroup", {
-    id: "shiftGroup",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        className="font-semibold"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Grup Shift
-        <ChevronsUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-    cell: (info) => <div className="pl-2">{info.getValue() || "-"}</div>,
-  }),
+  //   columnHelper.accessor("shiftGroup", {
+  //     id: "shiftGroup",
+  //     header: ({ column }) => (
+  //       <Button
+  //         variant="ghost"
+  //         className="font-semibold"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Grup Shift
+  //         <ChevronsUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     ),
+  //     cell: (info) => <div className="pl-2">{info.getValue() || "-"}</div>,
+  //   }),
 ];

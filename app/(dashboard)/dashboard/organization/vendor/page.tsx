@@ -2,6 +2,13 @@ import { DataTable } from "./table/data-table";
 import { columns, Vendor } from "./table/columns";
 import { get } from "@/lib/fetch-wrapper";
 import DialogCreateVendor from "./DialogCreateVendor";
+import { Metadata } from "next";
+
+
+export const metadata: Metadata = {
+  title: "Vendor",
+  description: "Vendor page",
+};
 
 async function getVendors(): Promise<Vendor[]> {
   const res = await get("vendor", ["vendor"]);
