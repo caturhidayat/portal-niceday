@@ -24,10 +24,10 @@ export default async function Page() {
   const vendors = await getVendors();
   return (
     <div className="grid gap-4 space-y-2">
-      <div className="grid">
+      {/* <div className="grid">
         <h1 className="py-4 font-bold text-xl">Vendors</h1>
-      </div>
-      <div className="flex justify-end">
+      </div> */}
+      <div className="flex">
         <DialogCreateVendor />
       </div>
       <div>

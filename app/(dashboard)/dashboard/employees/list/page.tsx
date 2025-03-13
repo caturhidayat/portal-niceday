@@ -41,10 +41,6 @@ export default async function Page() {
   return (
     <div className="grid gap-4 space-y-2">
       <div>
-        <span className="font-bold text-xl">Employee Shift</span>
-      </div>
-
-      <div>
         <DataTableC
           columns={columns}
           data={employees}

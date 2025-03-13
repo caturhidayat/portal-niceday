@@ -31,10 +31,7 @@ export default async function Page() {
 
   return (
     <div className="grid gap-4">
-      <div className="space-y-2">
-        <span className="font-bold text-xl">Attendance List</span>
-      </div>
-      <div className="flex justify-end py-2">
+      <div className="flex">
         <DialogCreate employees={employees} shifts={shifts} />
       </div>
       <Suspense fallback={<Loading />}>

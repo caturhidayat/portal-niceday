@@ -23,7 +23,7 @@ export default function CreateDeptModal() {
     <div className="grid grid-cols-1">
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <Button aria-haspopup>Create</Button>
+          <Button aria-haspopup>Add Department</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>

@@ -44,10 +44,10 @@ export default async function Page() {
 
   return (
     <div className="grid gap-4">
-      <div className="space-y-2">
+      {/* <div className="space-y-2">
         <span className="font-bold text-xl">Employees</span>
-      </div>
-      <div className="flex justify-end py-2 gap-2">
+      </div> */}
+      <div className="flex py-2 gap-2">
         <DialogCreateEmployee
           departments={departments}
           branches={branches}

@@ -22,9 +22,9 @@ export default async function Page() {
   ]);
   return (
     <div className="grid gap-4">
-      <div className="grid">
+      {/* <div className="grid">
         <h1 className="py-4 font-bold text-xl">Overtime List</h1>
-      </div>
+      </div> */}
       {/* <div className="flex justify-end py-2 gap-2">
                 <DialogCreateOvertime />
             </div> */}

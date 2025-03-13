@@ -15,7 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { CircleX } from "lucide-react";
+import { Building, CircleX } from "lucide-react";
 
 const initialState = {
   success: false,
@@ -45,7 +45,10 @@ export default function CreateBranchModal() {
     <div className="grid grid-cols-1">
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <Button aria-haspopup>Create</Button>
+          <Button aria-haspopup>
+            <Building className="mr-2 h-4 w-4" />
+            Add Branch
+          </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader className="font-bold mb-2">

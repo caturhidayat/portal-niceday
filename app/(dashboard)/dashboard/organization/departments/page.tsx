@@ -28,10 +28,10 @@ export default async function Departments() {
 
   return (
     <div className="grid gap-4">
-      <div className="grid">
+      {/* <div className="grid">
         <h1 className="py-4 font-bold text-xl">Departements</h1>
-      </div>
-      <div className="flex justify-end">
+      </div> */}
+      <div className="flex">
         <CreateDeptModal />
       </div>
       <div className="grid grid-cols-1">

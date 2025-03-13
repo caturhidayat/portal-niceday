@@ -18,10 +18,10 @@ export default async function Page() {
     // console.log("employees = ", employees);
     return (
         <div className="grid gap-4">
-            <div className="grid">
+            {/* <div className="grid">
                 <h1 className="py-4 font-bold text-xl">Admins</h1>
-            </div>
-            <div className="flex justify-end">
+            </div> */}
+            <div className="flex">
                 <DialogCreateAdmin />
             </div>
             <div className=" grid grid-cols-1">
