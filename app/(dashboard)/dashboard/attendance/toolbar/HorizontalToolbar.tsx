@@ -312,46 +312,48 @@ export default function HorizontalToolbar({
           </div>
         </div>
 
-        {/* Department */}
-        <div>
-          <Label className="mr-2">Department</Label>
-          <Select value={departmentId} onValueChange={setDepartmentId}>
-            <SelectTrigger className="w-[180px] bg-background">
-              <SelectValue placeholder="Select department" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {departments.map((item) => (
-                  <SelectItem key={item.id} value={item.id.toString()}>
-                    {item.name}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+        <div className="grid items-center gap-2 sm:grid-cols-2">
+          {/* Department */}
+          <div>
+            <Label className="mr-2">Department</Label>
+            <Select value={departmentId} onValueChange={setDepartmentId}>
+              <SelectTrigger className="w-[180px] bg-background">
+                <SelectValue placeholder="Select department" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {departments.map((item) => (
+                    <SelectItem key={item.id} value={item.id.toString()}>
+                      {item.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
 
-        {/* Shift Group */}
-        <div>
-          <Label className="mr-2">Shift Group</Label>
-          <Select value={shiftGroupId} onValueChange={setShiftGroupId}>
-            <SelectTrigger className="w-[180px] bg-background">
-              <SelectValue placeholder="Select shift group" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {shiftGroups.map((item) => (
-                  <SelectItem key={item.id} value={item.id.toString()}>
-                    {item.name}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          {/* Shift Group */}
+          <div>
+            <Label className="mr-2">Shift Group</Label>
+            <Select value={shiftGroupId} onValueChange={setShiftGroupId}>
+              <SelectTrigger className="w-[180px] bg-background">
+                <SelectValue placeholder="Select shift group" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {shiftGroups.map((item) => (
+                    <SelectItem key={item.id} value={item.id.toString()}>
+                      {item.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-2 ml-auto">
+        <div className="grid items-center gap-2 sm:grid-cols-2">
           <Button
             onClick={handleViewData}
             disabled={loading}
@@ -366,7 +368,11 @@ export default function HorizontalToolbar({
               </>
             )}
           </Button>
-          <Button variant={"outline"} onClick={handleReset} className="bg-orange-400 hover:bg-orange-600">
+          <Button
+            variant={"outline"}
+            onClick={handleReset}
+            className="bg-orange-400 hover:bg-orange-600"
+          >
             <>
               <RotateCcw className="h-4 w-4 mr-2" />
               Reset
