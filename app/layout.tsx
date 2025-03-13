@@ -3,13 +3,11 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Sarala } from "next/font/google";
 
-export const Author = [{ name: "Catur Hidayat", url: "https://broky.homes" }];
 
 export const metadata: Metadata = {
   title: "Home",
   description: "Portal admin Niceday",
   applicationName: "Niceday",
-  authors: Author,
   generator: "NextJS, React",
   keywords: "HRIS",
 };

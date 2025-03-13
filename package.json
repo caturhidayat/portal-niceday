@@ -2,6 +2,9 @@
   "name": "portal-niceday",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Catur Hidayat",
+    "url": "https://broky.homes"},
   "scripts": {
     "dev": "ENV=development next dev",
     "build": "ENV=production next build",
