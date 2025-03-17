@@ -4,6 +4,12 @@ import { DataTable } from "./table/data-table";
 import { columns } from "./table/columns";
 import { Suspense } from "react";
 import Loading from "@/app/loading";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Branches",
+  description: "Branches page",
+};
 
 export type Branch = {
   id: number;
@@ -24,10 +30,10 @@ export default async function Page() {
   console.log("branches = ", branches);
   return (
     <div className="grid gap-4">
-      <div className="grid">
+      {/* <div className="grid">
         <h1 className="py-4 font-bold text-xl">Branches</h1>
-      </div>
-      <div className="flex justify-end">
+      </div> */}
+      <div className="flex">
         <CreateBranchModal />
       </div>
       <div className=" grid grid-cols-1">

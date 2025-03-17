@@ -172,7 +172,7 @@ export function DataTable<TData extends { id: string }, TValue>({
     <div className="space-y-4">
       <div className="rounded-md border">
         <Table>
-          <TableHeader className="bg-accent">
+          <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -187,7 +187,7 @@ export function DataTable<TData extends { id: string }, TValue>({
                     </TableHead>
                   );
                 })}
-                <TableHead className="bg-accent">
+                <TableHead>
                   <Button variant={"ghost"}>Action</Button>
                 </TableHead>
               </TableRow>

@@ -3,6 +3,14 @@ import { Attendance, Shift, User } from "../today/columns";
 import DialogCreate from "./DialogCreate";
 import { DataTableAttendance } from "./table/data-table";
 import { get } from "@/lib/fetch-wrapper";
+import { Metadata } from "next";
+import { Suspense } from "react";
+import Loading from "@/app/loading";
+
+export const metadata: Metadata = {
+  title: "Attendance List",
+  description: "Attendance List",
+};
 
 async function getAttendance(): Promise<Attendance[]> {
   const response = await get("attendances", ["attendances"]);
@@ -23,13 +31,12 @@ export default async function Page() {
 
   return (
     <div className="grid gap-4">
-      <div className="space-y-2">
-        <span className="font-bold text-xl">Attendance List</span>
-      </div>
-      <div className="flex justify-end py-2">
+      <div className="flex">
         <DialogCreate employees={employees} shifts={shifts} />
       </div>
-      <DataTableAttendance columns={columnsAttendance} data={data} />
+      <Suspense fallback={<Loading />}>
+        <DataTableAttendance columns={columnsAttendance} data={data} />
+      </Suspense>
     </div>
   );
 }

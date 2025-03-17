@@ -117,7 +117,7 @@ export default function TableAttendancesList({
       </div>
       <div className="h-2" />
       <Table>
-        <TableHeader className="bg-accent">
+        <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id} className="">
               {headerGroup.headers.map((header) => {

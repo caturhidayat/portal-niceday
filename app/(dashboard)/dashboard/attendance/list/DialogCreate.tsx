@@ -30,7 +30,7 @@ export default function DialogCreate({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create Attendance</DialogTitle>
-          <DialogDescription>Create new attendance</DialogDescription>
+          <DialogDescription>Create new attendance for employee</DialogDescription>
         </DialogHeader>
         <FormEntryAttendance
           employees={employees}

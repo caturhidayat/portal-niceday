@@ -35,7 +35,7 @@ import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { DataTablePagination } from "@/components/table/data-table-pagination";
 
-import { Branches, columns, Departments, User } from "./table/columns";
+import { Branches, Departments, User } from "./table/columns";
 import { Button } from "@/components/ui/button";
 import DialogEditEmployee from "./DialogEditEmployee";
 import {
@@ -50,11 +50,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Trash2 } from "lucide-react";
-import { Label } from "@/components/ui/label";
-import { deleteAttendance } from "../attendance/list/actions";
 import { DataTableToolbar } from "./table/data-table-toolbar";
 import { Vendor } from "../organization/vendor/table/columns";
-import { deleteEmployee, softDeleteEmployee } from "./actions/actions";
+import { softDeleteEmployee } from "./actions/actions";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -162,7 +160,7 @@ export function DataTableC<TData extends User, TValue>({
       <DataTableToolbar table={table} />
       <div className="rounded-md border">
         <Table>
-          <TableHeader className="bg-accent">
+          <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {

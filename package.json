@@ -2,6 +2,9 @@
   "name": "portal-niceday",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Catur Hidayat",
+    "url": "https://broky.homes"},
   "scripts": {
     "dev": "ENV=development next dev",
     "build": "ENV=production next build",
@@ -46,6 +49,7 @@
     "react-dom": "^19.0.0-rc.1",
     "react-hook-form": "^7.54.2",
     "react-leaflet": "^5.0.0-rc.2",
+    "react-resizable-panels": "^2.1.7",
     "server-only": "^0.0.1",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.5.2",

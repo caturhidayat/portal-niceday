@@ -4,10 +4,17 @@ import { columns } from "./table/columns";
 import { DataTable } from "./table/data-table";
 import { Suspense } from "react";
 import Loading from "@/app/loading";
+import { Metadata } from "next";
 // import dynamic from "next/dynamic";
 // const MapDisplay = dynamic(() => import("@/components/MapDisplay"), {
 //     ssr: false,
 // });
+
+
+export const metadata: Metadata = {
+  title: "Office Location",
+  description: "Office Location page",
+};
 
 export type OfficeLocation = {
   id: number;
