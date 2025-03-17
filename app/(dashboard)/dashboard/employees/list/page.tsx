@@ -2,6 +2,12 @@ import { get } from "@/lib/fetch-wrapper";
 import { DataTableC } from "../data-table";
 import { Branches, columns, Departments, User } from "./table/columns";
 import { Vendor } from "../../organization/vendor/table/columns";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Employees Management",
+  description: "Employees management page",
+};
 
 async function getEmployees(): Promise<User[]> {
   const response = await get("users/employees", ["employees"]);
@@ -34,10 +40,6 @@ export default async function Page() {
 
   return (
     <div className="grid gap-4 space-y-2">
-      <div>
-        <span className="font-bold text-xl">Employee Shift</span>
-      </div>
-
       <div>
         <DataTableC
           columns={columns}

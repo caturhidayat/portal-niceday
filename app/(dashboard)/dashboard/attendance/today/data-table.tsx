@@ -135,7 +135,7 @@ export function DataTableC<TData, TValue>({
       <DataTableToolbar table={table} />
       <div className="rounded-md border">
         <Table ref={tbl}>
-          <TableHeader className="bg-accent">
+          <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -150,7 +150,7 @@ export function DataTableC<TData, TValue>({
                     </TableHead>
                   );
                 })}
-                <TableHead className="bg-accent">
+                <TableHead>
                   <Button variant={"ghost"}>Action</Button>
                 </TableHead>
               </TableRow>

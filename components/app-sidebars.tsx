@@ -224,10 +224,10 @@ const data = {
       icon: CalendarClock,
       iconColor: "text-lime-500",
       items: [
-        // {
-        //   title: "Attendance",
-        //   url: "/dashboard/attendance",
-        // },
+        {
+          title: "Attendance",
+          url: "/dashboard/attendance",
+        },
         // {
         //   title: "Attendance Entry Form",
         //   url: "/dashboard/attendance/entry-form",

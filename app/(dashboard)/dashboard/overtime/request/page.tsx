@@ -3,6 +3,13 @@ import { getAttendances, getOvertimeBilled, getOvertimeRules } from "./actions";
 import { columns } from "./table/columns";
 import { DataTableOvertime } from "./table/data-table";
 import Loading from "@/app/loading";
+import { Metadata } from "next";
+
+
+export const metadata: Metadata = {
+  title: "Overtime Resquest",
+  description: "Overtime request page",
+};
 
 export default async function OvertimeRequestPage() {
 const [attendances, overtimeBilled, overtimeRules] = await Promise.all([
