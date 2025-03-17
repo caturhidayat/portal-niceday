@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download } from "lucide-react";
+import { Download, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "sonner";
 import {
@@ -38,6 +38,19 @@ import { useState } from "react";
 import { rankItem } from "@tanstack/match-sorter-utils";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { columns } from "../today/columns";
+import { DataTablePagination } from "@/components/table/data-table-pagination";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { deleteAttendance } from "../list/actions";
 
 // Definisikan tipe data untuk hasil filter attendance
 // export type AttendanceData = {
@@ -91,18 +104,18 @@ export default function TableView<TData extends Attendance, TValue>({
     data,
     columns: columnsToolbar,
     initialState: {
-      sorting: [
-        {
-          id: "fullName",
-          desc: true,
-        },
-        {
-          id: "attendanceDate",
-          desc: true,
-        },
-      ],
+      // sorting: [
+      //   {
+      //     id: "fullName",
+      //     desc: true,
+      //   },
+      //   {
+      //     id: "attendanceDate",
+      //     desc: true,
+      //   },
+      // ],
       pagination: {
-        pageSize: 20,
+        pageSize: 15,
       },
     },
     state: {
@@ -392,38 +405,7 @@ export default function TableView<TData extends Attendance, TValue>({
                     </TableCell>
                   ))}
 
-                  <TableCell className="p-0 px-2 flex">
-                    {/* <DialogEditAttendance attendance={row.original} />
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="ghost">
-                            <Trash2 className="mr-2 h-4 w-4 text-red-600" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>
-                              Are you sure you want to delete this attendance?
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This action cannot be undone. This will
-                              permanently delete your attendance.
-                            </AlertDialogDescription>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                onClick={async () => {
-                                  await deleteAttendance(row.original.id);
-                                  table.resetRowSelection();
-                                }}
-                              >
-                                Delete
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogHeader>
-                        </AlertDialogContent>
-                      </AlertDialog> */}
-                  </TableCell>
+                  <TableCell className="p-0 px-2 flex"></TableCell>
                 </TableRow>
               );
             })
@@ -439,6 +421,7 @@ export default function TableView<TData extends Attendance, TValue>({
           )}
         </TableBody>
       </Table>
+      <DataTablePagination table={table} />
     </div>
   );
 }
