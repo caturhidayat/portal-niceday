@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useActionState, useState } from "react";
-import { Loader, Loader2, Save, UserRoundPlus } from "lucide-react";
+import { BookPlusIcon, Loader, Loader2, Save, UserRoundPlus } from "lucide-react";
 import { Label } from "@/components/ui/label";
 
 import { Input } from "@/components/ui/input";
@@ -34,14 +34,14 @@ export default function DialogCreateVendor() {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button>
-          <UserRoundPlus className="mr-2 h-4 w-4" />
-          Create Vendor
+          <BookPlusIcon className="mr-2 h-4 w-4" />
+          Add Vendor
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Vendor</DialogTitle>
-          <DialogDescription>Create new vendor</DialogDescription>
+          <DialogTitle>Add Vendor</DialogTitle>
+          <DialogDescription>Add new vendor</DialogDescription>
         </DialogHeader>
 
         <form className="space-y-4" action={action}>

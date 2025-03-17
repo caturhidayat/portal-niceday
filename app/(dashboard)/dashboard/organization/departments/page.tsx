@@ -4,6 +4,12 @@ import { columns } from "./table/columns";
 import CreateDeptModal from "./create-dept-modal";
 import { Suspense } from "react";
 import Loading from "@/app/loading";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Department",
+  description: "Departmen page",
+};
 
 export type Departments = {
   id: number;
@@ -22,10 +28,10 @@ export default async function Departments() {
 
   return (
     <div className="grid gap-4">
-      <div className="grid">
+      {/* <div className="grid">
         <h1 className="py-4 font-bold text-xl">Departements</h1>
-      </div>
-      <div className="flex justify-end">
+      </div> */}
+      <div className="flex">
         <CreateDeptModal />
       </div>
       <div className="grid grid-cols-1">

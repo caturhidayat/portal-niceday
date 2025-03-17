@@ -30,13 +30,13 @@ export default function DialogCreateEmployee({
       <DialogTrigger asChild>
         <Button>
           <UserRoundPlus className="mr-2 h-4 w-4" />
-          Create User
+          Add Employee
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Employee</DialogTitle>
-          <DialogDescription>Create new employee</DialogDescription>
+          <DialogTitle>Add Employee</DialogTitle>
+          <DialogDescription>Add new employee</DialogDescription>
         </DialogHeader>
         <FormCreateEmployee
           departments={departments}
