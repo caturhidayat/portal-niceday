@@ -19,8 +19,8 @@ export type Attendance = {
   department: string | null;
   shiftId: string | null;
   shiftName: string | null;
-  startShift: string | null;
-  endShift: string | null;
+  shiftStart: string | null;
+  shiftEnd: string | null;
   shiftGroup: string | null;
   overtime: string | null;
   overtimeId: string | null;
@@ -34,9 +34,46 @@ export type Attendance = {
   overtimeDeletedAt: string | null;
 };
 
-const columnHelper = createColumnHelper<Attendance>();
+export type AttendanceData = {
+  userId: string;
+  attendanceDate: string;
+  checkInTime: string | null;
+  checkOutTime: string | null;
+  isLate: boolean;
+  lateMinutes: number | null;
+  workHours: number | null;
+  remarks: string | null;
+  shiftId: string | null;
+  shiftName: string | null;
+  shiftStart: string | null;
+  shiftEnd: string | null;
+  fullName: string;
+  username: string;
+  officeLocationName: string;
+  branch: string;
+  department: string;
+  shiftGroup: string;
+  shiftGroupId: string;
+  overtimeId: string;
+  overtimeStart: string | null;
+  overtimeEnd: string | null;
+  overtimeActualMinutes: number | null;
+  overtimeActualHours: number | null;
+  overtimeMultiplicationHours: number | null;
+  overtimeBilled: string | null;
+  overtimeNotes: string;
+  overtimeStatus: string | null;
+  overtimeRejectedReason: string | null;
+  overtimeCreatedAt: string | null;
+  overtimeUpdatedAt: string | null;
+  overtimeDeletedAt: string | null;
+  createdAt: string | null;
+  updatedAt: string | null;
+};
 
-export const columnsToolbar: ColumnDef<Attendance, any>[] = [
+const columnHelper = createColumnHelper<AttendanceData>();
+
+export const columnsToolbar: ColumnDef<AttendanceData, any>[] = [
   // Username Column
   columnHelper.accessor("username", {
     id: "username",
@@ -146,16 +183,16 @@ export const columnsToolbar: ColumnDef<Attendance, any>[] = [
     ),
     columns: [
       // Start Shift Column
-      columnHelper.accessor("startShift", {
-        id: "startShift",
+      columnHelper.accessor("shiftStart", {
+        id: "shiftStart",
         header: () => <Label className="text-blue-600">Start</Label>,
         cell: (info) => (
           <div className="text-center p-2">{info.getValue() || "-"}</div>
         ),
       }),
       // End Shift Column
-      columnHelper.accessor("endShift", {
-        id: "endShift",
+      columnHelper.accessor("shiftEnd", {
+        id: "shiftEnd",
         header: () => <Label className="text-blue-600">End</Label>,
         cell: (info) => (
           <div className="text-center p-2">{info.getValue() || "-"}</div>
@@ -174,6 +211,22 @@ export const columnsToolbar: ColumnDef<Attendance, any>[] = [
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         Dept
+        <ChevronsUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: (info) => <div className="pl-4">{info.getValue() || "-"}</div>,
+  }),
+
+  // Remarks Column
+  columnHelper.accessor("remarks", {
+    id: "remarks",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        className="font-semibold"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Remarks
         <ChevronsUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
