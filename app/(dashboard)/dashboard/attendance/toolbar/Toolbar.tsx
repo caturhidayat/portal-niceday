@@ -25,10 +25,11 @@ import { CalendarIcon, RotateCcw, Search, Table2 } from "lucide-react";
 import { useState } from "react";
 import { Departments } from "../../employees/table/columns";
 
-import { AttendanceData, ShiftGroup } from "../actions";
+import { ShiftGroup } from "../actions";
 
 import { toast } from "sonner";
 import { MultiSelect } from "@/components/ui/multi-select";
+import { AttendanceData } from "./columns";
 
 // Definisikan tipe untuk User
 type User = {
