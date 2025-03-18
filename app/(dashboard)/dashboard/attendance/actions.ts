@@ -2,26 +2,26 @@
 
 import { get } from "@/lib/fetch-wrapper";
 import { Departments, User } from "../employees/table/columns";
-import { Attendance } from "./toolbar/columns";
+import { Attendance, AttendanceData } from "./toolbar/columns";
 
 // Definisikan tipe data untuk hasil filter attendance
-export type AttendanceData = {
-  id: string;
-  userId: string;
-  attendanceDate: string;
-  checkInTime: string | null;
-  checkOutTime: string | null;
-  isLate: boolean;
-  lateMinutes: number | null;
-  workHours: number | null;
-  fullName: string | null;
-  username: string | null;
-  department: string | null;
-  shiftName: string | null;
-  shiftGroup: string | null;
-  branch: string | null;
-  officeLocationName: string | null;
-};
+// export type AttendanceData = {
+//   id: string;
+//   userId: string;
+//   attendanceDate: string;
+//   checkInTime: string | null;
+//   checkOutTime: string | null;
+//   isLate: boolean;
+//   lateMinutes: number | null;
+//   workHours: number | null;
+//   fullName: string | null;
+//   username: string | null;
+//   department: string | null;
+//   shiftName: string | null;
+//   shiftGroup: string | null;
+//   branch: string | null;
+//   officeLocationName: string | null;
+// };
 
 // Fungsi untuk memfilter data attendance berdasarkan parameter
 export async function filterAttendance(
@@ -52,7 +52,7 @@ export async function filterAttendance(
 
   // Memanggil API untuk mendapatkan data attendance berdasarkan filter
   const response = await get(`attendances/filter?${queryParams}`);
-  return response as Attendance[];
+  return response as AttendanceData[];
 }
 
 type Shift = {
