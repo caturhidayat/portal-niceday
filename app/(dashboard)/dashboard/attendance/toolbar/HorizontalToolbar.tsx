@@ -24,7 +24,7 @@ import { useState } from "react";
 import { ShiftGroup } from "../actions";
 import { Departments } from "../../employees/table/columns";
 import { toast } from "sonner";
-import { Attendance } from "./columns";
+import { Attendance, AttendanceData } from "./columns";
 import { Separator } from "@/components/ui/separator";
 
 export default function HorizontalToolbar({
@@ -50,7 +50,7 @@ export default function HorizontalToolbar({
     departmentId?: string,
     shiftGroupId?: string,
     userIds?: string[]
-  ) => Promise<Attendance[]>;
+  ) => Promise<AttendanceData[]>;
   startDate?: number;
   endDate?: number;
   shiftGroupId: string;

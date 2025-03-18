@@ -3,7 +3,7 @@
 import { useState } from "react";
 import TableView from "./toolbar/TableView";
 import { Toaster } from "sonner";
-import { AttendanceData, ShiftGroup } from "./actions";
+import { ShiftGroup } from "./actions";
 import { Departments, User } from "../employees/table/columns";
 import {
   ResizableHandle,
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/resizable";
 import HorizontalToolbar from "./toolbar/HorizontalToolbar";
 import UserList from "./toolbar/UserList";
-import { Attendance, columnsToolbar } from "./toolbar/columns";
+import { Attendance, AttendanceData, columnsToolbar } from "./toolbar/columns";
 
 // Definisikan tipe untuk fungsi filterAttendance
 type FilterAttendanceFunction = (
@@ -21,7 +21,7 @@ type FilterAttendanceFunction = (
   departmentId?: string,
   shiftGroupId?: string,
   userIds?: string[]
-) => Promise<Attendance[]>;
+) => Promise<AttendanceData[]>;
 
 // Komponen client-side untuk halaman attendance
 export default function ClientPage({
@@ -35,7 +35,7 @@ export default function ClientPage({
   users: User[];
   filterAttendance: FilterAttendanceFunction;
 }) {
-  const [attendanceData, setAttendanceData] = useState<Attendance[]>([]);
+  const [attendanceData, setAttendanceData] = useState<AttendanceData[]>([]);
   const [startDate, setStartDate] = useState<number>();
   const [endDate, setEndDate] = useState<number>();
   const [shiftGroupId, setShiftGroupId] = useState<string>("");
@@ -116,7 +116,7 @@ export default function ClientPage({
             {/* <ResizableHandle withHandle /> */}
             <ResizablePanel defaultSize={78} minSize={78} maxSize={90}>
               <div className="h-full overflow-auto">
-              <HorizontalToolbar
+                <HorizontalToolbar
                   shiftGroups={shiftGroups}
                   departments={departments}
                   onFilterAttendance={handleFilterAttendance}

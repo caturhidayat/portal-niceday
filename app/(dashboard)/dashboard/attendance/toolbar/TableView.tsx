@@ -33,7 +33,7 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import { Attendance, columnsToolbar } from "./columns";
+import { Attendance, AttendanceData, columnsToolbar } from "./columns";
 import { useState } from "react";
 import { rankItem } from "@tanstack/match-sorter-utils";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -91,7 +91,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 };
 
 // Komponen untuk menampilkan tabel hasil filter
-export default function TableView<TData extends Attendance, TValue>({
+export default function TableView<TData extends AttendanceData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
