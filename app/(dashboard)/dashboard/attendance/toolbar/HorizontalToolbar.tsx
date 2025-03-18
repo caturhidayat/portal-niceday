@@ -241,7 +241,7 @@ export default function HorizontalToolbar({
     //     </div>
     //   </CardContent>
     // </Card>
-    <div className="bg-slate-300 p-2">
+    <div className="bg-zinc-300 p-2">
       <div className="flex flex-wrap items-center gap-4">
         {/* Date Selection */}
         <div className="flex items-center gap-2">
@@ -315,7 +315,7 @@ export default function HorizontalToolbar({
         <div className="grid items-center gap-2 sm:grid-cols-2">
           {/* Department */}
           <div>
-            <Label className="mr-2">Department</Label>
+            {/* <Label className="mr-2">Department</Label> */}
             <Select value={departmentId} onValueChange={setDepartmentId}>
               <SelectTrigger className="w-[180px] bg-background">
                 <SelectValue placeholder="Select department" />
@@ -334,7 +334,7 @@ export default function HorizontalToolbar({
 
           {/* Shift Group */}
           <div>
-            <Label className="mr-2">Shift Group</Label>
+            {/* <Label className="mr-2">Shift Group</Label> */}
             <Select value={shiftGroupId} onValueChange={setShiftGroupId}>
               <SelectTrigger className="w-[180px] bg-background">
                 <SelectValue placeholder="Select shift group" />
