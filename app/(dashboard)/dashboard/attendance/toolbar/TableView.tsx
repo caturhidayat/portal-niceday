@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, Trash2 } from "lucide-react";
+import { Download, Edit, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "sonner";
 import {
@@ -51,6 +51,17 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { deleteAttendance } from "../list/actions";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import FormEditAttendance from "../FormEditAttendance";
+import FormCreateAttendance from "../FormCreateAttendance";
 
 // Definisikan tipe data untuk hasil filter attendance
 // export type AttendanceData = {
@@ -214,134 +225,6 @@ export default function TableView<TData extends AttendanceData, TValue>({
   };
 
   return (
-    // <>
-    //   <Toaster position="top-right" richColors />
-    //   <Card>
-    //     {/* <CardHeader className="flex flex-row items-center justify-between">
-    //       <CardTitle>Attendance Data</CardTitle>
-    //       <Button variant="outline" onClick={exportToCSV}>
-    //         <Download className="mr-2 h-4 w-4" />
-    //         Export CSV
-    //       </Button>
-    //     </CardHeader> */}
-    //     <CardContent>
-    //       <Table>
-    //         <TableHeader>
-    //           {table.getHeaderGroups().map((headerGroup) => (
-    //             <TableRow key={headerGroup.id}>
-    //               {headerGroup.headers.map((header) => {
-    //                 return (
-    //                   <TableHead key={header.id} colSpan={header.colSpan}>
-    //                     {/* {header.isPlaceholder
-    //                       ? null
-    //                       : flexRender(
-    //                           header.column.columnDef.header,
-    //                           header.getContext()
-    //                         )} */}
-    //                     {header.isPlaceholder ? null : (
-    //                       <div>
-    //                         {header.column.getCanGroup() ? (
-    //                           // If the header can be grouped, let's add a toggle
-    //                           <button
-    //                             {...{
-    //                               onClick:
-    //                                 header.column.getToggleGroupingHandler(),
-    //                               style: {
-    //                                 cursor: "pointer",
-    //                               },
-    //                             }}
-    //                           >
-    //                             {header.column.getIsGrouped()
-    //                               ? `(${header.column.getGroupedIndex()}) `
-    //                               : ``}
-    //                           </button>
-    //                         ) : null}{" "}
-    //                         {flexRender(
-    //                           header.column.columnDef.header,
-    //                           header.getContext()
-    //                         )}
-    //                       </div>
-    //                     )}
-    //                   </TableHead>
-    //                 );
-    //               })}
-    //               <TableHead>
-    //                 <Button variant={"ghost"}>Acton</Button>
-    //               </TableHead>
-    //             </TableRow>
-    //           ))}
-    //         </TableHeader>
-    //         <TableBody>
-    //           {table.getRowModel().rows?.length ? (
-    //             table.getRowModel().rows.map((row) => {
-    //               return (
-    //                 <TableRow
-    //                   key={row.id}
-    //                   data-state={row.getIsSelected() && "selected"}
-    //                 >
-    //                   {row.getVisibleCells().map((cell) => (
-    //                     <TableCell key={cell.id} className="p-0 px-2">
-    //                       {flexRender(
-    //                         cell.column.columnDef.cell,
-    //                         cell.getContext()
-    //                       )}
-    //                     </TableCell>
-    //                   ))}
-
-    //                   <TableCell className="p-0 px-2 flex">
-    //                     {/* <DialogEditAttendance attendance={row.original} />
-    //                   <AlertDialog>
-    //                     <AlertDialogTrigger asChild>
-    //                       <Button variant="ghost">
-    //                         <Trash2 className="mr-2 h-4 w-4 text-red-600" />
-    //                       </Button>
-    //                     </AlertDialogTrigger>
-    //                     <AlertDialogContent>
-    //                       <AlertDialogHeader>
-    //                         <AlertDialogTitle>
-    //                           Are you sure you want to delete this attendance?
-    //                         </AlertDialogTitle>
-    //                         <AlertDialogDescription>
-    //                           This action cannot be undone. This will
-    //                           permanently delete your attendance.
-    //                         </AlertDialogDescription>
-    //                         <AlertDialogFooter>
-    //                           <AlertDialogCancel>Cancel</AlertDialogCancel>
-    //                           <AlertDialogAction
-    //                             onClick={async () => {
-    //                               await deleteAttendance(row.original.id);
-    //                               table.resetRowSelection();
-    //                             }}
-    //                           >
-    //                             Delete
-    //                           </AlertDialogAction>
-    //                         </AlertDialogFooter>
-    //                       </AlertDialogHeader>
-    //                     </AlertDialogContent>
-    //                   </AlertDialog> */}
-    //                   </TableCell>
-    //                 </TableRow>
-    //               );
-    //             })
-    //           ) : (
-    //             <TableRow>
-    //               <TableCell
-    //                 colSpan={columns.length}
-    //                 className="h-24 text-center"
-    //               >
-    //                 <Alert>
-    //                   <AlertTitle>No results.</AlertTitle>
-    //                   <AlertDescription>No data to display.</AlertDescription>
-    //                 </Alert>
-    //               </TableCell>
-    //             </TableRow>
-    //           )}
-    //         </TableBody>
-    //       </Table>
-    //     </CardContent>
-    //   </Card>
-    // </>
-
     <div>
       <Table>
         <TableHeader className="bg-slate-100">
@@ -405,7 +288,45 @@ export default function TableView<TData extends AttendanceData, TValue>({
                     </TableCell>
                   ))}
 
-                  <TableCell className="p-0 px-2 flex"></TableCell>
+                  <TableCell className="p-0 px-2 flex">
+                    {!row.original.checkInTime && !row.original.checkOutTime ? (
+                      <Dialog>
+                        <DialogTrigger>
+                          <Button variant={"ghost"}>
+                            <Edit className="mr-2 h-4 w-4" />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Edit Attendance</DialogTitle>
+                            <DialogDescription>
+                              Edit attendance Employee
+                            </DialogDescription>
+                          </DialogHeader>
+                          <FormCreateAttendance attendance={row.original} />
+                        </DialogContent>
+                      </Dialog>
+                    ) : (
+                      <>
+                        <Dialog>
+                          <DialogTrigger>
+                            <Button variant={"ghost"}>
+                              <Edit className="mr-2 h-4 w-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Edit Attendance</DialogTitle>
+                              <DialogDescription>
+                                Edit attendance Employee
+                              </DialogDescription>
+                            </DialogHeader>
+                            <FormEditAttendance attendance={row.original} />
+                          </DialogContent>
+                        </Dialog>
+                      </>
+                    )}
+                  </TableCell>
                 </TableRow>
               );
             })

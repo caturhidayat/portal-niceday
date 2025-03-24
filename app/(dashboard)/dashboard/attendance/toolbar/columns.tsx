@@ -35,6 +35,7 @@ export type Attendance = {
 };
 
 export type AttendanceData = {
+  id: string;
   userId: string;
   attendanceDate: string;
   checkInTime: string | null;
