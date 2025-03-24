@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { API_URL } from "./constant";
 import { getErrorMessage } from "./error";
+import { revalidatePath } from "next/cache";
 
 export const getHeaders = async () => ({
   Cookie: (await cookies()).toString(),
@@ -42,6 +43,8 @@ export const postRaw = async (path: string, formData: FormData) => {
     body: JSON.stringify(data),
   });
 
+  revalidatePath('/', 'layout')
+
   const parsedRes = await res.json();
   console.log("parsedRes ", parsedRes);
   if (!res.ok) {
@@ -63,6 +66,8 @@ export const postJson = async (path: string, data: FormData) => {
     body: JSON.stringify(data),
   });
 
+  revalidatePath('/', 'layout')
+
   const parsedRes = await res.json();
   console.log("parsedRes", parsedRes);
   if (!res.ok) {
@@ -81,31 +86,40 @@ export const get = async <T>(path: string, tags?: string[]) => {
   return res.json() as T;
 };
 
-export const put = async (path: string, id: string, data: FormData) => {
+export const put = async (path: string, id: string, data: FormData, tags?: string[]) => {
   const token = await getHeaders();
   const res = await fetch(`${API_URL}/${path}/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json", ...token },
     body: JSON.stringify(Object.fromEntries(data)),
+    next: { tags },
   });
+
+  revalidatePath('/', 'layout')
   return res.json();
 };
 
-export async function putNoParams(path: string, data: FormData) {
+export async function putNoParams(path: string, data: FormData, tags?: string[]) {
   const token = await getHeaders();
   const res = await fetch(`${API_URL}/${path}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json", ...token },
     body: JSON.stringify(Object.fromEntries(data)),
+    next: { tags },
   });
+
+  revalidatePath('/', 'layout')
   return res.json();
 }
 
-export const del = async (path: string, id: string) => {
+export const del = async (path: string, id: string, tags?: string[]) => {
   const token = await getHeaders();
   const res = await fetch(`${API_URL}/${path}/${id}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json", ...token },
+    next: { tags },
   });
+
+  revalidatePath('/', 'layout')
   return res.json();
 };

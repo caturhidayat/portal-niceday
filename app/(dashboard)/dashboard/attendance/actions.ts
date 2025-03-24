@@ -247,7 +247,7 @@ export async function updateAttendance(
     }
 
     console.log("validatedData : ", validatedData);
-    await put(`attendances`, attendanceId, formData);
+    await put(`attendances`, attendanceId, formData, ["attendances"]);
 
     // Revalidate the attendance list to show updated data
     revalidateTag("attendances");
@@ -264,16 +264,16 @@ export async function updateAttendance(
   }
 }
 
-// Schema untuk validasi data create attendance
+// Schema for validating create attendance data
 const createAttendanceSchema = z.object({
-  userId: z.string().min(1, { message: "User ID diperlukan" }),
-  attendanceDate: z.string().min(1, { message: "Tanggal kehadiran diperlukan" }),
+  userId: z.string().min(1, { message: "User ID is required" }),
+  attendanceDate: z.string().min(1, { message: "Attendance date is required" }),
   checkInTime: z.string().optional().nullable(),
   checkOutTime: z.string().optional().nullable(),
   remarks: z.string().optional().nullable(),
 });
 
-// Interface untuk data form create attendance
+// Interface for create attendance form data
 export interface CreateAttendanceFormData {
   userId: string;
   attendanceDate: string;
@@ -282,7 +282,7 @@ export interface CreateAttendanceFormData {
   remarks?: string;
 }
 
-// Interface untuk response dari server action
+// Interface for response from server action
 export interface ActionResponseCreateAttendance {
   success: boolean;
   message: string;
@@ -291,7 +291,7 @@ export interface ActionResponseCreateAttendance {
   };
 }
 
-// Server action untuk create attendance
+// Server action for create attendance
 export async function createAttendance(
   formData: FormData
 ): Promise<ActionResponseCreateAttendance> {
@@ -342,7 +342,7 @@ export async function createAttendance(
       };
     }
 
-    // Buat FormData untuk dikirim ke API
+    // Create FormData to send to API
     const submitData = new FormData();
     submitData.append("userId", userId);
     submitData.append("attendanceDate", attendanceDate);
@@ -361,7 +361,7 @@ export async function createAttendance(
 
     console.log('submit data :', submitData);
 
-    // Kirim request create attendance
+    // Send request create attendance
     await post(`attendances/entry`, submitData);
 
     // Revalidate attendance data

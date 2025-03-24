@@ -61,8 +61,7 @@ export default function FormCreateAttendance({
       }
     } catch (error) {
       toast.error("Failed to add attendance data", {
-        description:
-          error instanceof Error ? error.message : "Unknown error",
+        description: error instanceof Error ? error.message : "Unknown error",
         duration: 5000,
       });
     } finally {
@@ -88,7 +87,9 @@ export default function FormCreateAttendance({
           defaultValue={checkInTimeFormatted}
           className="w-full"
         />
-        <p className="text-xs text-muted-foreground">Leave empty if you don't want to fill</p>
+        <p className="text-xs text-muted-foreground">
+          Leave empty if you don't want to fill
+        </p>
         {errors.checkInTime && (
           <p className="text-sm text-red-500">
             {errors.checkInTime.join(", ")}
@@ -104,7 +105,9 @@ export default function FormCreateAttendance({
           defaultValue={checkOutTimeFormatted}
           className="w-full"
         />
-        <p className="text-xs text-muted-foreground">Leave empty if you don't want to fill</p>
+        <p className="text-xs text-muted-foreground">
+          Leave empty if you don't want to fill
+        </p>
         {errors.checkOutTime && (
           <p className="text-sm text-red-500">
             {errors.checkOutTime.join(", ")}
@@ -121,9 +124,7 @@ export default function FormCreateAttendance({
           className="w-full"
         />
         {errors.remarks && (
-          <p className="text-sm text-red-500">
-            {errors.remarks.join(", ")}
-          </p>
+          <p className="text-sm text-red-500">{errors.remarks.join(", ")}</p>
         )}
       </div>
       <Button type="submit" disabled={isPending} className="w-full">
