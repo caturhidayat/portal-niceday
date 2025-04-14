@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description: "Attendance page",
 };
 
-// Komponen utama halaman (server component)
+// Main component for composing attendance page
 export default async function Page() {
   const [shiftGroups, departments, users] = await Promise.all([
     getShiftGroups(),

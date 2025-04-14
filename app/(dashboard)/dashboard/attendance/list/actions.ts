@@ -18,15 +18,15 @@ import { fromZonedTime } from "date-fns-tz";
 const AttendanceSchema = z.object({
   userId: z.string().min(1, { message: "User is required" }),
   attendanceDate: z.string(),
-  startTime: z.string(),
-  endTime: z.string(),
+  checkInTime: z.string(),
+  checkOutTime: z.string(),
 });
 
 export interface AttendanceFormData {
   userId: string;
   attendanceDate: string;
-  startTime: string;
-  endTime: string;
+  checkInTime: string;
+  checkOutTime: string;
 }
 
 export interface ActionResponseAttendance {
@@ -41,18 +41,18 @@ export interface ActionResponseAttendance {
 // Fungsi untuk mengatur waktu dari string format "HH:mm"
 const setTimeFromString = (epochTimestamp: string, timeString: string) => {
   // Parse timeString format "HH:mm"
-  const [hours, minutes] = timeString.split(':').map(Number)
+  const [hours, minutes] = timeString.split(":").map(Number);
 
   // Buat Date object dari epoch timestamp
   // const date = new Date(+epochTimestamp)
-  const date = fromUnixTime(+epochTimestamp)
+  const date = fromUnixTime(+epochTimestamp);
 
   // Set jam dan menit
-  const withHours = setHours(date, hours)
-  const withMinutes = setMinutes(withHours, minutes)
+  const withHours = setHours(date, hours);
+  const withMinutes = setMinutes(withHours, minutes);
 
   return withMinutes.getTime().toString();
-}
+};
 
 // Create Attendance
 export async function createAttendance(
@@ -63,10 +63,10 @@ export async function createAttendance(
     // console.log("formData server action : ", formData);
 
     const attendanceDate = formData.get("attendanceDate") as string;
-    const startTime = formData.get("startTime") as string;
-    const endTime = formData.get("endTime") as string;
-    const [startHour, startMinute] = startTime.split(":").map(Number);
-    const [endHour, endMinute] = endTime.split(":").map(Number);
+    const checkInTime = formData.get("checkInTime") as string;
+    const checkOutTime = formData.get("checkOutTime") as string;
+    const [startHour, startMinute] = checkInTime.split(":").map(Number);
+    const [endHour, endMinute] = checkOutTime.split(":").map(Number);
 
     const diffTime = differenceInSeconds(
       new Date(setMinutes(setHours(+attendanceDate, endHour), endMinute)),
@@ -79,7 +79,6 @@ export async function createAttendance(
     }
 
     // const addOne = addDays(+attendanceDate, 1).getTime().toString();
-    
 
     console.log("diffTime server action : ", diffTime);
 
@@ -88,31 +87,48 @@ export async function createAttendance(
     // const start = setTimeFromString(attendanceDate, startTime);
     // const end = setTimeFromString(attendanceDate, endTime);
 
-
     // Buat date dengan timezone Asia/Jakarta
-    const checkInDate = setMinutes(setHours(new Date(+attendanceDate), startHour), startMinute);
-    const checkOutDate = setMinutes(setHours(new Date(+attendanceDate), endHour), endMinute);
+    const checkInDate = setMinutes(
+      setHours(new Date(+attendanceDate), startHour),
+      startMinute
+    );
+    const checkOutDate = setMinutes(
+      setHours(new Date(+attendanceDate), endHour),
+      endMinute
+    );
     const checkOutAddOne = addDays(checkOutDate, 1);
 
     // Konversi ke UTC dengan mempertahankan waktu lokal
-    const checkInTime = fromZonedTime(checkInDate, 'Asia/Jakarta').getTime().toString();
-    const checkOutTime = fromZonedTime(checkOutDate, 'Asia/Jakarta').getTime().toString();
-    const checkOutAddOneTime = fromZonedTime(checkOutAddOne, 'Asia/Jakarta').getTime().toString();
+    const checkInTimeLocal = fromZonedTime(checkInDate, "Asia/Jakarta")
+      .getTime()
+      .toString();
+    const checkOutTimeLocal = fromZonedTime(checkOutDate, "Asia/Jakarta")
+      .getTime()
+      .toString();
+    const checkOutAddOneTimeLocal = fromZonedTime(
+      checkOutAddOne,
+      "Asia/Jakarta"
+    )
+      .getTime()
+      .toString();
 
     // const checkOut = fromUnixTime(+checkOutTime)
     // console.log("checkOut server action : ", checkOut);
 
     // const checOutTimeAddOne = addDays(new Date(checkOut), 1);
     // const addOne = checOutTimeAddOne.getTime().toString();
-    console.log("checkOutAddOneTime server action : ", checkOutAddOneTime);
+    console.log("checkOutAddOneTime server action : ", checkOutAddOneTimeLocal);
 
-    console.log("checkOutTime server action : ", checkOutTime);
+    console.log("checkOutTime server action : ", checkOutTimeLocal);
 
     // console.log("addOne server action : ", addOne);
 
     const rawData: any = {
       userId: formData.get("userId") as string,
       attendanceDate: attendanceDate,
+      checkInTime: checkInTimeLocal,
+      checkOutTime: checkOutTimeLocal,
+      checkOutAddOne: checkOutAddOneTimeLocal,
       // startTime: new Date(
       //   setMinutes(setHours(+attendanceDate, startHour), startMinute)
       // )
@@ -131,7 +147,7 @@ export async function createAttendance(
       //       .getTime()
       //       .toString(),
       startTime: checkInTime,
-      endTime: isNextDay ? checkOutAddOneTime : checkOutTime,
+      endTime: isNextDay ? checkOutAddOneTimeLocal : checkOutTime,
     };
 
     // console.log("rawData server action : ", rawData);
@@ -150,15 +166,15 @@ export async function createAttendance(
     const submitData = new FormData();
     submitData.append("userId", rawData.userId);
     submitData.append("attendanceDate", rawData.attendanceDate);
-    submitData.append("startTime", rawData.startTime);
-    submitData.append("endTime", rawData.endTime);
+    submitData.append("checkInTime", rawData.checkInTime);
+    submitData.append("checkOutTime", rawData.checkOutTime);
 
     const res = await post("attendances/entry", submitData);
 
     if (res.error) {
       return {
         success: false,
-        message: "Failed to create attendance" + " " + res.error,
+        message: "Failed to create attendance" + " : " + res.error,
       };
     }
     console.log("res server action : ", res);
