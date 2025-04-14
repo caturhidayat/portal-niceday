@@ -73,6 +73,7 @@ export default function ClientPage({
     setShiftGroupId("");
     setDepartmentId("");
     setSelectedUsers([]);
+    setAttendanceData([]);
   };
 
   return (
@@ -94,26 +95,6 @@ export default function ClientPage({
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={80}>
           <ResizablePanelGroup direction="vertical">
-            {/* <ResizablePanel defaultSize={8} minSize={8} maxSize={10}>
-              <div className="h-full overflow-auto">
-                <HorizontalToolbar
-                  shiftGroups={shiftGroups}
-                  departments={departments}
-                  onFilterAttendance={handleFilterAttendance}
-                  startDate={startDate}
-                  endDate={endDate}
-                  shiftGroupId={shiftGroupId}
-                  departmentId={departmentId}
-                  selectedUsers={selectedUsers}
-                  setStartDate={setStartDate}
-                  setEndDate={setEndDate}
-                  setShiftGroupId={setShiftGroupId}
-                  setDepartmentId={setDepartmentId}
-                  handleReset={handleReset}
-                />
-              </div>
-            </ResizablePanel> */}
-            {/* <ResizableHandle withHandle /> */}
             <ResizablePanel defaultSize={78} minSize={78} maxSize={90}>
               <div className="h-full overflow-auto">
                 <HorizontalToolbar

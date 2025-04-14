@@ -32,8 +32,8 @@ const initialState = {
   inputs: {
     userId: "",
     attendanceDate: "",
-    startTime: "",
-    endTime: "",
+    checkInTime: "",
+    checkOutTime: "",
   },
 };
 
@@ -47,8 +47,8 @@ export default function FormEntryAttendance({
   shifts: Shift[];
 }) {
   const [attendanceDate, setAttendanceDate] = useState<Date>();
-  const [startTime, setStartTime] = useState<string>("");
-  const [endTime, setEndTime] = useState<string>("");
+  const [checkInTime, setCheckInTime] = useState<string>("");
+  const [checkOutTime, setCheckOutTime] = useState<string>("");
   const [selectedEmployee, setSelectedEmployee] = useState<string>();
   const [openEmployee, setOpenEmployee] = useState(false);
 
@@ -161,31 +161,31 @@ export default function FormEntryAttendance({
 
         <div className="grid grid-cols-2 gap-4">
           <div className="col-span-1 space-y-2">
-            <Label htmlFor="startTime">Start Time</Label>
+            <Label htmlFor="checkInTime">Start Time</Label>
             <div className="flex items-center space-x-2">
               <Input
                 type="time"
-                name="startTime"
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
+                name="checkInTime"
+                value={checkInTime}
+                onChange={(e) => setCheckInTime(e.target.value)}
               />
             </div>
-            {state.errors?.startTime && (
-              <p className="text-red-500">{state.errors.startTime}</p>
+            {state.errors?.checkInTime && (
+              <p className="text-red-500">{state.errors.checkInTime}</p>
             )}
           </div>
           <div className="col-span-1 space-y-2">
-            <Label htmlFor="endTime">End Time</Label>
+            <Label htmlFor="checkOutTime">End Time</Label>
             <div className="flex items-center space-x-2">
               <Input
                 type="time"
-                name="endTime"
-                value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
+                name="checkOutTime"
+                value={checkOutTime}
+                onChange={(e) => setCheckOutTime(e.target.value)}
               />
             </div>
-            {state.errors?.endTime && (
-              <p className="text-red-500">{state.errors.endTime}</p>
+            {state.errors?.checkOutTime && (
+              <p className="text-red-500">{state.errors.checkOutTime}</p>
             )}
           </div>
         </div>
@@ -202,8 +202,8 @@ export default function FormEntryAttendance({
           disabled={
             isPending ||
             !attendanceDate ||
-            !startTime ||
-            !endTime ||
+            !checkInTime ||
+            !checkOutTime ||
             !selectedEmployee
           }
         >
