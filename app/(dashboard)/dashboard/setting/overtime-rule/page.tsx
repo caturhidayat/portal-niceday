@@ -20,7 +20,7 @@ export default async function Page() {
       <div className="grid">
         <h1 className="py-4 font-bold text-xl">Overtime Rule</h1>
       </div>
-      <div className="flex justify-end">
+      <div className="flex">
         <DialogCreateRule overtimeRules={overtimeRules} />
       </div>
       <div className="grid gap-4">
