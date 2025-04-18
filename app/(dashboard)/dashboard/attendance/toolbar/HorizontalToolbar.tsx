@@ -357,7 +357,7 @@ export default function HorizontalToolbar({
           <Button
             onClick={handleViewData}
             disabled={loading}
-            className="bg-teal-600 hover:bg-teal-700"
+            // className="bg-teal-600 hover:bg-teal-700"
           >
             {loading ? (
               "Loading..."
@@ -369,9 +369,9 @@ export default function HorizontalToolbar({
             )}
           </Button>
           <Button
-            variant={"outline"}
+            variant={"destructive"}
             onClick={handleReset}
-            className="bg-orange-400 hover:bg-orange-600"
+            // className="bg-orange-400 hover:bg-orange-600"
           >
             <>
               <RotateCcw className="h-4 w-4 mr-2" />
