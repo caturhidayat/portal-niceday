@@ -74,7 +74,7 @@ export default function FormCreateShiftGroup({
 
   return (
     <div>
-      <ScrollArea className="mt-4 h-4/5">
+      <ScrollArea className="mt-4 h-[60vh] max-h-[80vh] rounded-lg border border-gray-200 p-4">
         <div className="grid gap-2">
           <form className="space-y-2" action={action}>
             <div className="grid gap-4">
@@ -179,6 +179,7 @@ export default function FormCreateShiftGroup({
 
               <Button
                 type="button"
+                className="bg-violet-500 text-white"
                 onClick={() => setDisplayShift(!displayShift)}
               >
                 Display Shift
