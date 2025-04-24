@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Sarala } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
 
 
 export const metadata: Metadata = {
@@ -27,7 +28,13 @@ export default function RootLayout({
       <body
         className={`${sarala.className} antialiased supressHydrationWarning`}
       >
-        <main>{children}</main>
+        <main>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+          >{children}</ThemeProvider>
+        </main>
         <Toaster richColors position="top-right" closeButton />
       </body>
     </html>
