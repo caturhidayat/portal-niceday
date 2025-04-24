@@ -241,7 +241,7 @@ export default function HorizontalToolbar({
     //     </div>
     //   </CardContent>
     // </Card>
-    <div className="bg-zinc-300 p-2">
+    <div className="p-2">
       <div className="flex flex-wrap items-center gap-4">
         {/* Date Selection */}
         <div className="flex items-center gap-2">

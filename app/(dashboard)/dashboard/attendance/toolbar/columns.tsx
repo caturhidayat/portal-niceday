@@ -143,14 +143,14 @@ export const columnsToolbar: ColumnDef<AttendanceData, any>[] = [
     id: "actualTime",
     header: () => (
       <div className="flex items-center justify-center">
-        <Label className="text-green-600">Actual Time</Label>
+        <Label className="">Actual Time</Label>
       </div>
     ),
     columns: [
       // Check In Column
       columnHelper.accessor("checkInTime", {
         id: "checkInTime",
-        header: () => <Label className="text-green-600 text-center">Check In</Label>,
+        header: () => <Label className=" text-center">Check In</Label>,
         cell: (info) => (
           <div className="p-2">
             {info.getValue()
@@ -162,7 +162,7 @@ export const columnsToolbar: ColumnDef<AttendanceData, any>[] = [
       // Check Out Column
       columnHelper.accessor("checkOutTime", {
         id: "checkOutTime",
-        header: () => <Label className="text-green-600 text-center">Check Out</Label>,
+        header: () => <Label className=" text-center">Check Out</Label>,
         cell: (info) => (
           <div className="p-2">
             {info.getValue()
@@ -179,14 +179,14 @@ export const columnsToolbar: ColumnDef<AttendanceData, any>[] = [
     id: "shiftSchedule",
     header: () => (
       <div className="text-center">
-        <Label className="text-blue-600">Shift Schedule</Label>
+        <Label className="text-center">Shift Schedule</Label>
       </div>
     ),
     columns: [
       // Start Shift Column
       columnHelper.accessor("shiftStart", {
         id: "shiftStart",
-        header: () => <Label className="text-blue-600">Start</Label>,
+        header: () => <Label className="text-center">Start</Label>,
         cell: (info) => (
           <div className="text-center p-2">{info.getValue() || "-"}</div>
         ),
@@ -194,7 +194,7 @@ export const columnsToolbar: ColumnDef<AttendanceData, any>[] = [
       // End Shift Column
       columnHelper.accessor("shiftEnd", {
         id: "shiftEnd",
-        header: () => <Label className="text-blue-600">End</Label>,
+        header: () => <Label className="text-center">End</Label>,
         cell: (info) => (
           <div className="text-center p-2">{info.getValue() || "-"}</div>
         ),

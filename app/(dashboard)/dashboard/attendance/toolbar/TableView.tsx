@@ -163,7 +163,7 @@ export default function TableView<TData extends AttendanceData, TValue>({
   return (
     <div>
       <Table>
-        <TableHeader className="bg-slate-100">
+        <TableHeader className="">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
