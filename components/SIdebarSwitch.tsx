@@ -19,6 +19,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import Image from "next/image";
 
 export function SidebarSwitch({
   teams,
@@ -41,8 +42,13 @@ export function SidebarSwitch({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-sky-600 text-sidebar-primary-foreground">
-                <activeTeam.logo className="size-4" />
+              {/* <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-sky-600 text-sidebar-primary-foreground"> */}
+                {/* <activeTeam.logo className="size-4" /> */}
+                {/* <Image src={"/images/Logo.png"} alt="Logo" width={32} height={32} /> */}
+              {/* </div> */}
+              <div className="flex aspect-square items-center justify-center rounded-lg">
+                {/* <activeTeam.logo className="size-4" /> */}
+                <Image src={"/images/Logo.png"} alt="Logo" width={46} height={46} />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">

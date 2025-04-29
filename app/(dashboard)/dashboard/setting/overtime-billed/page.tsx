@@ -10,7 +10,7 @@ export default async function Page() {
       <div className="grid">
         <h1 className="py-4 font-bold text-xl">Overtime Billed</h1>
       </div>
-      <div className="flex justify-end">
+      <div className="flex">
         <DialogCreateOvertimeBilled />
       </div>
       <div>

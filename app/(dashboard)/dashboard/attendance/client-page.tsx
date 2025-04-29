@@ -15,7 +15,7 @@ import UserList from "./toolbar/UserList";
 import { Attendance, AttendanceData, columnsToolbar } from "./toolbar/columns";
 
 // Definisikan tipe untuk fungsi filterAttendance
-type FilterAttendanceFunction = (
+export type FilterAttendanceFunction = (
   startDate?: number,
   endDate?: number,
   departmentId?: string,
@@ -112,7 +112,7 @@ export default function ClientPage({
                   setDepartmentId={setDepartmentId}
                   handleReset={handleReset}
                 />
-                <TableView data={attendanceData} columns={columnsToolbar} />
+                <TableView data={attendanceData} columns={columnsToolbar} filterAttendances={filterAttendance} />
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>

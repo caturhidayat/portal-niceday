@@ -180,43 +180,7 @@ export function DataTableC<TData extends { id: string }, TValue>({
                     ))}
 
                     <TableCell className="p-0 px-2">
-                      {/* <DialogEditEmployee
-                        employee={row.original}
-                        departments={departments}
-                        branches={branches}
-                      /> */}
-                      {/* <Button variant="ghost">
-                        <Edit className="mr-2 h-4 w-4" />
-                      </Button> */}
-                      {/* <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="ghost">
-                            <Trash2 className="mr-2 h-4 w-4 text-red-600" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>
-                              Are you sure you want to delete this employee?
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This action cannot be undone. This will
-                              permanently delete your employee.
-                            </AlertDialogDescription>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                onClick={async () => {
-                                  await deleteShiftGroup(row.original.id);
-                                  table.resetRowSelection();
-                                }}
-                              >
-                                Delete
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogHeader>
-                        </AlertDialogContent>
-                      </AlertDialog> */}
+                      
                     </TableCell>
                   </TableRow>
                 );

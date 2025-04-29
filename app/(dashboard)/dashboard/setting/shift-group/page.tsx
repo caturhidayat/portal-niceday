@@ -27,7 +27,7 @@ export default async function Page() {
             <div className="space-y-2">
                 <h1 className="py-4 font-bold text-xl">Shifts Group</h1>
             </div>
-            <div className="flex justify-end">
+            <div className="flex">
                 <CreateShiftGroupModal shifts={shifts} />
             </div>
             <div className="grid gap-4">
