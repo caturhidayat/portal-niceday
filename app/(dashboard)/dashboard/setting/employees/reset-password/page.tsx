@@ -21,7 +21,6 @@ export default async function ResetPasswordPage() {
       <div className="grid">
         <h1 className="py-4 font-bold text-xl">Reset Password</h1>
       </div>
-      <div className="flex justify-end"></div>
       <div className="flex gap">
         <div className="w-[520px]">
           <Card>

@@ -29,6 +29,12 @@ export interface ActionResponseShiftGroup {
     inputs?: ShiftGroupFormData;
 }
 
+/*
+function createShiftGroup - for creating shift group
+@params _prevState - previous state
+@params formData - form data from client
+@returns Promise<ActionResponseShiftGroup> - action response
+*/
 export default async function createShiftGroup(_prevState: ActionResponseShiftGroup, formData: FormData): Promise<ActionResponseShiftGroup> {
     try {
         console.log("Form Data server action : ", formData);
@@ -108,28 +114,13 @@ export default async function createShiftGroup(_prevState: ActionResponseShiftGr
     }
 }
 
-// Delete Shift Group
+/*
+function deleteShiftGroup - for deleting shift group
+@params id - shift group id
+@returns Promise<void>
+*/
 export async function deleteShiftGroup(id: string) {
     console.log("delete shift group id : ", id);
     await del("shift-group", id);
     revalidateTag("shift-group");
 }
-
-
-// Create Shift Group by Name
-// export async function createShiftGroupByName(data: any) {
-//     // transform formData to FormData
-//     const formData = new FormData();
-//     Object.entries(data).forEach(([key, value]) => {
-//         formData.append(key, value);
-//     });
-
-//     const res = await post("shift-group", formData);
-
-//     if (res.error) {
-//         return { error: "An error occured", success: "" };
-//     }
-
-//     revalidateTag("shift-group");
-//     return res.data;
-// }

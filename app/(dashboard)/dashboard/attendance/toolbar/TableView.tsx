@@ -62,6 +62,7 @@ import {
 import { Input } from "@/components/ui/input";
 import FormEditAttendance from "../FormEditAttendance";
 import FormCreateAttendance from "../FormCreateAttendance";
+import { FilterAttendanceFunction } from "../client-page";
 
 // Definisikan tipe data untuk hasil filter attendance
 // export type AttendanceData = {
@@ -85,6 +86,7 @@ import FormCreateAttendance from "../FormCreateAttendance";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  filterAttendances: FilterAttendanceFunction;
 }
 
 // Define a custom fuzzy filter function that will apply ranking info to rows (using match-sorter utils)
@@ -105,6 +107,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 export default function TableView<TData extends AttendanceData, TValue>({
   columns,
   data,
+  filterAttendances
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
@@ -160,7 +163,7 @@ export default function TableView<TData extends AttendanceData, TValue>({
   return (
     <div>
       <Table>
-        <TableHeader className="bg-slate-100">
+        <TableHeader className="">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
